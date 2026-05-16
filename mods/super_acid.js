@@ -2,14 +2,14 @@ acidBlacklist = ["super_acid", "acid", "wall", "gold", "water", "ice", "gold_coi
 
 elements.super_acid = {
 	color: "#77b300",
-	behavior: behaviors.LIQUID_OLD,
+	behavior: behaviors.LIQUID,
 	state: "liquid",
 	category: "liquids",
 	density: 3000,
 	hardness: 1,
 	tick: function (pixel) {
 		for (i = 0; i < adjacentCoords.length; i++) {
-			if (Math.random() < 0.2) {
+			if (Math.random() < 0.5) {
 				var pX = pixel.x
 				var pY = pixel.y
 				var oX = adjacentCoords[i][0];
