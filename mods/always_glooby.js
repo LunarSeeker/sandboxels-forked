@@ -1,47 +1,59 @@
-elements.gloob = {
-    color: "#411900",
-    density: 200,
-    state: "solid",
-    burn: 5,
-    tempHigh: 400,
-    burnTime: 200,
-    burnInto: ["glube"],
-    category: "Glooby stuff",
+elements.egg.color = elements.bead.color
+
+function irradiateNearby(pixel, radius = 1, intensity = 1) {
+    // List of elements to explicitly exclude
+    const excludedElements = new Set([
+        "deuterium",
+        "tritium",
+        "glowder",
+        "uranium",
+        "plutonium",
+    ]);
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+            if (dx === 0 && dy === 0) continue;
+            let nx = pixel.x + dx;
+            let ny = pixel.y + dy;
+            let p = getPixel(nx, ny);
+            if (p && !elements[p.element].radioactive && !elements[p.element].shielding && !excludedElements.has(p.element) && !elements[p.element].antiRadiation && Math.random() < 0.1 * intensity) {
+                p.temp += 15 * intensity;
+                p.irradiated = (p.irradiated || 0) + intensity;
+                if (p.irradiated > 10 && Math.random() < 0.2) {
+                    changePixel(p, "irradiated_matter");
+                }
+            }
+        }
+    }
 }
 
-elements.glube = {
+elements.glowder = {
+    name: "Glowder",
+    color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
     behavior: behaviors.POWDER,
-    color: '#181100',
-    state: 'powder',
-    category: "Glooby stuff",
+    category: "glooby",
+    state: "solid",
     reactions: {
-        "water": { elem1: null, elem2: "wetGloob" },
-        "milk": { elem1: null, elem2: "gloobyMilk" },
+        "water": { elem1: "glowder", elem2: "acid" },
+        "dirty_water": { elem1: null, elem2: "acid" }
     },
-    stateHigh: ["gloobGas"],
-    density: 10
+    density: 1.25,
+    radioactive: true,
+    radioactivity: 0.3,
+    tick(pixel) {
+        irradiateNearby(pixel, 1, 0.7);
+    }
 }
 
-elements.wetGloob = {
-    behavior: behaviors.LIQUID,
-    color: "#A9844F",
-    state: 'liquid',
-    category: 'Glooby stuff',
-    density: '25'
-}
-
-elements.gloobyMilk = {
-    behavior: behaviors.LIQUID,
-    color: '#BEB2AD',
-    state: 'liquid',
-    category: "Glooby stuff",
-    density: 10
-}
-
-elements.gloobGas = {
-    behavior: behaviors.GAS,
-    color: '#E5E4E2',
-    category: 'Glooby stuff',
-    density: .86,
-    state: 'gas',
-}
+// Irradiated matter (weakened)
+elements.irradiated_matter = {
+    color: "#777733",
+    behavior: behaviors.POWDER,
+    category: "glooby",
+    tempHigh: 400,
+    state: "solid",
+    density: 900,
+    burn: 80,
+    burnTime: 250,
+    hardness: 5
+};
