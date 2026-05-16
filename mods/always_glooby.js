@@ -3,13 +3,12 @@ elements.egg.color = elements.bead.color
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
     const excludedElements = new Set([
-        "deuterium",
-        "tritium",
         "glowder",
         "uranium",
         "plutonium",
         "acid",
         "plague",
+        "dirt",
     ]);
 
     for (let dx = -radius; dx <= radius; dx++) {
@@ -41,7 +40,6 @@ elements.glowder = {
     },
     density: 1.25,
     radioactive: true,
-    radioactivity: 0.3,
     tick(pixel) {
         irradiateNearby(pixel, 1, 0.7);
     }
@@ -50,15 +48,18 @@ elements.glowder = {
 // Irradiated matter (weakened)
 elements.irradiated_matter = {
     color: "#777733",
-    behavior: behaviors.POWDER,
+    behavior: behaviors.STURDYPOWDER,
     category: "glooby",
     tempHigh: 400,
     state: "solid",
     density: 900,
-    burn: 80,
-    burnTime: 250,
     hardness: 5,
     reactions: {
-        "bless": { elem1: "gold" },
+        "bless": { elem2: "gold" },
+    },
+    tick: function (pixel) {
+        if (Math.random() < 0.15) {
+            tryCreate('RADIATION', pixel.x, pixel.y - 1)
+        }
     },
 };
