@@ -28,6 +28,27 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
     }
 }
 
+function freezeNearby(pixel, radius = 1, intensity = 1) {
+    // List of elements to explicitly exclude
+    const excludedElements = new Set([
+        "water",
+        "acid",
+        "plague",
+    ]);
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+            if (dx === 0 && dy === 0) continue;
+            let nx = pixel.x + dx;
+            let ny = pixel.y + dy;
+            let p = getPixel(nx, ny);
+            if (p && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
+                p.temp = (p.temp || 0) - intensity;
+            }
+        }
+    }
+}
+
 elements.glowder = {
     name: "Glowder",
     color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
@@ -63,3 +84,32 @@ elements.irradiated_matter = {
         }
     },
 };
+
+elements.gice = {
+    color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
+    behavior: behaviors.WALL,
+    category: "glooby",
+    state: "solid",
+    density: 5,
+    tick(pixel) {
+        freezeNearby(pixel, 5, 0.6);
+    }
+}
+
+elements.gloob = {
+    color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
+    behavior: behaviors.LIQUID,
+    tempHigh: 200,
+    stateHigh: "glowder",
+    tempLow: -50,
+    stateLow: "gice",
+    category: "glooby",
+    reactions: {
+        "salt": { elem1: "acid", elem2: null },
+        "rock": { elem2: "wet_sand", chance: 0.005 },
+        "sand": { elem1: "acid", elem2: null },
+        "bless": { elem1: "wet_sand", elem2: "bless" },
+    },
+    state: "liquid",
+    density: 900
+}
