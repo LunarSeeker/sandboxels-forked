@@ -110,6 +110,7 @@ elements.gloob = {
         "sand": { elem1: "acid", elem2: null },
         "bless": { elem1: "wet_sand", elem2: "bless" },
     },
+    breakInto: ["hydrogen", "acid"],
     state: "liquid",
     density: 900
 }
@@ -120,7 +121,8 @@ elements.groove = {
     category: "glooby",
     state: "solid",
     stateHigh: "molten_groove",
-    tempHigh: 2000
+    tempHigh: 2000,
+    breakInto: ["water", "bless"],
 };
 elements.molten_groove = {
     color: ["#6615d6", "#9651f5", "#d3c3eb"],
