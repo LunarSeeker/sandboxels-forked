@@ -1,4 +1,4 @@
-acidBlacklist = ["super_acid", "acid", "wall", "gold", "water", "ice", "gold_coin"]
+acidBlacklist = ["super_acid", "acid", "wall", "gold", "water", "ice", "gold_coin", "gloob", "groove"]
 
 elements.super_acid = {
 	color: "#77b300",
@@ -7,6 +7,7 @@ elements.super_acid = {
 	category: "liquids",
 	density: 3000,
 	hardness: 1,
+	breakInto: ["hydrogen","acid"],
 	tick: function (pixel) {
 		for (i = 0; i < adjacentCoords.length; i++) {
 			if (Math.random() < 0.5) {
