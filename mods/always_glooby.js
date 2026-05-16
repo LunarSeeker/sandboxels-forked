@@ -113,3 +113,23 @@ elements.gloob = {
     state: "liquid",
     density: 900
 }
+
+elements.groove = {
+    color: ["#e5edc2", "#bec797"],
+    behavior: behaviors.WALL,
+    category: "glooby",
+    state: "solid",
+    stateHigh: "molten_groove",
+    tempHigh: 2000
+};
+elements.molten_groove = {
+    color: ["#6615d6", "#9651f5", "#d3c3eb"],
+    behavior: behaviors.LIQUID,
+    category: "glooby",
+    state: "liquid",
+    stateLow: "groove",
+    tempLow: 1999,
+    temp: 2500,
+    viscosity: 1000,
+    density: 1000
+};
