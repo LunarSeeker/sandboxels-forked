@@ -55,11 +55,13 @@ elements.irradiated_matter = {
     density: 900,
     hardness: 5,
     reactions: {
-        "bless": { elem2: "gold" },
+        "water": { elem2: "dirty_water" },
     },
     tick: function (pixel) {
         if (Math.random() < 0.15) {
-            tryCreate('RADIATION', pixel.x, pixel.y - 1)
+            tryCreate('radiation', pixel.x, pixel.y - 1)
         }
     },
 };
+
+elements.bless.reactions["irradiated_matter"] = { elem2: "gold" }
