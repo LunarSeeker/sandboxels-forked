@@ -1,4 +1,4 @@
-acidBlacklist = ["super_acid", "acid", "wall", "gold"]
+acidBlacklist = ["super_acid", "acid", "wall", "gold", "water", "ice", "gold_coin"]
 
 elements.super_acid = {
 	color: "#77b300",
