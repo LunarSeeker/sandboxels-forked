@@ -8,6 +8,8 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "glowder",
         "uranium",
         "plutonium",
+        "acid",
+        "plague",
     ]);
 
     for (let dx = -radius; dx <= radius; dx++) {
@@ -55,5 +57,8 @@ elements.irradiated_matter = {
     density: 900,
     burn: 80,
     burnTime: 250,
-    hardness: 5
+    hardness: 5,
+    reactions: {
+        "bless": { elem1: "gold" },
+    },
 };
