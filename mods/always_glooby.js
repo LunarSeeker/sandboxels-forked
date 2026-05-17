@@ -1,14 +1,18 @@
-elements.egg.color = elements.bead.color
+function clamp(x, min, max) {
+    return Math.max(min, Math.min(x, max));
+}
 
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
     const excludedElements = new Set([
-        "glowder",
-        "uranium",
-        "plutonium",
         "acid",
-        "plague",
         "dirt",
+        "gloob",
+        "glowder",
+        "groove",
+        "plague",
+        "plutonium",
+        "uranium",
     ]);
 
     for (let dx = -radius; dx <= radius; dx++) {
@@ -28,27 +32,6 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
     }
 }
 
-function freezeNearby(pixel, radius = 1, intensity = 1) {
-    // List of elements to explicitly exclude
-    const excludedElements = new Set([
-        "water",
-        "acid",
-        "plague",
-    ]);
-
-    for (let dx = -radius; dx <= radius; dx++) {
-        for (let dy = -radius; dy <= radius; dy++) {
-            if (dx === 0 && dy === 0) continue;
-            let nx = pixel.x + dx;
-            let ny = pixel.y + dy;
-            let p = getPixel(nx, ny);
-            if (p && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
-                p.temp = (p.temp || 0) - intensity;
-            }
-        }
-    }
-}
-
 elements.glowder = {
     name: "Glowder",
     color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
@@ -59,10 +42,10 @@ elements.glowder = {
         "water": { elem1: "glowder", elem2: "acid" },
         "dirty_water": { elem1: null, elem2: "acid" }
     },
-    density: 1.25,
+    density: 100,
     radioactive: true,
     tick(pixel) {
-        irradiateNearby(pixel, 1, 0.7);
+        irradiateNearby(pixel, 4, 0.5);
     }
 }
 
@@ -85,24 +68,11 @@ elements.irradiated_matter = {
     },
 };
 
-elements.gice = {
-    color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
-    behavior: behaviors.WALL,
-    category: "glooby",
-    state: "solid",
-    density: 5,
-    tick(pixel) {
-        freezeNearby(pixel, 5, 0.6);
-    }
-}
-
 elements.gloob = {
     color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
     behavior: behaviors.LIQUID,
-    tempHigh: 200,
-    stateHigh: "glowder",
-    tempLow: -50,
-    stateLow: "gice",
+    //tempHigh: 200,
+    //stateHigh: "glowder",
     category: "glooby",
     reactions: {
         "salt": { elem1: "acid", elem2: null },
@@ -110,9 +80,10 @@ elements.gloob = {
         "sand": { elem1: "acid", elem2: null },
         "bless": { elem1: "wet_sand", elem2: "bless" },
     },
-    breakInto: ["hydrogen", "acid"],
+    breakInto: ["glowder", "water"],
     state: "liquid",
-    density: 900
+    density: 900,
+    viscosity: 10,
 }
 
 elements.groove = {
@@ -120,11 +91,16 @@ elements.groove = {
     behavior: behaviors.WALL,
     category: "glooby",
     state: "solid",
-    stateHigh: "molten_groove",
+    stateHigh: "glolt",
     tempHigh: 2000,
     breakInto: ["water", "bless"],
+    tick: function (pixel) {
+        if (Math.random() < 0.5 || pixel.temp < 100) {
+            pixel.temp = clamp(pixel.temp, 0, 20)
+        }
+    }
 };
-elements.molten_groove = {
+elements.glolt = {
     color: ["#6615d6", "#9651f5", "#d3c3eb"],
     behavior: behaviors.LIQUID,
     category: "glooby",
