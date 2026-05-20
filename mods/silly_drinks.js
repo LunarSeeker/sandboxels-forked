@@ -1,22 +1,38 @@
-const excludedElements = new Set([
-    "water",
-    "ice",
-    "algae",
-    "coral",
-    "dirt",
-    "grass",
-    "plant",
-    "irradiated_matter",
-    "gloob",
-    "glowder",
-    "glolt",
-    "groove",
-    "melted_cheese",
-    "cheese",
-    "gleeb",
-    "glorp",
-]);
+function cheesifyNearby(pixel, radius = 1, intensity = 1) {
+    // List of elements to explicitly exclude
+    const excludedElements = new Set([
+        "water",
+        "ice",
+        "algae",
+        "coral",
+        "dirt",
+        "grass",
+        "plant",
+        "irradiated_matter",
+        "gloob",
+        "glowder",
+        "glolt",
+        "groove",
+        "melted_cheese",
+        "cheese",
+        "gleeb",
+        "glorp",
+    ]);
 
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+            if (dx === 0 && dy === 0) continue;
+            let nx = pixel.x + dx;
+            let ny = pixel.y + dy;
+            let p = getPixel(nx, ny);
+            if (p && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
+                if (Math.random() < 0.6) {
+                    changePixel(p, "cheese");
+                }
+            }
+        }
+    }
+}
 
 elements.gleeb = {
     color: "#c9c5b1",
@@ -30,17 +46,8 @@ elements.gleeb = {
     category: "liquids",
     state: "liquid",
     density: 800,
-    //stain: -0.25,
-    tick: function (pixel) {
-        for (let dx = -2; dx <= 2; dx++) {
-            for (let dy = -2; dy <= 2; dy++) {
-                if (dx === 0 && dy === 0) continue;
-                let p = getPixel((pixel.x + dx), (pixel.y + dy));
-                if (p && !excludedElements.has(p.element) && Math.random() < 0.2 && p.state !== "gas") {
-                    changePixel(p, "cheese");
-                }
-            }
-        }
+    tick(pixel) {
+        cheesifyNearby(pixel, 4, 0.5);
     }
 }
 
