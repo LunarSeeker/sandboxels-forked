@@ -39,8 +39,8 @@ elements.glowder = {
     category: "glooby",
     state: "solid",
     reactions: {
-        "water": { elem1: "glowder", elem2: "acid" },
-        "dirty_water": { elem1: null, elem2: "acid" }
+        "water": { elem1: "glowder", elem2: "dirt" },
+        "dirty_water": { elem1: null, elem2: "dirt" }
     },
     density: 100,
     radioactive: true,
@@ -75,10 +75,10 @@ elements.gloob = {
     //stateHigh: "glowder",
     category: "glooby",
     reactions: {
-        "salt": { elem1: "acid", elem2: null },
-        "rock": { elem2: "wet_sand", chance: 0.005 },
-        "sand": { elem1: "acid", elem2: null },
-        "bless": { elem1: "wet_sand", elem2: "bless" },
+        "salt": { elem1: "dirt", elem2: null },
+        "rock": { elem2: "dirt", chance: 0.05 },
+        "sand": { elem1: "dirt", elem2: null },
+        "bless": { elem1: "dirt", elem2: "bless" },
     },
     breakInto: ["glowder", "water"],
     state: "liquid",
@@ -95,9 +95,9 @@ elements.groove = {
     tempHigh: 2000,
     breakInto: ["water", "bless"],
     tick: function (pixel) {
-        if (Math.random() < 0.5 || pixel.temp < 100) {
-            pixel.temp = clamp(pixel.temp, 0, 20)
-        }
+        //if (pixel.temp < 100) {
+        pixel.temp = clamp(pixel.temp, 0, 20)
+        //}
     }
 };
 elements.glolt = {

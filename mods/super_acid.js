@@ -1,4 +1,4 @@
-acidBlacklist = ["super_acid", "acid", "wall", "gold", "water", "ice", "gold_coin", "gloob", "groove", "gray_goo"]
+acidBlacklist = ["super_acid", "acid", "gloob", "gold_coin", "gold", "gray_goo", "groove", "hydrogen", "ice", "wall", "water"]
 
 elements.super_acid = {
 	color: "#77b300",
@@ -11,15 +11,10 @@ elements.super_acid = {
 	tick: function (pixel) {
 		for (i = 0; i < adjacentCoords.length; i++) {
 			if (Math.random() < 0.5) {
-				var pX = pixel.x
-				var pY = pixel.y
-				var oX = adjacentCoords[i][0];
-				var oY = adjacentCoords[i][1];
-				var checkPosX = pX + oX;
-				var checkPosY = pY + oY;
+				var checkPosX = pixel.x + adjacentCoords[i][0];
+				var checkPosY = pixel.y + adjacentCoords[i][1];
 				if (!isEmpty(checkPosX, checkPosY, true)) {
-					var newPixel = pixelMap[checkPosX][checkPosY];
-					var newElement = newPixel.element;
+					var newElement = pixelMap[checkPosX][checkPosY].element;
 					if (!acidBlacklist.includes(newElement)) {
 						if (typeof (pixel[newElement]) === "undefined") {
 							pixel[newElement] = 0;
