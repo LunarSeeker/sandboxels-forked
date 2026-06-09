@@ -44,7 +44,7 @@ elements.glorp = {
         "blood": { "elem1": "infection", "elem2": "infection" },
     },
     viscosity: 1,
-    category: "glorp",
+    category: "glooby",
     state: "liquid"
 }
 
@@ -62,12 +62,12 @@ elements.glorp_water = {
         "snow": { "elem1": null, "elem2": "cheese" },
         "blood": { "elem1": "infection", "elem2": "infection" },
     },
-    density: 900,
-    viscosity: 1.5,
-    state: "liquid",
-    category: "glorp",
+    category: "glooby",
     conduct: 0.05,
+    density: 900,
     stain: 0.25,
+    state: "liquid",
+    viscosity: 1.5,
 }
 
 elements.glorp_bomb = {
@@ -81,3 +81,7 @@ elements.glorp_bomb = {
     state: "solid",
     density: 1300,
 }
+
+elements.bless.reactions.gleeb = { elem2: null }
+elements.bless.reactions.glorp = { elem2: null }
+elements.bless.reactions.glorp_water = { elem2: null }

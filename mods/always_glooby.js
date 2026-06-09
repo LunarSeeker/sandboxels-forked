@@ -53,7 +53,7 @@ elements.glowder = {
 elements.irradiated_matter = {
     color: "#777733",
     behavior: behaviors.STURDYPOWDER,
-    category: "glooby",
+    category: "powders",
     tempHigh: 400,
     state: "solid",
     density: 900,
