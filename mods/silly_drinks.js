@@ -3,7 +3,7 @@ elements.gleeb = {
     behavior: behaviors.LIQUID,
     category: "glooby",
     reactions: {
-        "sand": { elem1: "gleeb", elem2: null, chance: 0.1 }
+        "sand": { elem1: "gleeb", elem2: null }
     },
 
     tick: function (pixel) {
@@ -28,16 +28,56 @@ elements.gleeb = {
 
 elements.glorp = {
     color: "#f0bb00",
-    behavior: behaviors.LIQUID,
+    behavior: [
+        "SW:glorp_water%15|SW:glorp_water%15|XX AND SW:glorp_water%15",
+        "M2 AND SW:glorp_water%15|XX|M2 AND SW:glorp_water%15",
+        "M1 AND SW:glorp_water%15|M1 AND SW:glorp_water%15|M1 AND SW:glorp_water%15",
+    ],
+    density: 997,
     reactions: {
-        "head": { elem1: "glorp", elem2: "cheese" },
-        "body": { elem1: "glorp", elem2: "cheese" },
-        "rock": { elem1: "glorp", elem2: "cheese" },
-        "sand": { elem1: "glorp", elem2: "cheese" },
+        "water": { "elem1": "glorp_water", "elem2": "glorp_water", "chance": 0.7 },
+        "dirt": { "elem1": null, "elem2": "cheese" },
+        "mud": { "elem1": "glorp_water", "elem2": "cheese", "chance": (1 / 3) },
+        "sand": { "elem1": null, "elem2": "cheese" },
+        "wet_sand": { "elem1": "glorp_water", "elem2": "cheese", "chance": (1 / 3) },
+        "snow": { "elem1": null, "elem2": "cheese" },
+        "blood": { "elem1": "infection", "elem2": "infection" },
     },
-    viscosity: 0.5,
-    category: "glooby",
+    viscosity: 1,
+    category: "glorp",
+    state: "liquid"
+}
+
+elements.glorp_water = {
+    color: "#cae695",
+    behavior: [
+        "SW:glorp%5|SW:glorp%5|SW:glorp%5",
+        "M2 AND SW:glorp%5|XX|M2 AND SW:glorp%5",
+        "M1 AND SW:glorp%5|M1 AND SW:glorp%5|M1 AND SW:glorp%5",
+    ],
+    reactions: {
+        "water": { "elem1": "glorp_water", "elem2": "glorp_water", "chance": 0.7 },
+        "dirt": { "elem1": "water", "elem2": "cheese" },
+        "sand": { "elem1": "water", "elem2": "cheese" },
+        "snow": { "elem1": null, "elem2": "cheese" },
+        "blood": { "elem1": "infection", "elem2": "infection" },
+    },
+    density: 900,
+    viscosity: 1.5,
     state: "liquid",
-    density: 300,
-    stain: -0.25,
+    category: "glorp",
+    conduct: 0.05,
+    stain: 0.25,
+}
+
+elements.glorp_bomb = {
+    color: "#ffea4d",
+    behavior: [
+        "XX|XX|XX",
+        "XX|XX|XX",
+        "M2|M1 AND EX:12>glorp|M2",
+    ],
+    category: "weapons",
+    state: "solid",
+    density: 1300,
 }
