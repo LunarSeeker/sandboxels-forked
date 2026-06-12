@@ -150,16 +150,21 @@ elements.arsenic_gas = {
 }
 
 elements.conversium = {
-    behavior: behaviors.SOLID,
+    behavior: behaviors.LIQUID,
     category: "special",
     color: ["#cff7b0", "#fce6bb", "#fccece"],
     density: 50,
     excludeRandom: true,
-    state: "solid",
+    state: "liquid",
+    viscosity: 0.5,
     reactions: {
+        "bee": { elem2: "fly" },
+        "body": { elem2: "rat" },
         "cloud": { elem2: "smoke" },
         "dirty_water": { elem2: "magma" },
         "hail_cloud": { elem2: "smoke" },
+        "head": { elem2: "rat" },
+        "ink": { elem2: "oil" },
         "pool_water": { elem2: "magma" },
         "rad_steam": { elem2: "oxygen" },
         "rain_cloud": { elem2: "oxygen" },
@@ -171,6 +176,7 @@ elements.conversium = {
         "snow": { elem2: "magma" },
         "steam": { elem2: "smoke" },
         "sugar_water": { elem2: "magma" },
+        "sugar": { elem2: "salt" },
         "thunder_cloud": { elem2: "smoke" },
         "water": { elem2: "magma" }
     },
@@ -200,11 +206,12 @@ elements.blue_goo = {
         "sugar_water": { elem2: "blue_goo" },
         "vaccine": { elem2: "blue_goo" },
         "vinegar": { elem2: "blue_goo" },
-        "water": { elem2: "blue_goo" }
+        "water": { elem2: "blue_goo" },
+        "yolk": { elem2: "blue_goo" }
     },
 }
 
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.blue_goo = { elem2: "water" }
-elements.bless.reactions.conversium = { elem2: "water" }
+elements.bless.reactions.conversium = { elem2: null }
