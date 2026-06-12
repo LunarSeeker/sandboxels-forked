@@ -6,12 +6,14 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
     const excludedElements = new Set([
         "acid",
+        "deuterium",
         "dirt",
         "gloob",
         "glowder",
         "groove",
         "plague",
         "plutonium",
+        "super_acid",
         "uranium",
     ])
 

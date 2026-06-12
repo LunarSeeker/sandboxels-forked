@@ -192,8 +192,10 @@ elements.blue_goo = {
     viscosity: 1.05,
     reactions: {
         "alcohol": { elem2: "blue_goo" },
+        "deuterium": { elem2: "blue_goo" },
         "dirty_water": { elem2: "blue_goo" },
         "foam": { elem2: "blue_goo" },
+        "heavy_water": { elem2: "blue_goo" },
         "juice": { elem2: "blue_goo" },
         "magma": { elem2: "blue_goo" },
         "oil": { elem2: "blue_goo" },
@@ -209,6 +211,39 @@ elements.blue_goo = {
         "water": { elem2: "blue_goo" },
         "yolk": { elem2: "blue_goo" }
     },
+}
+
+elements.heavy_water = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: "#2167ff",
+    conduct: 0.02,
+    density: 1.1056,
+    stain: -0.5,
+    state: "liquid",
+    viscosity: 1.2467,
+    extinguish: true
+}
+
+elements.deuterium = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#ace0e6",
+    density: 0.18,
+    state: "gas",
+    reactions: {
+        "oxygen": { "elem1": "heavy_water", "elem2": null },
+    },
+}
+
+elements.electron = {
+    behavior: behaviors.GAS,
+    category: "energy",
+    color: "#faffa1",
+    state: "gas",
+    reactions: {
+        "hydrogen": { elem1: null, elem2: "deuterium" },
+    }
 }
 
 elements.bless.reactions.arsenic = { elem2: null }
