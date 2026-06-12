@@ -148,3 +148,63 @@ elements.arsenic_gas = {
         "hair": { elem1: null, elem2: null, chance: 0.01 }
     },
 }
+
+elements.conversium = {
+    behavior: behaviors.SOLID,
+    category: "special",
+    color: ["#cff7b0", "#fce6bb", "#fccece"],
+    density: 50,
+    excludeRandom: true,
+    state: "solid",
+    reactions: {
+        "cloud": { elem2: "smoke" },
+        "dirty_water": { elem2: "magma" },
+        "hail_cloud": { elem2: "smoke" },
+        "pool_water": { elem2: "magma" },
+        "rad_steam": { elem2: "oxygen" },
+        "rain_cloud": { elem2: "oxygen" },
+        "salt_water": { elem2: "magma" },
+        "sand": { elem2: "conversium" },
+        "seltzer": { elem2: "conversium" },
+        "smog": { elem2: "oxygen" },
+        "snow_cloud": { elem2: "smoke" },
+        "snow": { elem2: "magma" },
+        "steam": { elem2: "smoke" },
+        "sugar_water": { elem2: "magma" },
+        "thunder_cloud": { elem2: "smoke" },
+        "water": { elem2: "magma" }
+    },
+}
+
+elements.blue_goo = {
+    behavior: behaviors.LIQUID,
+    category: "special",
+    color: ["#b0e9f7", "#0008ff", "#09c8f7"],
+    density: 0.75,
+    excludeRandom: true,
+    state: "liquid",
+    viscosity: 1.05,
+    reactions: {
+        "alcohol": { elem2: "blue_goo" },
+        "dirty_water": { elem2: "blue_goo" },
+        "foam": { elem2: "blue_goo" },
+        "juice": { elem2: "blue_goo" },
+        "magma": { elem2: "blue_goo" },
+        "oil": { elem2: "blue_goo" },
+        "poison": { elem2: "blue_goo" },
+        "pool_water": { elem2: "blue_goo" },
+        "salt_water": { elem2: "blue_goo" },
+        "seltzer": { elem2: "blue_goo" },
+        "slime": { elem2: "blue_goo" },
+        "soda": { elem2: "blue_goo" },
+        "sugar_water": { elem2: "blue_goo" },
+        "vaccine": { elem2: "blue_goo" },
+        "vinegar": { elem2: "blue_goo" },
+        "water": { elem2: "blue_goo" }
+    },
+}
+
+elements.bless.reactions.arsenic = { elem2: null }
+elements.bless.reactions.arsenic_gas = { elem2: null }
+elements.bless.reactions.blue_goo = { elem2: "water" }
+elements.bless.reactions.conversium = { elem2: "water" }
