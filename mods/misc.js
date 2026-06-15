@@ -1,3 +1,15 @@
+function bluegooFunc(pixel) {
+    for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+            if (dx === 0 && dy === 0) continue
+            let p = getPixel((pixel.x + dx), (pixel.y + dy))
+            if (p && !elements[p.element].state === "liquid") {
+                changePixel(p, "blue_goo")
+            }
+        }
+    }
+}
+
 elements.goobberry = {
     behavior: behaviors.POWDER,
     breakInto: "juice",
@@ -190,26 +202,8 @@ elements.blue_goo = {
     excludeRandom: true,
     state: "liquid",
     viscosity: 1.05,
-    reactions: {
-        "alcohol": { elem2: "blue_goo" },
-        "deuterium": { elem2: "blue_goo" },
-        "dirty_water": { elem2: "blue_goo" },
-        "foam": { elem2: "blue_goo" },
-        "heavy_water": { elem2: "blue_goo" },
-        "juice": { elem2: "blue_goo" },
-        "magma": { elem2: "blue_goo" },
-        "oil": { elem2: "blue_goo" },
-        "poison": { elem2: "blue_goo" },
-        "pool_water": { elem2: "blue_goo" },
-        "salt_water": { elem2: "blue_goo" },
-        "seltzer": { elem2: "blue_goo" },
-        "slime": { elem2: "blue_goo" },
-        "soda": { elem2: "blue_goo" },
-        "sugar_water": { elem2: "blue_goo" },
-        "vaccine": { elem2: "blue_goo" },
-        "vinegar": { elem2: "blue_goo" },
-        "water": { elem2: "blue_goo" },
-        "yolk": { elem2: "blue_goo" }
+    tick: function(pixel) {
+        bluegooFunc(pixel)
     },
 }
 
