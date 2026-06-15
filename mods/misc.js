@@ -3,7 +3,7 @@ function bluegooFunc(pixel) {
         for (let dy = -1; dy <= 1; dy++) {
             if (dx === 0 && dy === 0) continue
             let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && !elements[p.element].state === "liquid") {
+            if (p && elements[p.element].state === "liquid" && p.element !== "blue_goo") {
                 changePixel(p, "blue_goo")
             }
         }
