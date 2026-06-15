@@ -46,7 +46,7 @@ elements.glowder = {
     },
     density: 100,
     radioactive: true,
-    tick(pixel) {
+    tick: function (pixel) {
         irradiateNearby(pixel, 4, 0.5)
     }
 }
