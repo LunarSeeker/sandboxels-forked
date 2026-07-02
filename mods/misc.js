@@ -202,7 +202,7 @@ elements.blue_goo = {
     excludeRandom: true,
     state: "liquid",
     viscosity: 1.05,
-    tick: function(pixel) {
+    tick: function (pixel) {
         bluegooFunc(pixel)
     },
 }
@@ -237,6 +237,7 @@ elements.electron = {
     state: "gas",
     reactions: {
         "hydrogen": { elem1: null, elem2: "deuterium" },
+        "water": { "elem1": "heavy_water", "elem2": null },
     }
 }
 
@@ -244,3 +245,21 @@ elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.conversium = { elem2: null }
+
+elements.atom_gen = {
+    behavior: behaviors.LIQUID,
+    category: "special",
+    color: ["#b0e9f7", "#0008ff", "#09c8f7"],
+    density: 0.75,
+    excludeRandom: true,
+    state: "liquid",
+    viscosity: 1.05,
+    tick: function (pixel) {
+        const trons = ["proton", "electron", "neutron"]
+        for (var y = 1; y < 25; y++) {
+            if (!isEmpty(pixel.x, pixel.y + y, false)) {
+                changePixel(pixel, trons[Math.floor(Math.random() * trons.length)])
+            }
+        }
+    },
+}
