@@ -113,18 +113,3 @@ elements.glolt = {
     density: 500,
     viscosity: 1000
 }
-
-elements.test_thingie = {
-    behavior: behaviors.LIQUID,
-    category: "liquids",
-    color: "#777733",
-    density: 900,
-    hardness: 5,
-    state: "liquid",
-    viscosity: 100,
-    tick: function (pixel) {
-        if (Math.random() < 0.1 || pixel.temp < 101) {
-            pixel.temp += 1
-        }
-    },
-}

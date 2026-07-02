@@ -31,7 +31,7 @@ elements.burn_juice = {
     burn: 100,
     burnTime: 2,
     category: "liquids",
-    density: 790,
+    density: 792,
     stain: -0.25,
     state: "liquid",
     viscosity: 1.15,
@@ -58,18 +58,18 @@ elements.arsenic = {
         "vine": { elem1: null, elem2: "dead_plant" },
         "algae": { elem1: null, elem2: null },
         "kelp": { elem1: null, elem2: "dirty_water" },
-        "coral": { elem1: null, elem2: "dirty_water", chance: 0.02 },
+        "coral": { elem1: null, elem2: "dirty_water" },
         "mushroom_spore": { elem1: null, elem2: null },
         "lichen": { elem1: null, elem2: null },
         "yeast": { elem1: null, elem2: null },
-        "rat": { elem1: null, elem2: "rotten_meat" },
-        "frog": { elem1: null, elem2: "rotten_meat" },
-        "tadpole": { elem2: null },
-        "fish": { elem1: null, elem2: "rotten_meat" },
-        "bird": { elem1: null, elem2: "rotten_meat" },
-        "head": { elem1: null, elem2: "rotten_meat" },
-        "body": { elem1: null, elem2: "rotten_meat" },
-        "homunculus": { elem1: null, elem2: "rotten_meat" },
+        "rat": { elem2: "rotten_meat" },
+        "frog": { elem2: "slime" },
+        "tadpole": { elem2: "slime" },
+        "fish": { elem2: "rotten_meat" },
+        "bird": { elem2: "rotten_meat" },
+        "head": { elem2: "rotten_meat" },
+        "body": { elem2: "rotten_meat" },
+        "homunculus": { elem2: "rotten_meat" },
         "ant": { elem1: null, elem2: "dead_bug" },
         "worm": { elem1: null, elem2: "dead_bug" },
         "fly": { elem1: null, elem2: "dead_bug" },
@@ -85,16 +85,16 @@ elements.arsenic = {
         "pistil": { elem1: null, elem2: "dead_plant" },
         "petal": { elem1: null, elem2: "dead_plant" },
         "grass_seed": { elem1: null, elem2: "dead_plant" },
-        "meat": { elem1: null, elem2: "rotten_meat" },
+        "meat": { elem2: "rotten_meat" },
         "cheese": { elem1: null, elem2: "rotten_cheese" },
         "cheese_powder": { elem1: null, elem2: "rotten_cheese" },
         "mushroom_cap": { elem1: null, elem2: null, chance: 0.01 },
         "mushroom_gill": { elem1: null, elem2: null, chance: 0.01 },
         "mushroom_stalk": { elem1: null, elem2: null, chance: 0.01 },
-        //"pollen": { elem2: null, chance: 0.01 },
+        "pollen": { elem2: null, chance: 0.01 },
         "mushroom_spore": { elem1: null, elem2: null, chance: 0.1 },
-        "head": { elem1: null, elem2: "rotten_meat" },
-        "body": { elem1: null, elem2: "rotten_meat" },
+        "head": { elem2: "rotten_meat" },
+        "body": { elem2: "rotten_meat" },
         "hair": { elem1: null, elem2: null, chance: 0.01 }
     },
 }
@@ -124,14 +124,14 @@ elements.arsenic_gas = {
         "mushroom_spore": { elem1: null, elem2: null },
         "lichen": { elem1: null, elem2: null },
         "yeast": { elem1: null, elem2: null },
-        "rat": { elem1: null, elem2: "rotten_meat" },
-        "frog": { elem1: null, elem2: "rotten_meat" },
-        "tadpole": { elem2: null },
-        "fish": { elem1: null, elem2: "rotten_meat" },
-        "bird": { elem1: null, elem2: "rotten_meat" },
-        "head": { elem1: null, elem2: "rotten_meat" },
-        "body": { elem1: null, elem2: "rotten_meat" },
-        "homunculus": { elem1: null, elem2: "rotten_meat" },
+        "rat": { elem2: "rotten_meat" },
+        "frog": { elem2: "slime" },
+        "tadpole": { elem2: "slime" },
+        "fish": { elem2: "rotten_meat" },
+        "bird": { elem2: "rotten_meat" },
+        "head": { elem2: "rotten_meat" },
+        "body": { elem2: "rotten_meat" },
+        "homunculus": { elem2: "rotten_meat" },
         "ant": { elem1: null, elem2: "dead_bug" },
         "worm": { elem1: null, elem2: "dead_bug" },
         "fly": { elem1: null, elem2: "dead_bug" },
@@ -147,16 +147,16 @@ elements.arsenic_gas = {
         "pistil": { elem1: null, elem2: "dead_plant" },
         "petal": { elem1: null, elem2: "dead_plant" },
         "grass_seed": { elem1: null, elem2: "dead_plant" },
-        "meat": { elem1: null, elem2: "rotten_meat" },
+        "meat": { elem2: "rotten_meat" },
         "cheese": { elem1: null, elem2: "rotten_cheese" },
         "cheese_powder": { elem1: null, elem2: "rotten_cheese" },
         "mushroom_cap": { elem1: null, elem2: null, chance: 0.01 },
         "mushroom_gill": { elem1: null, elem2: null, chance: 0.01 },
         "mushroom_stalk": { elem1: null, elem2: null, chance: 0.01 },
-        //"pollen": { elem2: null, chance: 0.01 },
+        "pollen": { elem2: null, chance: 0.01 },
         "mushroom_spore": { elem1: null, elem2: null, chance: 0.1 },
-        "head": { elem1: null, elem2: "rotten_meat" },
-        "body": { elem1: null, elem2: "rotten_meat" },
+        "head": { elem2: "rotten_meat" },
+        "body": { elem2: "rotten_meat" },
         "hair": { elem1: null, elem2: null, chance: 0.01 }
     },
 }
@@ -176,7 +176,7 @@ elements.conversium = {
         "dirty_water": { elem2: "magma" },
         "hail_cloud": { elem2: "smoke" },
         "head": { elem2: "rat" },
-        "ink": { elem2: "oil" },
+        "ink": { elem2: "conversium" },
         "pool_water": { elem2: "magma" },
         "rad_steam": { elem2: "oxygen" },
         "rain_cloud": { elem2: "oxygen" },
@@ -226,7 +226,7 @@ elements.deuterium = {
     density: 0.18,
     state: "gas",
     reactions: {
-        "oxygen": { "elem1": "heavy_water", "elem2": null },
+        "oxygen": { elem1: "heavy_water", elem2: null },
     },
 }
 
@@ -237,7 +237,7 @@ elements.electron = {
     state: "gas",
     reactions: {
         "hydrogen": { elem1: null, elem2: "deuterium" },
-        "water": { "elem1": "heavy_water", "elem2": null },
+        "water": { elem1: null, elem2: "heavy_water" },
     }
 }
 
@@ -247,19 +247,22 @@ elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.conversium = { elem2: null }
 
 elements.atom_gen = {
-    behavior: behaviors.LIQUID,
+    behavior: behaviors.WALL,
     category: "special",
     color: ["#b0e9f7", "#0008ff", "#09c8f7"],
-    density: 0.75,
-    excludeRandom: true,
-    state: "liquid",
-    viscosity: 1.05,
     tick: function (pixel) {
-        const trons = ["proton", "electron", "neutron"]
-        for (var y = 1; y < 25; y++) {
-            if (!isEmpty(pixel.x, pixel.y + y, false)) {
-                changePixel(pixel, trons[Math.floor(Math.random() * trons.length)])
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var x = pixel.x + adjacentCoords[i][0]
+            var y = pixel.y + adjacentCoords[i][1]
+            if (!isEmpty(x, y, true)) {
+                var sensed = pixelMap[x][y]
+                if (sensed.element == 'neutron' || sensed.element == 'uranium') {
+                    deletePixel(x, y)
+                    pixel.charge = 5
+                    break
+                }
             }
         }
-    },
+        doDefaults(pixel)
+    }
 }
