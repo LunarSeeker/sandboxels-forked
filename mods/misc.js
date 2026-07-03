@@ -38,8 +38,8 @@ elements.burn_juice = {
 }
 
 elements.arsenic = {
-    behavior: behaviors.SOLID,
-    category: "solids",
+    behavior: behaviors.POWDER,
+    category: "powders",
     color: "#478800",
     density: 0.5782,
     state: "solid",
