@@ -16,7 +16,7 @@ elements.ore_drill = {
 }
 
 elements.random_ore = {
-    behavior: behaviors.WALL,
+    behavior: behaviors.STURDYPOWDER,
     category: "factory",
     color: ["#5b5c5c", "#3b3c3c"],
     state: "solid",
@@ -32,22 +32,21 @@ elements.random_ore = {
     }
 }
 
-elements.power_core = {
+elements.smelter = {
     behavior: behaviors.WALL,
-    category: "special",
-    color: ["#10F7F3", "#5AEDEB", "#BDFCFB"],
-    stateHigh: "fire",
-    tempHigh: 10000,
+    category: "factory",
+    color: ["#5b5c5c", "#3b3c3c", "#0b0c0c"],
     state: "solid",
     tick: function (pixel) {
-        if (pixel.temp === 5000) {
-            pixel.color = "#F92810"
+        if (Math.random() < 0.04) {
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coord = adjacentCoords[i]
+                var x = pixel.x + coord[0]
+                var y = pixel.y + coord[1]
+                if (!isEmpty(x, y, true)) {
+                    pixel.temp += 10
+                }
+            }
         }
-        else {
-            pixel.color = "#F9B610"
-        }
-        if (pixelMap[pixel.x][pixel.y - 4].element === "steel") {
-            createPixel("copper", pixel.x, pixel.y - 5)
-        }
-    },
+    }
 }

@@ -230,39 +230,19 @@ elements.deuterium = {
     },
 }
 
-elements.electron = {
-    behavior: behaviors.GAS,
-    category: "energy",
-    color: "#faffa1",
-    state: "gas",
-    reactions: {
-        "hydrogen": { elem1: null, elem2: "deuterium" },
-        "water": { elem1: null, elem2: "heavy_water" },
-    }
-}
-
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.conversium = { elem2: null }
 
 elements.atom_gen = {
-    behavior: behaviors.WALL,
+    behavior: [
+        "XX|XX|XX",
+        "M1 AND EX:10|XX|EX:10",
+        "M2|M1 AND EX:15>proton,proton,proton,proton,radiation,rad_steam|M2"
+    ],
     category: "special",
     color: ["#b0e9f7", "#0008ff", "#09c8f7"],
-    tick: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var x = pixel.x + adjacentCoords[i][0]
-            var y = pixel.y + adjacentCoords[i][1]
-            if (!isEmpty(x, y, true)) {
-                var sensed = pixelMap[x][y]
-                if (sensed.element == 'neutron' || sensed.element == 'uranium') {
-                    deletePixel(x, y)
-                    pixel.charge = 5
-                    break
-                }
-            }
-        }
-        doDefaults(pixel)
-    }
+    state: "solid",
+    excludeRandom: true
 }
