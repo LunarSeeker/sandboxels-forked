@@ -41,10 +41,10 @@ elements.power_core = {
     state: "solid",
     tick: function (pixel) {
         if (pixel.temp === 5000) {
-            pixel.color = pixelColorPick(pixel, "#F92810")
+            pixel.color = "#F92810"
         }
         else {
-            pixel.color = pixelColorPick(pixel, "#F9B610")
+            pixel.color = "#F9B610"
         }
         if (pixelMap[pixel.x][pixel.y - 4].element === "steel") {
             createPixel("copper", pixel.x, pixel.y - 5)
