@@ -51,7 +51,7 @@ elements.red_water = {
     stateLow: "red_steam",
     tempHigh: 0,
     stateHigh: "red_ice",
-    category: "liquid",
+    category: "liquids",
     state: "liquid",
     density: 997,
     temp: -10
@@ -59,7 +59,6 @@ elements.red_water = {
 
 elements.red_steam = {
     color: "#F88379",
-    name: "red_ice_steam",
     behavior: behaviors.GAS,
     reactions: {
         "dirty_water": { elem2: "red_water" },
@@ -74,30 +73,10 @@ elements.red_steam = {
     temp: -150,
     tempHigh: -100,
     stateHigh: "red_water",
-    category: "gas",
+    category: "gases",
     state: "gas",
     density: 0.6,
     hidden: true,
-}
-
-elements.red_steam = {
-    behavior: behaviors.GAS,
-    category: "gases",
-    color: "#F88379",
-    state: "gas",
-    stateHigh: "red_water",
-    temp: -150,
-    tempHigh: -100,
-    reactions: {
-        "dirty_water": { elem2: "red_water" },
-        "ice": { elem2: "red_ice" },
-        "pool_water": { elem2: "red_water" },
-        "salt_water": { elem2: "red_water" },
-        "slush": { elem2: "red_ice" },
-        "sugar_water": { elem2: "red_water" },
-        "water": { elem2: "red_water" },
-        "steam": { elem2: "red_steam" },
-    }
 }
 
 elements.goobberry = {
