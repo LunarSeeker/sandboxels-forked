@@ -19,7 +19,7 @@ elements.rebirthite = {
         "worm": { "elem1": null, "elem2": "sapling" }
     },
     state: "liquid",
-    density: 1.2,
+    density: 1,
     viscosity: 2
 }
 
