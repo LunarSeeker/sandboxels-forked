@@ -10,6 +10,96 @@ function bluegooFunc(pixel) {
     }
 }
 
+elements.red_ice = {
+    color: "#D2042D",
+    behavior: [
+        "XX|XX|XX",
+        "XX|XX|XX",
+        "XX|M1|XX",
+    ],
+    reactions: {
+        "dirty_water": { elem2: "red_water" },
+        "ice": { elem2: "red_ice" },
+        "pool_water": { elem2: "red_water" },
+        "salt_water": { elem2: "red_water" },
+        "slush": { elem2: "red_ice" },
+        "sugar_water": { elem2: "red_water" },
+        "water": { elem2: "red_water" },
+        "steam": { elem2: "red_steam" },
+    },
+    tempLow: 0,
+    stateLow: "red_water",
+    category: "solids",
+    state: "solid",
+    density: 917,
+}
+
+elements.red_water = {
+    color: "#880808",
+    behavior: behaviors.LIQUID,
+    reactions: {
+        "dirty_water": { elem2: "red_water" },
+        "ice": { elem2: "red_ice" },
+        "pool_water": { elem2: "red_water" },
+        "salt_water": { elem2: "red_water" },
+        "slush": { elem2: "red_ice" },
+        "sugar_water": { elem2: "red_water" },
+        "water": { elem2: "red_water" },
+        "steam": { elem2: "red_steam" },
+    },
+    tempLow: -100,
+    stateLow: "red_steam",
+    tempHigh: 0,
+    stateHigh: "red_ice",
+    category: "liquid",
+    state: "liquid",
+    density: 997,
+    temp: -10
+}
+
+elements.red_steam = {
+    color: "#F88379",
+    name: "red_ice_steam",
+    behavior: behaviors.GAS,
+    reactions: {
+        "dirty_water": { elem2: "red_water" },
+        "ice": { elem2: "red_ice" },
+        "pool_water": { elem2: "red_water" },
+        "salt_water": { elem2: "red_water" },
+        "slush": { elem2: "red_ice" },
+        "sugar_water": { elem2: "red_water" },
+        "water": { elem2: "red_water" },
+        "steam": { elem2: "red_steam" },
+    },
+    temp: -150,
+    tempHigh: -100,
+    stateHigh: "red_water",
+    category: "gas",
+    state: "gas",
+    density: 0.6,
+    hidden: true,
+}
+
+elements.red_steam = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#F88379",
+    state: "gas",
+    stateHigh: "red_water",
+    temp: -150,
+    tempHigh: -100,
+    reactions: {
+        "dirty_water": { elem2: "red_water" },
+        "ice": { elem2: "red_ice" },
+        "pool_water": { elem2: "red_water" },
+        "salt_water": { elem2: "red_water" },
+        "slush": { elem2: "red_ice" },
+        "sugar_water": { elem2: "red_water" },
+        "water": { elem2: "red_water" },
+        "steam": { elem2: "red_steam" },
+    }
+}
+
 elements.goobberry = {
     behavior: behaviors.POWDER,
     breakInto: "juice",
@@ -161,36 +251,24 @@ elements.arsenic_gas = {
     },
 }
 
-elements.conversium = {
+elements.inversium = {
     behavior: behaviors.LIQUID,
     category: "special",
-    color: ["#cff7b0", "#fce6bb", "#fccece"],
+    color: ["#0000b0", "#0000bb", "#0000ce"],
     density: 50,
     excludeRandom: true,
     state: "liquid",
     viscosity: 0.5,
     reactions: {
-        "bee": { elem2: "fly" },
-        "body": { elem2: "rat" },
-        "cloud": { elem2: "smoke" },
-        "dirty_water": { elem2: "magma" },
-        "hail_cloud": { elem2: "smoke" },
-        "head": { elem2: "rat" },
-        "ink": { elem2: "conversium" },
-        "pool_water": { elem2: "magma" },
-        "rad_steam": { elem2: "oxygen" },
-        "rain_cloud": { elem2: "oxygen" },
-        "salt_water": { elem2: "magma" },
-        "sand": { elem2: "conversium" },
-        "seltzer": { elem2: "conversium" },
-        "smog": { elem2: "oxygen" },
-        "snow_cloud": { elem2: "smoke" },
-        "snow": { elem2: "magma" },
-        "steam": { elem2: "smoke" },
-        "sugar_water": { elem2: "magma" },
-        "sugar": { elem2: "salt" },
-        "thunder_cloud": { elem2: "smoke" },
-        "water": { elem2: "magma" }
+        "dirty_water": { elem1: null, elem2: "red_water" },
+        "ice": { elem1: null, elem2: "red_ice" },
+        "magma": { elem1: null, elem2: "water" },
+        "pool_water": { elem1: null, elem2: "red_water" },
+        "salt_water": { elem1: null, elem2: "red_water" },
+        "slush": { elem1: null, elem2: "red_ice" },
+        "steam": { elem1: null, elem2: "red_steam" },
+        "sugar_water": { elem1: null, elem2: "red_water" },
+        "water": { elem1: null, elem2: "red_water" },
     },
 }
 
@@ -233,16 +311,7 @@ elements.deuterium = {
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.blue_goo = { elem2: "water" }
-elements.bless.reactions.conversium = { elem2: null }
-
-elements.atom_gen = {
-    behavior: [
-        "XX|XX|XX",
-        "M1 AND EX:10|XX|EX:10",
-        "M2|M1 AND EX:15>proton,proton,proton,proton,radiation,rad_steam|M2"
-    ],
-    category: "special",
-    color: ["#b0e9f7", "#0008ff", "#09c8f7"],
-    state: "solid",
-    excludeRandom: true
-}
+elements.bless.reactions.inversium = { elem2: null }
+elements.bless.reactions.red_ice = { elem2: "water" }
+elements.bless.reactions.red_steam = { elem2: "water" }
+elements.bless.reactions.red_water = { elem2: "water" }
