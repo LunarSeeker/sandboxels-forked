@@ -14,6 +14,7 @@ elements.rebirthite = {
         "meat": { "elem1": null, "elem2": "ant" },
         "pistil": { "elem1": null, "elem2": "sapling" },
         "rat": { "elem1": null, "elem2": "ant" },
+        "rotten_meat": { "elem1": null, "elem2": "ant" },
         "tree_branch": { "elem1": null, "elem2": "sapling" },
         "wood": { "elem1": null, "elem2": "sapling" },
         "worm": { "elem1": null, "elem2": "sapling" }
@@ -31,7 +32,7 @@ elements.give_life = {
         if (pixel.element == 'dead_bug') {
             pixel.element = 'bee'
         }
-        if (pixel.element == 'cancer') {
+        if (pixel.element == 'cancer' || pixel.element == 'meat' || pixel.element == 'rotten_meat') {
             pixel.element = 'cell'
         }
         if (pixel.element == 'dead_plant') {
