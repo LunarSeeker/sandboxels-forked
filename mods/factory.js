@@ -11,6 +11,9 @@ elements.ore_drill = {
             if (isEmpty(x, y + 1)) {
                 createPixel("random_ore", x, y + 1)
             }
+            if (isEmpty(x, y - 1)) {
+                createPixel("random_ore", x, y - 1)
+            }
         }
     },
 }
@@ -22,7 +25,7 @@ elements.random_ore = {
     state: "solid",
     tick: function (pixel) {
         if (pixel.temp >= 100) {
-            if (Math.random() < 0.10) {
+            if (Math.random() < 0.6) {
                 changePixel(pixel, "iron")
             }
             else {
@@ -38,15 +41,14 @@ elements.smelter = {
     color: ["#5b5c5c", "#3b3c3c", "#0b0c0c"],
     state: "solid",
     tick: function (pixel) {
-        if (Math.random() < 0.04) {
-            for (var i = 0; i < adjacentCoords.length; i++) {
-                var coord = adjacentCoords[i]
-                var x = pixel.x + coord[0]
-                var y = pixel.y + coord[1]
-                if (!isEmpty(x, y, true)) {
-                    pixel.temp += 10
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p && p.temp < 100 && p.element === "random_ore") {
+                    p.temp = pixel.temp + 10
                 }
             }
         }
-    }
+    },
 }

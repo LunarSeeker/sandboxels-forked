@@ -2,90 +2,56 @@ function clamp(x, min, max) {
     return Math.max(min, Math.min(x, max))
 }
 
-function irradiateNearby(pixel, radius = 1, intensity = 1) {
-    // List of elements to explicitly exclude
-    const excludedElements = new Set([
-        "acid",
-        "deuterium",
-        "dirt",
-        "gloob",
-        "glowder",
-        "groove",
-        "plague",
-        "plutonium",
-        "super_acid",
-        "uranium",
-    ])
-
-    for (let dx = -radius; dx <= radius; dx++) {
-        for (let dy = -radius; dy <= radius; dy++) {
-            if (dx === 0 && dy === 0) continue
-            let nx = pixel.x + dx
-            let ny = pixel.y + dy
-            let p = getPixel(nx, ny)
-            if (p && !elements[p.element].radioactive && !elements[p.element].shielding && !excludedElements.has(p.element) && !elements[p.element].antiRadiation && Math.random() < 0.1 * intensity) {
-                p.temp += 15 * intensity
-                p.irradiated = (p.irradiated || 0) + intensity
-                if (p.irradiated > 10 && Math.random() < 0.2) {
-                    changePixel(p, "irradiated_matter")
-                }
-            }
-        }
-    }
-}
-
-elements.glowder = {
-    name: "Glowder",
-    color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
-    behavior: behaviors.POWDER,
-    category: "glooby",
-    state: "solid",
-    reactions: {
-        "water": { elem1: "glowder", elem2: "dirt" },
-        "dirty_water": { elem1: null, elem2: "dirt" }
-    },
-    density: 100,
-    radioactive: true,
-    tick: function (pixel) {
-        irradiateNearby(pixel, 4, 0.5)
-    }
-}
-
-// Irradiated matter (weakened)
-elements.irradiated_matter = {
-    behavior: behaviors.STURDYPOWDER,
-    category: "powders",
-    color: "#777733",
-    density: 900,
-    hardness: 5,
-    state: "solid",
-    tempHigh: 400,
-    reactions: {
-        "water": { elem2: "glolt" },
-    },
-    tick: function (pixel) {
-        if (Math.random() < 0.1 || pixel.temp < 300) {
-            pixel.temp += 1
-        }
-    },
-}
-
 elements.gloob = {
     behavior: behaviors.LIQUID,
-    breakInto: ["glowder", "water"],
     category: "glooby",
     color: ["#62e36f", "#a5d9aa", "#b3c9b6"],
-    density: 900,
+    density: 600,
     state: "liquid",
-    tempHigh: 3000,
-    stateHigh: "glowder",
     viscosity: 10,
     reactions: {
-        "salt": { elem1: "dirt", elem2: null },
-        "rock": { elem2: "dirt", chance: 0.05 },
-        "sand": { elem1: "dirt", elem2: null },
-        "bless": { elem1: "dirt", elem2: "bless" },
-    },
+        "algae": { elem2: "gloob" },
+        "ant": { elem2: "gloob" },
+        "bee": { elem2: "gloob" },
+        "bird": { elem2: "gloob" },
+        "blood": { elem2: "gloob" },
+        "body": { elem2: "gloob" },
+        "cactus": { elem2: "gloob" },
+        "chlorine": { elem1: null },
+        "coral": { elem2: "gloob" },
+        "evergreen": { elem2: "gloob" },
+        "firefly": { elem2: "gloob" },
+        "fish": { elem2: "gloob" },
+        "flea": { elem2: "gloob" },
+        "fly": { elem2: "gloob" },
+        "frog": { elem2: "gloob" },
+        "grass": { elem2: "gloob" },
+        "hair": { elem2: "gloob" },
+        "head": { elem2: "gloob" },
+        "homunculus": { elem2: "gloob" },
+        "kelp": { elem2: "gloob" },
+        "lichen": { elem2: "gloob" },
+        "liquid_chlorine": { elem1: null },
+        "meat": { elem2: "gloob" },
+        "mushroom_cap": { elem2: "gloob" },
+        "mushroom_gill": { elem2: "gloob" },
+        "mushroom_spore": { elem2: "gloob" },
+        "mushroom_stalk": { elem2: "gloob" },
+        "petal": { elem2: "gloob" },
+        "pistil": { elem2: "gloob" },
+        "plant": { elem2: "gloob" },
+        "rat": { elem2: "gloob" },
+        "slug": { elem2: "gloob" },
+        "snail": { elem2: "gloob" },
+        "soap": { elem1: "water" },
+        "spider": { elem2: "gloob" },
+        "stink_bug": { elem2: "gloob" },
+        "tadpole": { elem2: "gloob" },
+        "termite": { elem2: "gloob" },
+        "vine": { elem2: "gloob" },
+        "water": { elem2: "gloob" },
+        "worm": { elem2: "gloob" }
+    }
 }
 
 elements.groove = {
@@ -93,23 +59,10 @@ elements.groove = {
     category: "glooby",
     color: ["#e5edc2", "#bec797"],
     state: "solid",
-    stateHigh: "glolt",
-    tempHigh: 2000,
     breakInto: ["water", "bless"],
     tick: function (pixel) {
-        //if (pixel.temp < 100) {
         pixel.temp = clamp(pixel.temp, 0, 20)
-        //}
     }
 }
-elements.glolt = {
-    behavior: behaviors.LIQUID,
-    category: "glooby",
-    color: ["#6615d6", "#9651f5", "#d3c3eb"],
-    state: "liquid",
-    stateLow: "groove",
-    tempLow: 1999,
-    temp: 2500,
-    density: 500,
-    viscosity: 1000
-}
+
+elements.bless.reactions.gloob = { elem2: "groove" }
