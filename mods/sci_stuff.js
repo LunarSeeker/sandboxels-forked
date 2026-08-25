@@ -1,3 +1,34 @@
+elements.bromine = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: ["#901100", "#7f1702", "#6e1a05", "#5e1b07", "#4e1b0a"],
+    density: 3102.8,
+    state: "liquid",
+    stateHigh: "bromine_gas",
+    stateLow: "bromine_ice",
+    tempHigh: 59,
+    tempLow: -7
+}
+
+elements.bromine_gas = {
+    behavior: behaviors.GAS,
+    category: "states",
+    color: ["#8f0000", "#7e0205", "#6e0508", "#5d080a", "#4d0a0a"],
+    state: "gas",
+    stateLow: "bromine",
+    tempLow: 57,
+    density: 6
+}
+
+elements.bromine_ice = {
+    behavior: behaviors.WALL,
+    category: "states",
+    color: ["#8f002b", "#7e0522", "#6d091a", "#5d0a13", "#4d0a0a"],
+    state: "solid",
+    stateHigh: "bromine",
+    tempHigh: -5
+}
+
 elements.arsenic = {
     behavior: behaviors.POWDER,
     category: "powders",

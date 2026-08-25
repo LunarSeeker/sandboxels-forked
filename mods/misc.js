@@ -47,6 +47,7 @@ elements.red_water = {
         "water": { elem2: "red_water" },
         "steam": { elem2: "red_steam" },
     },
+    temp: -20,
     tempLow: -100,
     stateLow: "red_steam",
     tempHigh: 0,
@@ -58,8 +59,16 @@ elements.red_water = {
 }
 
 elements.red_steam = {
-    color: "#F88379",
     behavior: behaviors.GAS,
+    category: "gases",
+    color: "#F88379",
+    density: 0.6,
+    extinguish: true,
+    hidden: true,
+    state: "gas",
+    stateHigh: "red_water",
+    temp: -150,
+    tempHigh: -100,
     reactions: {
         "dirty_water": { elem2: "red_water" },
         "ice": { elem2: "red_ice" },
@@ -69,14 +78,7 @@ elements.red_steam = {
         "sugar_water": { elem2: "red_water" },
         "water": { elem2: "red_water" },
         "steam": { elem2: "red_steam" },
-    },
-    temp: -150,
-    tempHigh: -100,
-    stateHigh: "red_water",
-    category: "gases",
-    state: "gas",
-    density: 0.6,
-    hidden: true,
+    }
 }
 
 elements.goobberry = {
@@ -116,7 +118,7 @@ elements.inversium = {
     viscosity: 0.5,
     reactions: {
         "cancer": { elem1: null, elem2: "cell" },
-        "dirt": {elem1: null, elem2: "sand"},
+        "dirt": { elem1: null, elem2: "sand" },
         "dirty_water": { elem1: null, elem2: "red_water" },
         "ice": { elem1: null, elem2: "red_ice" },
         "magma": { elem1: null, elem2: "water" },
