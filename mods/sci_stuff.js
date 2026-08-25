@@ -12,7 +12,7 @@ elements.bromine = {
 
 elements.bromine_gas = {
     behavior: behaviors.GAS,
-    category: "states",
+    category: "gases",
     color: ["#8f0000", "#7e0205", "#6e0508", "#5d080a", "#4d0a0a"],
     state: "gas",
     stateLow: "bromine",
@@ -22,7 +22,7 @@ elements.bromine_gas = {
 
 elements.bromine_ice = {
     behavior: behaviors.WALL,
-    category: "states",
+    category: "solids",
     color: ["#8f002b", "#7e0522", "#6d091a", "#5d0a13", "#4d0a0a"],
     state: "solid",
     stateHigh: "bromine",
