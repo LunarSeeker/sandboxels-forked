@@ -2,12 +2,17 @@ elements.bromine = {
     behavior: behaviors.LIQUID,
     category: "liquids",
     color: ["#901100", "#7f1702", "#6e1a05", "#5e1b07", "#4e1b0a"],
-    density: 3102.8,
+    density: 3120,
     state: "liquid",
     stateHigh: "bromine_gas",
     stateLow: "bromine_ice",
     tempHigh: 59,
-    tempLow: -7
+    tempLow: -7,
+    tick: function (pixel) {
+        if (pixel.temp > 0 && Math.random() < 0.001) {
+            changePixel(pixelMap[pixel.x][pixel.y], "bromine_gas", false)
+        }
+    }
 }
 
 elements.bromine_gas = {
@@ -17,7 +22,12 @@ elements.bromine_gas = {
     state: "gas",
     stateLow: "bromine",
     tempLow: 57,
-    density: 6
+    density: 6,
+    tick: function (pixel) {
+        if (pixel.temp < 58.8 && pixel.temp > 0 && Math.random() < 0.01) {
+            changePixel(pixelMap[pixel.x][pixel.y], "bromine", false)
+        }
+    }
 }
 
 elements.bromine_ice = {
