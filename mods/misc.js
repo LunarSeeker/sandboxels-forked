@@ -20,12 +20,13 @@ elements.red_ice = {
     reactions: {
         "dirty_water": { elem2: "red_water" },
         "ice": { elem2: "red_ice" },
+        "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
         "salt_water": { elem2: "red_water" },
         "slush": { elem2: "red_ice" },
+        "steam": { elem2: "red_steam" },
         "sugar_water": { elem2: "red_water" },
         "water": { elem2: "red_water" },
-        "steam": { elem2: "red_steam" },
     },
     tempLow: 0,
     stateLow: "red_water",
@@ -40,12 +41,13 @@ elements.red_water = {
     reactions: {
         "dirty_water": { elem2: "red_water" },
         "ice": { elem2: "red_ice" },
+        "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
         "salt_water": { elem2: "red_water" },
         "slush": { elem2: "red_ice" },
+        "steam": { elem2: "red_steam" },
         "sugar_water": { elem2: "red_water" },
         "water": { elem2: "red_water" },
-        "steam": { elem2: "red_steam" },
     },
     temp: -20,
     tempLow: -100,
@@ -72,13 +74,42 @@ elements.red_steam = {
     reactions: {
         "dirty_water": { elem2: "red_water" },
         "ice": { elem2: "red_ice" },
+        "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
         "salt_water": { elem2: "red_water" },
         "slush": { elem2: "red_ice" },
+        "steam": { elem2: "red_steam" },
         "sugar_water": { elem2: "red_water" },
         "water": { elem2: "red_water" },
-        "steam": { elem2: "red_steam" },
     }
+}
+
+elements.flesh_plant = {
+    color: "#f3e7db",
+    behavior: behaviors.WALL,
+    reactions: {
+        "beans": { elem1: null, elem2: "stench" },
+        "cancer": { elem1: "cancer", chance: 0.01 },
+        "fallout": { elem1: "cancer", chance: 0.05 },
+        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.05 },
+        "oxygen": { elem2: "carbon_dioxide", chance: 0.5 },
+        "plague": { elem1: "plague", chance: 0.1 },
+        "radiation": { elem1: "cancer", chance: 0.4 },
+        "sun": { elem1: "cooked_meat" },
+        "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
+    },
+    breakInto: ["blood", "meat", "bone"],
+    burn: 10,
+    burnInto: "cooked_meat",
+    burnTime: 250,
+    category: "life",
+    density: 1050,
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    temp: 25,
+    tempHigh: 150,
+    tempLow: -30,
+    state: "solid"
 }
 
 elements.goobberry = {
@@ -117,14 +148,14 @@ elements.inversium = {
     state: "liquid",
     viscosity: 0.5,
     reactions: {
-        "cancer": { elem1: null, elem2: "cell" },
-        "dirt": { elem1: null, elem2: "sand" },
+        "cancer": { elem2: "cell" },
+        "dirt": { elem2: "sand" },
         "dirty_water": { elem1: null, elem2: "red_water" },
         "ice": { elem1: null, elem2: "red_ice" },
-        "magma": { elem1: null, elem2: "water" },
+        "plant": { elem2: "flesh_plant" },
         "pool_water": { elem1: null, elem2: "red_water" },
         "salt_water": { elem1: null, elem2: "sugar_water" },
-        "salt": { elem1: null, elem2: "sugar" },
+        "salt": { elem2: "sugar" },
         "slush": { elem1: null, elem2: "red_ice" },
         "steam": { elem1: null, elem2: "red_steam" },
         "water": { elem1: null, elem2: "red_water" },
@@ -168,6 +199,7 @@ elements.deuterium = {
 }
 
 elements.bless.reactions.blue_goo = { elem2: "water" }
+elements.bless.reactions.flesh_plant = { elem2: "plant" }
 elements.bless.reactions.inversium = { elem2: null }
 elements.bless.reactions.red_ice = { elem2: "ice" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
