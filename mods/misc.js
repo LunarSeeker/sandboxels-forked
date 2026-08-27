@@ -10,13 +10,31 @@ function bluegooFunc(pixel) {
     }
 }
 
+function scp409func(pixel) {
+    for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+            if (dx === 0 && dy === 0) continue
+            let p = getPixel((pixel.x + dx), (pixel.y + dy))
+            if (p && p.element !== "bless" && p.element !== "scp_409" && p.element !== "granite") {
+                changePixel(p, "scp_409")
+            }
+        }
+    }
+}
+
 elements.red_ice = {
     color: "#D2042D",
+    excludeRandom: true,
     behavior: [
         "XX|XX|XX",
         "XX|XX|XX",
         "XX|M1|XX",
     ],
+    category: "solids",
+    density: 917,
+    state: "solid",
+    stateLow: "red_water",
+    tempLow: 0,
     reactions: {
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
@@ -29,16 +47,20 @@ elements.red_ice = {
         "sugar_water": { elem2: "red_water" },
         "water": { elem2: "red_water" },
     },
-    tempLow: 0,
-    stateLow: "red_water",
-    category: "solids",
-    state: "solid",
-    density: 917,
 }
 
 elements.red_water = {
-    color: "#880808",
     behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: "#880808",
+    density: 997,
+    excludeRandom: true,
+    state: "liquid",
+    stateHigh: "red_ice",
+    stateLow: "red_steam",
+    temp: -20,
+    tempHigh: 0,
+    tempLow: -100,
     reactions: {
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
@@ -51,14 +73,6 @@ elements.red_water = {
         "sugar_water": { elem2: "red_water" },
         "water": { elem2: "red_water" },
     },
-    temp: -20,
-    tempLow: -100,
-    stateLow: "red_steam",
-    tempHigh: 0,
-    stateHigh: "red_ice",
-    category: "liquids",
-    state: "liquid",
-    density: 997
 }
 
 elements.red_steam = {
@@ -66,6 +80,7 @@ elements.red_steam = {
     category: "gases",
     color: "#F88379",
     density: 0.6,
+    excludeRandom: true,
     extinguish: true,
     hidden: true,
     state: "gas",
@@ -87,8 +102,20 @@ elements.red_steam = {
 }
 
 elements.flesh_plant = {
-    color: "#f3e7db",
     behavior: behaviors.WALL,
+    breakInto: ["blood", "meat", "bone"],
+    burn: 10,
+    burnInto: "cooked_meat",
+    burnTime: 250,
+    category: "life",
+    color: "#f3e7db",
+    density: 1050,
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    temp: 25,
+    tempHigh: 150,
+    tempLow: -30,
     reactions: {
         "beans": { elem1: null, elem2: "stench" },
         "cancer": { elem1: "cancer", chance: 0.01 },
@@ -100,18 +127,6 @@ elements.flesh_plant = {
         "sun": { elem1: "cooked_meat" },
         "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
     },
-    breakInto: ["blood", "meat", "bone"],
-    burn: 10,
-    burnInto: "cooked_meat",
-    burnTime: 250,
-    category: "life",
-    density: 1050,
-    stateHigh: "cooked_meat",
-    stateLow: "frozen_meat",
-    temp: 25,
-    tempHigh: 150,
-    tempLow: -30,
-    state: "solid"
 }
 
 elements.goobberry = {
@@ -200,9 +215,40 @@ elements.deuterium = {
     },
 }
 
+elements.time = {
+    behavior: behaviors.LIQUID,
+    category: "special",
+    color: "#ffffff",
+    density: 1,
+    state: "liquid"
+}
+
+elements.granite = {
+    behavior: behaviors.WALL,
+    breakInto: "gravel",
+    category: "land",
+    color: ["#F3C3AD", "#F0AB75", "#DDA888", "#BD927E", "#998473", "#5C5E53", "#BD8366"],
+    hardness: 0.75,
+    state: "solid",
+    stateHigh: "magma",
+    tempHigh: 1215,
+}
+
+elements.scp_409 = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: ["#f2f0e4", "#f7f7f2", "#bdb69f"],
+    excludeRandom: true,
+    state: "solid",
+    tick: function (pixel) {
+        scp409func(pixel)
+    },
+}
+
 elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.flesh_plant = { elem2: "plant" }
 elements.bless.reactions.inversium = { elem2: null }
 elements.bless.reactions.red_ice = { elem2: "ice" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
 elements.bless.reactions.red_water = { elem2: "water" }
+elements.bless.reactions.scp_409 = { elem2: "granite" }
