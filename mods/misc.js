@@ -19,6 +19,7 @@ elements.red_ice = {
     ],
     reactions: {
         "dirty_water": { elem2: "red_water" },
+        "frozen_plant": { elem2: "flesh_plant" },
         "ice": { elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
@@ -40,6 +41,7 @@ elements.red_water = {
     behavior: behaviors.LIQUID,
     reactions: {
         "dirty_water": { elem2: "red_water" },
+        "frozen_plant": { elem2: "flesh_plant" },
         "ice": { elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
@@ -56,8 +58,7 @@ elements.red_water = {
     stateHigh: "red_ice",
     category: "liquids",
     state: "liquid",
-    density: 997,
-    temp: -10
+    density: 997
 }
 
 elements.red_steam = {
@@ -73,6 +74,7 @@ elements.red_steam = {
     tempHigh: -100,
     reactions: {
         "dirty_water": { elem2: "red_water" },
+        "frozen_plant": { elem2: "flesh_plant" },
         "ice": { elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
@@ -122,16 +124,14 @@ elements.goobberry = {
     state: "solid",
 }
 
-elements.burn_juice = {
+elements.cook_juice = {
     color: "#da1a1a",
     behavior: behaviors.LIQUID,
     reactions: {
-        "meat": { "elem2": "cooked_meat" },
-        "head": { "elem2": "cooked_meat" },
         "body": { "elem2": "cooked_meat" },
+        "head": { "elem2": "cooked_meat" },
+        "meat": { "elem2": "cooked_meat" },
     },
-    burn: 100,
-    burnTime: 2,
     category: "liquids",
     density: 792,
     stain: -0.25,
@@ -149,8 +149,10 @@ elements.inversium = {
     viscosity: 0.5,
     reactions: {
         "cancer": { elem2: "cell" },
+        "dead_plant": { elem2: "flesh_plant" },
         "dirt": { elem2: "sand" },
         "dirty_water": { elem1: null, elem2: "red_water" },
+        "frozen_plant": { elem2: "flesh_plant" },
         "ice": { elem1: null, elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem1: null, elem2: "red_water" },
