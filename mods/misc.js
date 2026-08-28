@@ -1,27 +1,3 @@
-function bluegooFunc(pixel) {
-    for (let dx = -1; dx <= 1; dx++) {
-        for (let dy = -1; dy <= 1; dy++) {
-            if (dx === 0 && dy === 0) continue
-            let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && elements[p.element].state === "liquid" && p.element !== "blue_goo") {
-                changePixel(p, "blue_goo")
-            }
-        }
-    }
-}
-
-function scp409func(pixel) {
-    for (let dx = -1; dx <= 1; dx++) {
-        for (let dy = -1; dy <= 1; dy++) {
-            if (dx === 0 && dy === 0) continue
-            let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && p.element !== "bless" && p.element !== "scp_409" && p.element !== "granite") {
-                changePixel(p, "scp_409")
-            }
-        }
-    }
-}
-
 elements.red_ice = {
     color: "#D2042D",
     excludeRandom: true,
@@ -36,8 +12,11 @@ elements.red_ice = {
     stateLow: "red_water",
     tempLow: 0,
     reactions: {
+        "blood": { elem2: "red_ice" },
+        "body": { elem2: "red_ice" },
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
+        "head": { elem2: "red_ice" },
         "ice": { elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
@@ -62,8 +41,11 @@ elements.red_water = {
     tempHigh: 0,
     tempLow: -100,
     reactions: {
+        "blood": { elem2: "red_ice" },
+        "body": { elem2: "red_ice" },
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
+        "head": { elem2: "red_ice" },
         "ice": { elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
@@ -88,8 +70,11 @@ elements.red_steam = {
     temp: -150,
     tempHigh: -100,
     reactions: {
+        "blood": { elem2: "red_ice" },
+        "body": { elem2: "red_ice" },
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
+        "head": { elem2: "red_ice" },
         "ice": { elem2: "red_ice" },
         "plant": { elem2: "flesh_plant" },
         "pool_water": { elem2: "red_water" },
@@ -117,7 +102,6 @@ elements.flesh_plant = {
     tempHigh: 150,
     tempLow: -30,
     reactions: {
-        "beans": { elem1: null, elem2: "stench" },
         "cancer": { elem1: "cancer", chance: 0.01 },
         "fallout": { elem1: "cancer", chance: 0.05 },
         "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.05 },
@@ -143,9 +127,10 @@ elements.cook_juice = {
     color: "#da1a1a",
     behavior: behaviors.LIQUID,
     reactions: {
-        "body": { "elem2": "cooked_meat" },
-        "head": { "elem2": "cooked_meat" },
-        "meat": { "elem2": "cooked_meat" },
+        "body": { elem1: null, elem2: "cooked_meat" },
+        "head": { elem1: null, elem2: "cooked_meat" },
+        "meat": { elem1: null, elem2: "cooked_meat" },
+        "rotten_meat": { elem2: "cooked_meat" },
     },
     category: "liquids",
     density: 792,
@@ -165,7 +150,6 @@ elements.inversium = {
     reactions: {
         "cancer": { elem2: "cell" },
         "dead_plant": { elem2: "flesh_plant" },
-        "dirt": { elem2: "sand" },
         "dirty_water": { elem1: null, elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
         "ice": { elem1: null, elem2: "red_ice" },
@@ -188,8 +172,27 @@ elements.blue_goo = {
     state: "liquid",
     viscosity: 1.05,
     tick: function (pixel) {
-        bluegooFunc(pixel)
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p && elements[p.element].state === "liquid" && p.element !== "blue_goo") {
+                    changePixel(p, "blue_goo")
+                }
+            }
+        }
     },
+}
+
+elements.heavy_ice = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: "#b2e6eb",
+    density: 917,
+    state: "solid",
+    stateHigh: "heavy_water",
+    temp: -5,
+    tempHigh: 5
 }
 
 elements.heavy_water = {
@@ -198,10 +201,13 @@ elements.heavy_water = {
     color: "#2167ff",
     conduct: 0.02,
     density: 1.1056,
-    stain: -0.5,
+    extinguish: true,
     state: "liquid",
+    stateHigh: "deuterium",
+    stateLow: "ice",
+    tempHigh: 104,
+    tempLow: 4,
     viscosity: 1.2467,
-    extinguish: true
 }
 
 elements.deuterium = {
@@ -220,14 +226,25 @@ elements.time = {
     category: "special",
     color: "#ffffff",
     density: 1,
-    state: "liquid"
+    state: "liquid",
+    reactions: {
+        "ant": { elem1: null, elem2: "dead_bug" },
+        "bee": { elem1: null, elem2: "dead_bug" },
+        "body": { elem1: null, elem2: "rotten_meat" },
+        "fly": { elem1: null, elem2: "dead_bug" },
+        "grass": { elem1: null, elem2: "dead_plant" },
+        "head": { elem1: null, elem2: "rotten_meat" },
+        "meat": { elem1: null, elem2: "rotten_meat" },
+        "plant": { elem1: null, elem2: "dead_plant" },
+        "sun": { elem1: null, elem2: "supernova" }
+    },
 }
 
 elements.granite = {
     behavior: behaviors.WALL,
-    breakInto: "gravel",
+    breakInto: ["sand", "gravel"],
     category: "land",
-    color: ["#F3C3AD", "#F0AB75", "#DDA888", "#BD927E", "#998473", "#5C5E53", "#BD8366"],
+    color: ["#F3C3AD", "#F0AB75", "#DDA888", "#BD927E", "#312F2E", "#5C5E53", "#BD8366"],
     hardness: 0.75,
     state: "solid",
     stateHigh: "magma",
@@ -236,12 +253,20 @@ elements.granite = {
 
 elements.scp_409 = {
     behavior: behaviors.WALL,
-    category: "solids",
-    color: ["#f2f0e4", "#f7f7f2", "#bdb69f"],
+    category: "special",
+    color: "#f7f7f2",
     excludeRandom: true,
     state: "solid",
     tick: function (pixel) {
-        scp409func(pixel)
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p && p.element !== "bless" && p.element !== "scp_409" && p.element !== "granite") {
+                    changePixel(p, "scp_409")
+                }
+            }
+        }
     },
 }
 
