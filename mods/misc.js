@@ -204,7 +204,7 @@ elements.heavy_water = {
     extinguish: true,
     state: "liquid",
     stateHigh: "deuterium",
-    stateLow: "ice",
+    stateLow: "heavy_ice",
     tempHigh: 104,
     tempLow: 4,
     viscosity: 1.2467,
