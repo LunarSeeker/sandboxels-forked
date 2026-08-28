@@ -65,4 +65,33 @@ elements.groove = {
     }
 }
 
+elements.spamtonium = {
+    behavior: [
+        "XX|CR:pipis%3 AND CR:water%0.2|XX",
+        "CR:pipis%3 AND CR:water%0.2|XX|CR:pipis%3 AND CR:water%0.2",
+        "M1|CR:pipis%3 AND M2 AND CR:water%0.2|M1",
+    ],
+    category: "glooby",
+    color: ["#fff200", "#ffffff", "#ffaec9"],
+    density: 500,
+    state: "solid",
+    reactions: {
+        "egg": { elem1: null, elem2: "pipis" },
+    },
+}
+
+elements.pipis = {
+    behavior: behaviors.SUPPORTPOWDER,
+    category: "glooby",
+    color: ["#00bfff", "#0085b0"],
+    density: 150,
+    state: "solid",
+    reactions: {
+        "body": { elem2: "meat" },
+        "egg": { elem2: "pipis" },
+        "head": { elem2: "blood" },
+        "plant": { elem2: "dead_plant" }
+    },
+}
+
 elements.bless.reactions.gloob = { elem2: "groove" }
