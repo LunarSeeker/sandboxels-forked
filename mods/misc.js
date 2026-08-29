@@ -14,6 +14,7 @@ elements.red_ice = {
     reactions: {
         "blood": { elem2: "red_ice" },
         "body": { elem2: "red_ice" },
+        "cactus": { elem2: "flesh_plant" },
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
         "head": { elem2: "red_ice" },
@@ -43,6 +44,7 @@ elements.red_water = {
     reactions: {
         "blood": { elem2: "red_ice" },
         "body": { elem2: "red_ice" },
+        "cactus": { elem2: "flesh_plant" },
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
         "head": { elem2: "red_ice" },
@@ -64,7 +66,6 @@ elements.red_steam = {
     density: 0.6,
     excludeRandom: true,
     extinguish: true,
-    hidden: true,
     state: "gas",
     stateHigh: "red_water",
     temp: -150,
@@ -72,6 +73,7 @@ elements.red_steam = {
     reactions: {
         "blood": { elem2: "red_ice" },
         "body": { elem2: "red_ice" },
+        "cactus": { elem2: "flesh_plant" },
         "dirty_water": { elem2: "red_water" },
         "frozen_plant": { elem2: "flesh_plant" },
         "head": { elem2: "red_ice" },
@@ -89,18 +91,15 @@ elements.red_steam = {
 elements.flesh_plant = {
     behavior: behaviors.WALL,
     breakInto: ["blood", "meat", "bone"],
-    burn: 10,
-    burnInto: "cooked_meat",
-    burnTime: 250,
     category: "life",
-    color: "#f3e7db",
+    color: "#1d84de",
     density: 1050,
     state: "solid",
     stateHigh: "cooked_meat",
     stateLow: "frozen_meat",
-    temp: 25,
-    tempHigh: 150,
-    tempLow: -30,
+    temp: -25,
+    tempHigh: 30,
+    tempLow: -150,
     reactions: {
         "cancer": { elem1: "cancer", chance: 0.01 },
         "fallout": { elem1: "cancer", chance: 0.05 },
@@ -142,12 +141,13 @@ elements.cook_juice = {
 elements.inversium = {
     behavior: behaviors.LIQUID,
     category: "special",
-    color: ["#0000b0", "#0000bb", "#0000ce"],
+    color: ["#000090", "#0000ff"],
     density: 50,
     excludeRandom: true,
     state: "liquid",
     viscosity: 0.5,
     reactions: {
+        "cactus": { elem2: "flesh_plant" },
         "cancer": { elem2: "cell" },
         "dead_plant": { elem2: "flesh_plant" },
         "dirty_water": { elem1: null, elem2: "red_water" },
@@ -184,43 +184,6 @@ elements.blue_goo = {
     },
 }
 
-elements.heavy_ice = {
-    behavior: behaviors.WALL,
-    category: "solids",
-    color: "#b2e6eb",
-    density: 917,
-    state: "solid",
-    stateHigh: "heavy_water",
-    temp: -5,
-    tempHigh: 5
-}
-
-elements.heavy_water = {
-    behavior: behaviors.LIQUID,
-    category: "liquids",
-    color: "#2167ff",
-    conduct: 0.02,
-    density: 1.1056,
-    extinguish: true,
-    state: "liquid",
-    stateHigh: "deuterium",
-    stateLow: "heavy_ice",
-    tempHigh: 104,
-    tempLow: 4,
-    viscosity: 1.2467,
-}
-
-elements.deuterium = {
-    behavior: behaviors.GAS,
-    category: "gases",
-    color: "#ace0e6",
-    density: 0.18,
-    state: "gas",
-    reactions: {
-        "oxygen": { elem1: "heavy_water", elem2: null },
-    },
-}
-
 elements.time = {
     behavior: behaviors.LIQUID,
     category: "special",
@@ -231,11 +194,14 @@ elements.time = {
         "ant": { elem1: null, elem2: "dead_bug" },
         "bee": { elem1: null, elem2: "dead_bug" },
         "body": { elem1: null, elem2: "rotten_meat" },
+        "flesh_plant": { elem1: null, elem2: "rotten_meat" },
         "fly": { elem1: null, elem2: "dead_bug" },
         "grass": { elem1: null, elem2: "dead_plant" },
         "head": { elem1: null, elem2: "rotten_meat" },
+        "iron": { elem1: null, elem2: "rust" },
         "meat": { elem1: null, elem2: "rotten_meat" },
         "plant": { elem1: null, elem2: "dead_plant" },
+        "skin": { elem1: null, elem2: "rotten_meat" },
         "sun": { elem1: null, elem2: "supernova" }
     },
 }
@@ -244,7 +210,7 @@ elements.granite = {
     behavior: behaviors.WALL,
     breakInto: ["sand", "gravel"],
     category: "land",
-    color: ["#F3C3AD", "#F0AB75", "#DDA888", "#BD927E", "#312F2E", "#5C5E53", "#BD8366"],
+    color: ["#F3FFFF", "#dbc7b8", "#fbe2d7", "#312F2E", "#e0e6c5", "#eadfda"],
     hardness: 0.75,
     state: "solid",
     stateHigh: "magma",

@@ -79,12 +79,12 @@ elements.spamtonium = {
 }
 
 elements.pipis = {
-    behavior: behaviors.POWDER,
+    behavior: behaviors.SUPERFLUID,
     breakInto: ["sand", "yolk"],
     category: "glooby",
     color: ["#00bfff", "#0085b0"],
     density: 150,
-    state: "solid",
+    state: "liquid",
     reactions: {
         "body": { elem2: "meat" },
         "egg": { elem2: "pipis" },

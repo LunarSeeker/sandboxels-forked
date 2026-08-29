@@ -82,8 +82,6 @@ elements.bacteria = {
     }
 }
 
-elements.infection.reactions.cell = { elem1: null, elem2: "infected_cell" }
-
 // --- 5. IMMUNE SYSTEM ---
 
 elements.phagocyte = {
@@ -111,10 +109,10 @@ elements.t_cell = {
         if (!pixel.killCD) { pixel.killCD = 0 }
         if (pixel.killCD > 0) { pixel.killCD--; return }
 
-        var target = findTarget(pixel, ["infected_cell"], 12) || findTarget(pixel, ["cytokines"], 15)
+        var target = findTarget(pixel, ["cancer"], 12) || findTarget(pixel, ["cytokines"], 15)
         if (target) {
             var targetPixel = pixelMap[target.x][target.y]
-            if (targetPixel.element === "infected_cell" && Math.abs(target.x - pixel.x) <= 1 && Math.abs(target.y - pixel.y) <= 1) {
+            if (targetPixel.element === "cancer" && Math.abs(target.x - pixel.x) <= 1 && Math.abs(target.y - pixel.y) <= 1) {
                 changePixel(targetPixel, "pus")
                 pixel.killCD = 30
             } else {
@@ -135,7 +133,7 @@ elements.b_cell = {
         if (pixel.cd > 0) { pixel.cd-- }
 
         if (pixel.cd === 0 && Math.random() < 0.4) {
-            if (findTarget(pixel, ["bacteria", "infection", "infected_cell"], 20)) {
+            if (findTarget(pixel, ["bacteria", "infection", "cancer"], 20)) {
                 var rx = Math.floor(Math.random() * 3) - 1
                 var ry = Math.floor(Math.random() * 3) - 1
                 if (isEmpty(pixel.x + rx, pixel.y + ry)) {
@@ -167,4 +165,3 @@ elements.stem_cell = {
 
 elements.rbc = { color: ["#ff0000", "#d10000", "#e62e2e"], behavior: behaviors.LIQUID, category: "life", state: "liquid", density: 1010 }
 elements.pus = { color: "#ebf2a0", behavior: behaviors.LIQUID, category: "life", state: "liquid", density: 1100 }
-elements.infected_cell = { color: ["#5e8a38", "#496e2b"], behavior: behaviors.CELL, category: "life", reactions: { "cell": { elem2: "infected_cell", chance: 0.01 } } }
