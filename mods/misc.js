@@ -169,6 +169,7 @@ elements.blue_goo = {
     color: ["#b0e9f7", "#0008ff", "#09c8f7"],
     density: 0.75,
     excludeRandom: true,
+    ignore: ["bless", "blue_goo", "inversium", "strange_matter", "midas_touch", "water", "salt_water", "time"],
     state: "liquid",
     viscosity: 1.05,
     tick: function (pixel) {
@@ -176,7 +177,7 @@ elements.blue_goo = {
             for (let dy = -1; dy <= 1; dy++) {
                 if (dx === 0 && dy === 0) continue
                 let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p && elements[p.element].state === "liquid" && p.element !== "blue_goo") {
+                if (p && elements[p.element].state === "liquid" && elements.blue_goo.ignore.indexOf(p.element) === -1) {
                     changePixel(p, "blue_goo")
                 }
             }
@@ -222,13 +223,14 @@ elements.scp_409 = {
     category: "special",
     color: "#f7f7f2",
     excludeRandom: true,
+    ignore: ["scp_409", "granite", "strange_matter", "midas_touch", "bless", "time"],
     state: "solid",
     tick: function (pixel) {
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
                 if (dx === 0 && dy === 0) continue
                 let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p && p.element !== "bless" && p.element !== "scp_409" && p.element !== "granite") {
+                if (p && elements.scp_409.ignore.indexOf(p.element) === -1) {
                     changePixel(p, "scp_409")
                 }
             }
