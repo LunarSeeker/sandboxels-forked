@@ -236,6 +236,64 @@ elements.scp_409 = {
     },
 }
 
+elements.dwarf = {
+    color: ["#f3e7db", "#f7ead0", "#eadaba", "#d7bd96", "#a07e56", "#825c43", "#604134", "#3a312a"],
+    behavior: function (pixel) {
+        behaviors.CRAWLER2(pixel, function (pixel, newX, _newY) {
+            if (!pixel.dwarf_digged && !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "wall") {
+                pixel.dwarf_digged = true
+            }
+        }, function (pixel, newX, _newY) {
+            if (Math.random() < 0.02 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && eLists.CRAWLTHRU.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
+                if (!pixel.dwarf_digged || !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "wall") {
+                    var wallCoords = [
+                        [-1, -1], [1, -1],
+                        [-1, 0], [1, 0],
+                        [0, 1]
+                    ]
+                    if (!isEmpty(pixel.x, pixel.y - 2)) {
+                        wallCoords.push([0, -1])
+                    }
+                    if (Math.random() < 0.15) { wallCoords.push([-1, 1]) }
+                    if (Math.random() < 0.15) { wallCoords.push([1, 1]) }
+                    for (var i = 0; i < wallCoords.length; i++) {
+                        var x = pixel.x + newX + wallCoords[i][0]
+                        var y = pixel.y + 1 + wallCoords[i][1]
+                        if (!isEmpty(x, y, true) && eLists.CRAWLTHRU.indexOf(pixelMap[x][y].element) !== -1) {
+                            changePixel(pixelMap[x][y], "wall")
+                        }
+                    }
+                    deletePixel(pixel.x + newX, pixel.y + 1)
+                    tryMove(pixel, pixel.x + newX, pixel.y + 1)
+                }
+            }
+            else if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && eLists.CRAWLTHRU.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
+                swapPixels(pixel, pixelMap[pixel.x + newX][pixel.y - 1])
+            }
+        })
+    },
+    reactions: {
+        "beans": { elem2: [null, null, null, "stench"], chance: 0.05 },
+        "diamond": { elem2: null, chance: 0.1 },
+        "fallout": { elem1: "rotten_meat", chance: 0.02 },
+        "gold": { elem2: null },
+        "granite": { elem2: null, chance: 0.05 },
+        "light": { stain1: "#825043" },
+        "neutron": { elem1: "rotten_meat", chance: 0.02 },
+        "oxygen": { elem2: "carbon_dioxide", chance: 1 },
+        "radiation": { elem1: "rotten_meat", chance: 0.1 },
+        "sun": { elem1: "cooked_meat" }
+    },
+    breakInto: "rotten_meat",
+    category: "life",
+    density: 500,
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    tempHigh: 120,
+    tempLow: -50
+}
+
 elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.flesh_plant = { elem2: "plant" }
 elements.bless.reactions.inversium = { elem2: null }
