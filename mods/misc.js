@@ -223,7 +223,7 @@ elements.scp_409 = {
     category: "special",
     color: "#f7f7f2",
     excludeRandom: true,
-    ignore: ["scp_409", "granite", "strange_matter", "midas_touch", "bless", "time"],
+    ignore: ["scp_409", "philosophers_stone", "granite", "strange_matter", "bless", "time"],
     state: "solid",
     tick: function (pixel) {
         for (let dx = -1; dx <= 1; dx++) {

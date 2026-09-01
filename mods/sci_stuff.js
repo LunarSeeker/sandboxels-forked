@@ -1,11 +1,19 @@
+function decay(ms) { //Taken from decays.js
+    return 1 / (Math.pow(Math.log10(ms * 30 + 1), 2) * 10)
+}
 
 // Beginning of stuff taken from nuclear.js
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
     const excludedElements = new Set([
         "deuterium",
-        "irradiated_matter",
+        "fallout",
+        "fluorine_20",
+        "gray_goo",
         "lead",
+        "philosophers_stone",
+        "radiation",
+        "time",
         "uranium"
     ])
 
@@ -15,7 +23,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
             let nx = pixel.x + dx
             let ny = pixel.y + dy
             let p = getPixel(nx, ny)
-            if (p && !elements[p.element].radioactive && !excludedElements.has(p.element) && !elements[p.element].antiRadiation && Math.random() < 0.1 * intensity) {
+            if (p && !elements[p.element].radioactive && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
                 p.temp += 15 * intensity
                 p.irradiated = (p.irradiated || 0) + intensity
                 if (p.irradiated > 10 && Math.random() < 0.2) {
@@ -45,9 +53,23 @@ elements.irradiated_matter = {
     category: "powders",
     color: "#777733",
     density: 900,
-    state: "solid"
+    radioactive: true,
+    state: "solid",
+    tick(pixel) {
+        irradiateNearby(pixel, 2, 0.4)
+    }
 }
 // End of stuff taken from nuclear.js
+
+elements.fluorine_20 = { //Also taken from decays.js
+    behavior: behaviors.POWDER,
+    color: "#b0ff1c",
+    tick: function (pixel) {
+        if (Math.random() < decay(11.0062 * 1000)) {
+            changePixel(pixel, "neon")
+        }
+    }
+}
 
 elements.heavy_ice = {
     behavior: behaviors.WALL,
@@ -247,4 +269,5 @@ elements.arsenic_gas = {
 
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
-elements.bless.reactions.irradiated_matter = {elem2: null}
+elements.bless.reactions.irradiated_matter = { elem2: "gold" }
+elements.bless.reactions.plutonium = { elem2: "gold" }
