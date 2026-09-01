@@ -63,7 +63,11 @@ elements.irradiated_matter = {
 
 elements.fluorine_20 = { //Also taken from decays.js
     behavior: behaviors.POWDER,
+    category: "powders",
     color: "#b0ff1c",
+    density: 900,
+    radioactive: true,
+    state: "solid",
     tick: function (pixel) {
         if (Math.random() < decay(11.0062 * 1000)) {
             changePixel(pixel, "neon")
