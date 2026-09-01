@@ -1,0 +1,273 @@
+function decay(ms) { //Taken from decays.js
+    return 1 / (Math.pow(Math.log10(ms * 30 + 1), 2) * 10)
+}
+
+// Beginning of stuff taken from nuclear.js
+function irradiateNearby(pixel, radius = 1, intensity = 1) {
+    // List of elements to explicitly exclude
+    const excludedElements = new Set([
+        "deuterium",
+        "fallout",
+        "fluorine_20",
+        "gray_goo",
+        "lead",
+        "philosophers_stone",
+        "radiation",
+        "time",
+        "uranium"
+    ])
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+            if (dx === 0 && dy === 0) continue
+            let nx = pixel.x + dx
+            let ny = pixel.y + dy
+            let p = getPixel(nx, ny)
+            if (p && !elements[p.element].radioactive && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
+                p.temp += 15 * intensity
+                p.irradiated = (p.irradiated || 0) + intensity
+                if (p.irradiated > 10 && Math.random() < 0.2) {
+                    changePixel(p, "irradiated_matter")
+                }
+            }
+        }
+    }
+}
+
+elements.plutonium = {
+    behavior: behaviors.POWDER,
+    category: "powders",
+    color: "#4e3629",
+    density: 19800,
+    radioactive: true,
+    state: "solid",
+    tick(pixel) {
+        irradiateNearby(pixel, 1, 0.8)
+    }
+}
+
+elements.irradiated_matter = {
+    behavior: behaviors.POWDER,
+    burn: 80,
+    burnTime: 250,
+    category: "powders",
+    color: "#777733",
+    density: 900,
+    radioactive: true,
+    state: "solid",
+    tick(pixel) {
+        irradiateNearby(pixel, 2, 0.4)
+    }
+}
+// End of stuff taken from nuclear.js
+
+elements.fluorine_20 = { //Also taken from decays.js
+    behavior: behaviors.POWDER,
+    color: "#b0ff1c",
+    tick: function (pixel) {
+        if (Math.random() < decay(11.0062 * 1000)) {
+            changePixel(pixel, "neon")
+        }
+    }
+}
+
+elements.heavy_ice = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: "#b2e6eb",
+    density: 917,
+    state: "solid",
+    stateHigh: "heavy_water",
+    temp: -5,
+    tempHigh: 5
+}
+
+elements.heavy_water = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: "#2167ff",
+    conduct: 0.02,
+    density: 1.1056,
+    extinguish: true,
+    state: "liquid",
+    stateHigh: "deuterium",
+    stateLow: "heavy_ice",
+    tempHigh: 104,
+    tempLow: 4,
+    viscosity: 1.2467,
+}
+
+elements.deuterium = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#ace0e6",
+    density: 0.18,
+    state: "gas",
+    reactions: {
+        "oxygen": { elem1: "heavy_water", elem2: null },
+    },
+}
+
+elements.bromine = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: ["#901100", "#7f1702", "#6e1a05", "#5e1b07", "#4e1b0a"],
+    density: 3120,
+    state: "liquid",
+    stateHigh: "bromine_gas",
+    stateLow: "bromine_ice",
+    tempHigh: 59,
+    tempLow: -7,
+    tick: function (pixel) {
+        if (pixel.temp > 0 && Math.random() < 0.001) {
+            changePixel(pixelMap[pixel.x][pixel.y], "bromine_gas", false)
+        }
+    }
+}
+
+elements.bromine_gas = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: ["#8f0000", "#7e0205", "#6e0508", "#5d080a", "#4d0a0a"],
+    state: "gas",
+    stateLow: "bromine",
+    tempLow: 57,
+    density: 6,
+    tick: function (pixel) {
+        if (pixel.temp < 58.8 && pixel.temp > 0 && Math.random() < 0.01) {
+            changePixel(pixelMap[pixel.x][pixel.y], "bromine", false)
+        }
+    }
+}
+
+elements.bromine_ice = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: ["#8f002b", "#7e0522", "#6d091a", "#5d0a13", "#4d0a0a"],
+    state: "solid",
+    stateHigh: "bromine",
+    tempHigh: -5
+}
+
+elements.arsenic = {
+    behavior: behaviors.POWDER,
+    category: "powders",
+    color: "#478800",
+    density: 0.5782,
+    state: "solid",
+    tempHigh: 614, // From what I can gather, arsenic has a melting point hotter than this, but since it turns into gas at this temp, I'll just go with this.
+    stateHigh: "arsenic_gas",
+    reactions: {
+        "algae": { elem1: null, elem2: null },
+        "ant": { elem1: null, elem2: "dead_bug" },
+        "bee": { elem1: null, elem2: "dead_bug" },
+        "bird": { elem2: "rotten_meat" },
+        "blood": { elem1: null, elem2: "arsenic" },
+        "body": { elem2: "rotten_meat" },
+        "cactus": { elem1: null, elem2: "dead_plant" },
+        "cheese_powder": { elem1: null, elem2: "rotten_cheese" },
+        "cheese": { elem1: null, elem2: "rotten_cheese" },
+        "coral": { elem1: null, elem2: "dirty_water" },
+        "evergreen": { elem1: null, elem2: "dead_plant" },
+        "firefly": { elem1: null, elem2: "dead_bug" },
+        "fish": { elem2: "rotten_meat" },
+        "flea": { elem1: null, elem2: "dead_bug" },
+        "flower_seed": { elem1: null, elem2: "dead_plant" },
+        "fly": { elem1: null, elem2: "dead_bug" },
+        "frog": { elem2: "slime" },
+        "grass_seed": { elem1: null, elem2: "dead_plant" },
+        "grass": { elem1: null, elem2: "dead_plant" },
+        "head": { elem2: "rotten_meat" },
+        "homunculus": { elem2: "rotten_meat" },
+        "kelp": { elem1: null, elem2: "dirty_water" },
+        "lichen": { elem1: null, elem2: null },
+        "meat": { elem2: "rotten_meat" },
+        "mushroom_cap": { elem1: null, elem2: null, chance: 0.01 },
+        "mushroom_gill": { elem1: null, elem2: null, chance: 0.01 },
+        "mushroom_spore": { elem1: null, elem2: null },
+        "mushroom_stalk": { elem1: null, elem2: null, chance: 0.01 },
+        "petal": { elem1: null, elem2: "dead_plant" },
+        "pistil": { elem1: null, elem2: "dead_plant" },
+        "plant": { elem1: null, elem2: "dead_plant" },
+        "pollen": { elem2: null, chance: 0.01 },
+        "rat": { elem2: "rotten_meat" },
+        "salt_water": { elem1: null, elem2: "dirty_water" },
+        "slug": { elem1: null, elem2: "slime" },
+        "snail": { elem1: null, elem2: "limestone" },
+        "soap": { elem1: null },
+        "spider": { elem1: null, elem2: "dead_bug" },
+        "stink_bug": { elem1: null, elem2: "dead_bug" },
+        "sugar_water": { elem1: null, elem2: "dirty_water" },
+        "tadpole": { elem2: "slime" },
+        "termite": { elem1: null, elem2: "dead_bug" },
+        "vine": { elem1: null, elem2: "dead_plant" },
+        "water": { elem1: null, elem2: "dirty_water" },
+        "worm": { elem1: null, elem2: "dead_bug" },
+        "yeast": { elem1: null, elem2: null },
+        "hair": { elem1: null, elem2: null, chance: 0.01 }
+    },
+}
+
+elements.arsenic_gas = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#478800",
+    density: 0.5782,
+    state: "gas",
+    temp: 700,
+    tempLow: 613,
+    stateLow: "arsenic",
+    reactions: {
+        "algae": { elem1: null, elem2: null },
+        "ant": { elem1: null, elem2: "dead_bug" },
+        "bee": { elem1: null, elem2: "dead_bug" },
+        "bird": { elem2: "rotten_meat" },
+        "blood": { elem1: null, elem2: "arsenic" },
+        "body": { elem2: "rotten_meat" },
+        "cactus": { elem1: null, elem2: "dead_plant" },
+        "cheese_powder": { elem1: null, elem2: "rotten_cheese" },
+        "cheese": { elem1: null, elem2: "rotten_cheese" },
+        "coral": { elem1: null, elem2: "dirty_water" },
+        "evergreen": { elem1: null, elem2: "dead_plant" },
+        "firefly": { elem1: null, elem2: "dead_bug" },
+        "fish": { elem2: "rotten_meat" },
+        "flea": { elem1: null, elem2: "dead_bug" },
+        "flower_seed": { elem1: null, elem2: "dead_plant" },
+        "fly": { elem1: null, elem2: "dead_bug" },
+        "frog": { elem2: "slime" },
+        "grass_seed": { elem1: null, elem2: "dead_plant" },
+        "grass": { elem1: null, elem2: "dead_plant" },
+        "head": { elem2: "rotten_meat" },
+        "homunculus": { elem2: "rotten_meat" },
+        "kelp": { elem1: null, elem2: "dirty_water" },
+        "lichen": { elem1: null, elem2: null },
+        "meat": { elem2: "rotten_meat" },
+        "mushroom_cap": { elem1: null, elem2: null, chance: 0.01 },
+        "mushroom_gill": { elem1: null, elem2: null, chance: 0.01 },
+        "mushroom_spore": { elem1: null, elem2: null },
+        "mushroom_stalk": { elem1: null, elem2: null, chance: 0.01 },
+        "petal": { elem1: null, elem2: "dead_plant" },
+        "pistil": { elem1: null, elem2: "dead_plant" },
+        "plant": { elem1: null, elem2: "dead_plant" },
+        "pollen": { elem2: null, chance: 0.01 },
+        "rat": { elem2: "rotten_meat" },
+        "salt_water": { elem1: null, elem2: "dirty_water" },
+        "slug": { elem1: null, elem2: "slime" },
+        "snail": { elem1: null, elem2: "limestone" },
+        "spider": { elem1: null, elem2: "dead_bug" },
+        "stink_bug": { elem1: null, elem2: "dead_bug" },
+        "sugar_water": { elem1: null, elem2: "dirty_water" },
+        "tadpole": { elem2: "slime" },
+        "termite": { elem1: null, elem2: "dead_bug" },
+        "vine": { elem1: null, elem2: "dead_plant" },
+        "water": { elem1: null, elem2: "dirty_water" },
+        "worm": { elem1: null, elem2: "dead_bug" },
+        "yeast": { elem1: null, elem2: null },
+        "hair": { elem1: null, elem2: null, chance: 0.01 }
+    },
+}
+
+elements.bless.reactions.arsenic = { elem2: null }
+elements.bless.reactions.arsenic_gas = { elem2: null }
+elements.bless.reactions.irradiated_matter = { elem2: "gold" }
+elements.bless.reactions.plutonium = { elem2: "gold" }
