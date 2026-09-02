@@ -24,9 +24,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
     for (let dx = -radius; dx <= radius; dx++) {
         for (let dy = -radius; dy <= radius; dy++) {
             if (dx === 0 && dy === 0) continue
-            let nx = pixel.x + dx
-            let ny = pixel.y + dy
-            let p = getPixel(nx, ny)
+            let p = getPixel((pixel.x + dx), (pixel.y + dy))
             if (p && !elements[p.element].radioactive && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
                 p.temp += 15 * intensity
                 p.irradiated = (p.irradiated || 0) + intensity
@@ -47,6 +45,7 @@ elements.plutonium = {
     state: "solid",
     tick(pixel) {
         irradiateNearby(pixel, 1, 0.8)
+        releaseElement("radiation")
     }
 }
 
@@ -64,20 +63,34 @@ elements.irradiated_matter = {
     }
 }
 // End of stuff taken from nuclear.js
-
-elements.fluorine_20 = { //Also taken from decays.js
-    behavior: behaviors.POWDER,
-    category: "powders",
+//Start of stuff taken from decays.js
+elements.fluorine_20 = {
+    behavior: behaviors.GAS,
+    category: "gases",
     color: "#b0ff1c",
-    density: 900,
     radioactive: true,
-    state: "solid",
+    state: "gas",
     tick: function (pixel) {
         if (Math.random() < decay(11006.2)) {
             changePixel(pixel, "neon")
+            releaseElement("radiation")
         }
     }
 }
+elements.oxygen_20 = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#7bc7c6",
+    radioactive: true,
+    state: "gas",
+    tick: function (pixel) {
+        if (Math.random() < decay(13510)) {
+            changePixel(pixel, "fluorine_20")
+            releaseElement("radiation")
+        }
+    }
+}
+//End of stuff taken from decays.js
 
 elements.heavy_ice = {
     behavior: behaviors.WALL,
@@ -307,12 +320,12 @@ elements.hazmat = {
         }
     },
     reactions: {
-        "fire": { attr1: { panic: 5 } },
         "acid": { attr1: { panic: 5 } },
         "c4": { attr1: { panic: 5 } },
         "cold_fire": { attr1: { panic: 5 } },
         "dynamite": { attr1: { panic: 5 } },
         "electric": { attr1: { panic: 5 } },
+        "fire": { attr1: { panic: 5 } },
         "grenade": { attr1: { panic: 5 } },
         "gunpowder": { attr1: { panic: 5 } },
         "plasma": { attr1: { panic: 5 } },
@@ -325,21 +338,21 @@ elements.hazmat = {
 }
 elements.hazmat_body = {
     color: ["#08271d", "#6f9904", "#4b4931"],
-    category: "life",
-    hidden: true,
-    density: 1500,
-    state: "solid",
-    conduct: .01,
-    temp: 37,
-    tempHigh: 150,
-    stateHigh: "cooked_meat",
-    tempLow: -30,
-    stateLow: "frozen_meat",
-    burn: 10,
-    burnTime: 250,
-    burnInto: "cooked_meat",
     breakInto: ["blood", "meat", "bone"],
+    burn: 10,
+    burnInto: "cooked_meat",
+    burnTime: 250,
+    category: "life",
+    conduct: .01,
+    density: 1500,
     forceSaveColor: true,
+    hidden: true,
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    temp: 30,
+    tempHigh: 150,
+    tempLow: -30,
     pickElement: "hazmat",
     reactions: {
         "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
@@ -469,8 +482,8 @@ elements.hazmat_body = {
                 pixel.dir *= -1
             }
             // homeostasis
-            if (pixel.temp > 37) { pixel.temp -= 1 }
-            else if (pixel.temp < 37) { pixel.temp += 1 }
+            if (pixel.temp > 30) { pixel.temp -= 1 }
+            else if (pixel.temp < 30) { pixel.temp += 1 }
         }
 
     }
@@ -482,7 +495,7 @@ elements.hazmat_head = {
     density: 1080,
     state: "solid",
     conduct: .01,
-    temp: 37,
+    temp: 30,
     tempHigh: 150,
     stateHigh: "cooked_meat",
     tempLow: -30,
@@ -546,8 +559,8 @@ elements.hazmat_head = {
             }
         }
         // homeostasis
-        if (pixel.temp > 37) { pixel.temp -= 1 }
-        else if (pixel.temp < 37) { pixel.temp += 1 }
+        if (pixel.temp > 30) { pixel.temp -= 1 }
+        else if (pixel.temp < 30) { pixel.temp += 1 }
     },
     onChange: function (pixel) {
         for (var i = 0; i < adjacentCoords.length; i++) {
