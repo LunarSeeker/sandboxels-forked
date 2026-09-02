@@ -171,7 +171,7 @@ elements.blue_goo = {
     color: ["#b0e9f7", "#0008ff", "#09c8f7"],
     density: 0.75,
     excludeRandom: true,
-    ignore: ["bless", "blue_goo", "inversium", "strange_matter", "midas_touch", "water", "salt_water", "time"],
+    ignore: ["bless", "blue_goo", "inversium", "strange_matter", "midas_touch", "water", "salt_water", "time", "hazmat_head", "hazmat_body"],
     state: "liquid",
     viscosity: 1.05,
     tick: function (pixel) {
@@ -287,10 +287,10 @@ elements.zombie = {
     forceSaveColor: true
 }
 elements.zombie_body = {
-    breakInto: ["blood", "meat", "bone"],
-    burn: 10,
-    burnInto: "cooked_meat",
-    burnTime: 250,
+    breakInto: ["ash", "rotten_meat", "bone"],
+    burn: 20,
+    burnInto: "ash",
+    burnTime: 150,
     category: "life",
     color: ["#08271d", "#6f9904", "#4b4931"],
     conduct: .01,
@@ -299,25 +299,25 @@ elements.zombie_body = {
     hidden: true,
     pickElement: "zombie",
     state: "solid",
-    stateHigh: "cooked_meat",
+    stateHigh: "ash",
     stateLow: "frozen_meat",
-    temp: 37,
+    temp: 25,
     tempHigh: 150,
     tempLow: -30,
     reactions: {
         "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
         "bee": { elem2: "dead_bug", oneway: true },
         "egg": { elem2: "yolk", oneway: true },
-        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
+        "fallout": { elem1: "ash", chance: 0.01 },
         "firefly": { elem2: "dead_bug", oneway: true },
         "flea": { elem2: "dead_bug", oneway: true },
         "fly": { elem2: "dead_bug", oneway: true },
         "grape": { elem2: "juice", color2: "#291824", oneway: true },
-        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
-        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
+        "neutron": { elem1: "ash", chance: 0.01 },
+        "radiation": { elem1: "ash", chance: 0.4 },
         "spider": { elem2: "dead_bug", oneway: true },
         "stink_bug": { elem2: "stench", oneway: true },
-        "sun": { elem1: "cooked_meat" },
+        "sun": { elem1: "ash" },
         "termite": { elem2: "dead_bug", oneway: true },
         "worm": { elem2: "slime", chance: 0.05, oneway: true }
     },
@@ -401,9 +401,9 @@ elements.zombie_body = {
         if (isEmpty(pixel.x, pixel.y - 1)) {
             // create blood if decapitated 10% chance
             if (Math.random() < 0.1 && !pixel.charge) {
-                createPixel("blood", pixel.x, pixel.y - 1)
-                // set dead to true 15% chance
-                if (Math.random() < 0.15) {
+                createPixel("ash", pixel.x, pixel.y - 1)
+                // set dead to true 10% chance
+                if (Math.random() < 0.1) {
                     pixel.dead = pixelTicks
                 }
             }
@@ -440,16 +440,16 @@ elements.zombie_body = {
                 pixel.dir *= -1
             }
             // homeostasis
-            if (pixel.temp > 37) { pixel.temp -= 1 }
-            else if (pixel.temp < 37) { pixel.temp += 1 }
+            if (pixel.temp > 25) { pixel.temp -= 2 }
+            else if (pixel.temp < 25) { pixel.temp += 1 }
         }
 
     }
 }
 elements.zombie_head = {
-    breakInto: ["blood", "meat", "bone"],
+    breakInto: ["ash", "rotten_meat", "bone"],
     burn: 10,
-    burnInto: "cooked_meat",
+    burnInto: "ash",
     burnTime: 250,
     category: "life",
     color: ["#ffff00", "#f1f100", "#d29720", "#eda63d"],
@@ -459,18 +459,18 @@ elements.zombie_head = {
     hidden: true,
     pickElement: "zombie",
     state: "solid",
-    stateHigh: "cooked_meat",
+    stateHigh: "ash",
     stateLow: "frozen_meat",
-    temp: 37,
+    temp: 25,
     tempHigh: 150,
     tempLow: -30,
     reactions: {
         "body": { elem2: "zombie", chance: 0.5, },
-        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
-        "head": { elem2: "zombie", chance: 0.8, },
-        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
-        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
-        "sun": { elem1: "cooked_meat" },
+        "fallout": { elem1: ["ash", "rotten_meat"] },
+        "head": { elem2: "zombie" },
+        "neutron": { elem1: ["ash", "rotten_meat"], chance: 0.1 },
+        "radiation": { elem1: ["ash", "rotten_meat"], chance: 0.4 },
+        "sun": { elem1: "ash" },
     },
     properties: {
         dead: false
@@ -512,16 +512,16 @@ elements.zombie_head = {
         if (tryMove(pixel, pixel.x, pixel.y + 1)) {
             // create blood if severed 10% chance
             if (isEmpty(pixel.x, pixel.y + 1) && !pixel.dead && Math.random() < 0.1 && !pixel.charge) {
-                createPixel("blood", pixel.x, pixel.y + 1)
-                // set dead to true 15% chance
-                if (Math.random() < 0.15) {
+                createPixel("ash", pixel.x, pixel.y + 1)
+                // set dead to true 10% chance
+                if (Math.random() < 0.1) {
                     pixel.dead = pixelTicks
                 }
             }
         }
         // homeostasis
-        if (pixel.temp > 37) { pixel.temp -= 1 }
-        else if (pixel.temp < 37) { pixel.temp += 1 }
+        if (pixel.temp > 25) { pixel.temp -= 1 }
+        else if (pixel.temp < 25) { pixel.temp += 1 }
     },
     onChange: function (pixel) {
         for (var i = 0; i < adjacentCoords.length; i++) {
@@ -552,3 +552,5 @@ elements.bless.reactions.red_ice = { elem2: "ice" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
 elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
+elements.bless.reactions.zombie_body = { elem2: null }
+elements.bless.reactions.zombie_head = { elem2: null }
