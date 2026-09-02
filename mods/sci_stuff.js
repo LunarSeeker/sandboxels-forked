@@ -12,6 +12,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "hazmat_body",
         "hazmat_head",
         "hazmat",
+        "ichor",
         "lead",
         "philosophers_stone",
         "radiation",
@@ -72,7 +73,7 @@ elements.fluorine_20 = { //Also taken from decays.js
     radioactive: true,
     state: "solid",
     tick: function (pixel) {
-        if (Math.random() < decay(11.0062 * 1000)) {
+        if (Math.random() < decay(11006.2)) {
             changePixel(pixel, "neon")
         }
     }
@@ -341,22 +342,20 @@ elements.hazmat_body = {
     forceSaveColor: true,
     pickElement: "hazmat",
     reactions: {
-        "egg": { elem2: "yolk", chance: 0.5, oneway: true },
-        "grape": { elem2: "juice", chance: 0.5, color2: "#291824", oneway: true },
         "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
         "bee": { elem2: "dead_bug", oneway: true },
-        "diamond": { elem2: null, chance: 0.05 },
+        "egg": { elem2: "yolk", chance: 0.5, oneway: true },
         "firefly": { elem2: "dead_bug", oneway: true },
         "flea": { elem2: "dead_bug", oneway: true },
         "fly": { elem2: "dead_bug", oneway: true },
-        "gold_coin": { elem2: null, chance: 0.05 },
+        "grape": { elem2: "juice", chance: 0.5, color2: "#291824", oneway: true },
         "grass_seed": { elem2: null, chance: 0.05 },
         "spider": { elem2: "dead_bug", oneway: true },
         "stink_bug": { elem2: "stench", oneway: true },
         "sun": { elem1: "cooked_meat" },
         "termite": { elem2: "dead_bug", oneway: true },
         "worm": { elem2: "slime", chance: 0.05, oneway: true },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } }
+        "alcohol": { chance: 0.05, attr1: { "panic": 0 } }
     },
     properties: {
         dead: false,
