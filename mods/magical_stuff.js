@@ -62,7 +62,7 @@ elements.dwarf = {
 elements.philosophers_stone = {
     behavior: behaviors.POWDER,
     category: "magic",
-    color: ["#ff0000", "#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#ff00ff"],
+    color: "#e60000",
     density: 1,
     excludeRandom: true,
     state: "solid",
@@ -105,8 +105,8 @@ elements.stable_aether = {
 elements.unstable_aether = {
     behavior: behaviors.GAS,
     category: "magic",
-    color: ["#ff0000", "#ff8800", "#0000ff", "#ff00ff"],
-    density: 1,
+    color: ["#8a2be2", "#da70d6", "#ba55d3"],
+    density: 0.5,
     state: "gas",
     tick: function (pixel) {
         if (Math.random() < decay(1160)) {
@@ -140,9 +140,10 @@ elements.primordial_chaos = {
 
 elements.ichor = {
     behavior: behaviors.LIQUID,
-    category: "liquids",
+    category: "magic",
     color: "#ffff00",
     density: 100,
+    extinguish: true,
     state: "liquid",
     viscosity: 1,
     reactions: {
