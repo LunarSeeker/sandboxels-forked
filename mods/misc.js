@@ -1,3 +1,5 @@
+//Inversium Stuff
+
 elements.red_ice = {
     color: "#D2042D",
     excludeRandom: true,
@@ -139,6 +141,8 @@ elements.inversium = {
     },
 }
 
+//
+
 elements.blue_goo = {
     behavior: behaviors.LIQUID,
     category: "special",
@@ -167,6 +171,7 @@ elements.time = {
     color: "#ffffff",
     density: 1,
     state: "liquid",
+    viscosity: 1050,
     reactions: {
         "ant": { elem1: null, elem2: "dead_bug" },
         "bee": { elem1: null, elem2: "dead_bug" },
@@ -213,6 +218,18 @@ elements.scp_409 = {
         }
     },
 }
+
+elements.quicksand = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: "#8B4513",
+    density: 1574,
+    stain: 0.3,
+    state: "liquid",
+    viscosity: 1050
+}
+
+// Zombie
 
 elements.zombie = {
     category: "life",
@@ -518,6 +535,8 @@ elements.zombie_head = {
         }
     }
 }
+
+//
 
 elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.flesh_plant = { elem2: "plant" }
