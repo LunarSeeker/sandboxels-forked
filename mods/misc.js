@@ -113,14 +113,42 @@ elements.flesh_plant = {
     temp: -25,
     tempHigh: 30,
     tempLow: -150,
+    ignore: [
+        "cancer",
+        "coral",
+        "fiber",
+        "flesh_plant",
+        "hazmat_body",
+        "hazmat_head",
+        "hazmat",
+        "hive",
+        "pinecone",
+        "plant",
+        "pollen",
+        "primordial_soup"
+    ],
+    tick: function (pixel) {
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p) {
+                    if (elements[p.element].state === "solid" && elements[p.element].category === "life" && elements.flesh_plant.ignore.indexOf(p.element) === -1) {
+                        changePixel(p, "red_ice")
+                    } else if (p.element === "plant") {
+                        p.temp = -25
+                        changePixel(p, "flesh_plant")
+                    }
+                }
+            }
+        }
+    },
     reactions: {
         "cancer": { elem1: "cancer", chance: 0.01 },
         "fallout": { elem1: "cancer", chance: 0.05 },
-        "grass": { elem2: "flesh_plant", temp: -25 },
         "neutron": { elem1: "ash", chance: 0.05 },
         "oxygen": { elem2: "carbon_dioxide", chance: 0.5 },
         "plague": { elem1: "plague", chance: 0.1 },
-        "plant": { elem2: "flesh_plant", temp: -25 },
         "radiation": { elem1: "cancer", chance: 0.4 },
         "sun": { elem1: "ash" },
         "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
@@ -145,9 +173,10 @@ elements.inversium = {
         "ice": { elem1: null, elem2: "red_ice", temp: 30 },
         "plant": { elem2: "flesh_plant", temp: -25 },
         "pool_water": { elem1: null, elem2: "red_water", temp: -25 },
-        "salt_water": { elem1: null, elem2: "sugar_water", temp: -25 },
+        "salt_water": { elem1: null, elem2: "red_water", temp: -25 },
         "salt": { elem2: "sugar" },
         "slush": { elem1: null, elem2: "red_ice", temp: 25 },
+        "sugar_water": { elem1: null, elem2: "red_water", temp: -25 },
         "steam": { elem1: null, elem2: "red_steam", temp: -150 },
         "water": { elem1: null, elem2: "red_water", temp: -30 },
     },
@@ -161,7 +190,16 @@ elements.blue_goo = {
     color: ["#b0e9f7", "#0008ff", "#09c8f7"],
     density: 0.75,
     excludeRandom: true,
-    ignore: ["bless", "blue_goo", "inversium", "strange_matter", "midas_touch", "water", "salt_water", "time", "hazmat_head", "hazmat_body"],
+    ignore: [
+        "bless",
+        "blue_goo",
+        "inversium",
+        "strange_matter",
+        "midas_touch",
+        "water",
+        "salt_water",
+        "time"
+    ],
     state: "liquid",
     viscosity: 1.05,
     tick: function (pixel) {
@@ -202,7 +240,7 @@ elements.time = {
 
 elements.granite = {
     behavior: behaviors.WALL,
-    breakInto: ["sand", "gravel"],
+    breakInto: "sand",
     category: "land",
     color: ["#F3FFFF", "#dbc7b8", "#fbe2d7", "#312F2E", "#e0e6c5", "#eadfda"],
     hardness: 0.75,
@@ -216,29 +254,25 @@ elements.scp_409 = {
     category: "special",
     color: "#f7f7f2",
     excludeRandom: true,
-    ignore: ["scp_409", "philosophers_stone", "granite", "strange_matter", "bless", "time"],
+    ignore: [
+        "granite",
+        "philosophers_stone",
+        "scp_409",
+        "strange_matter",
+        "time"
+    ],
     state: "solid",
     tick: function (pixel) {
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
                 if (dx === 0 && dy === 0) continue
                 let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p && elements.scp_409.ignore.indexOf(p.element) === -1) {
+                if (p && elements.scp_409.ignore.indexOf(p.element) === -1 && elements[p.element].category !== "energy") {
                     changePixel(p, "scp_409")
                 }
             }
         }
     },
-}
-
-elements.quicksand = {
-    behavior: behaviors.LIQUID,
-    category: "liquids",
-    color: "#8B4513",
-    density: 1574,
-    stain: 0.3,
-    state: "liquid",
-    viscosity: 1050
 }
 
 // Zombie
