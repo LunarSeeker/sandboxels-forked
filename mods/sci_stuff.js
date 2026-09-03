@@ -45,7 +45,7 @@ elements.plutonium = {
     state: "solid",
     tick(pixel) {
         irradiateNearby(pixel, 1, 0.8)
-        releaseElement("radiation")
+        //releaseElement("radiation")
     }
 }
 
