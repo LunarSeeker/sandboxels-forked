@@ -113,32 +113,6 @@ elements.flesh_plant = {
     },
 }
 
-elements.goobberry = {
-    behavior: behaviors.POWDER,
-    breakInto: "juice",
-    breakIntoColor: "#5dd507",
-    category: "food",
-    color: ["#464196", "#5dd507"],
-    reactions: {},
-    state: "solid",
-}
-
-elements.cook_juice = {
-    color: "#da1a1a",
-    behavior: behaviors.LIQUID,
-    reactions: {
-        "body": { elem1: null, elem2: "cooked_meat" },
-        "head": { elem1: null, elem2: "cooked_meat" },
-        "meat": { elem1: null, elem2: "cooked_meat" },
-        "rotten_meat": { elem2: "cooked_meat" },
-    },
-    category: "liquids",
-    density: 792,
-    stain: -0.25,
-    state: "liquid",
-    viscosity: 1.15,
-}
-
 elements.inversium = {
     behavior: behaviors.LIQUID,
     category: "special",

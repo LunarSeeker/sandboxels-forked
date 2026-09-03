@@ -1,8 +1,11 @@
 elements.rebirthite = {
-    color: ["#530000", "#FF0000"],
     behavior: behaviors.LIQUID,
-    category: "liquids",
     breakInto: ["hydrogen", "water"],
+    category: "liquids",
+    color: ["#530000", "#FF0000"],
+    density: 1.2,
+    state: "liquid",
+    viscosity: 2,
     reactions: {
         "ash": { elem1: null, elem2: "sugar" },
         "cancer": { elem1: null, elem2: "cell" },
@@ -18,10 +21,7 @@ elements.rebirthite = {
         "tree_branch": { elem1: null, elem2: "sapling" },
         "wood": { elem1: null, elem2: "sapling" },
         "worm": { elem1: null, elem2: "sapling" }
-    },
-    state: "liquid",
-    density: 1.2,
-    viscosity: 2
+    }
 }
 
 elements.bless.reactions.rebirthite = { elem2: null }
@@ -35,7 +35,7 @@ elements.give_life = {
         if (pixel.element == 'cancer' || pixel.element == 'meat' || pixel.element == 'rotten_meat') {
             pixel.element = 'cell'
         }
-        if (pixel.element == 'dead_plant' || pixel.element == 'ash') {
+        if (pixel.element == 'dead_plant' || pixel.element == 'ash' || pixel.element == 'zombie_head') {
             pixel.element = 'plant'
         }
     },
