@@ -1,8 +1,8 @@
 //Inversium Stuff
 
 elements.red_ice = {
-    behavior: behaviors.WALL,
-    category: "solids",
+    behavior: behaviors.POWDER,
+    category: "powders",
     color: "#D2042D",
     density: 917,
     excludeRandom: true,
