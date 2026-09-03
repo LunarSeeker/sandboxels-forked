@@ -123,7 +123,6 @@ elements.flesh_plant = {
         "hazmat",
         "hive",
         "pinecone",
-        "plant",
         "pollen",
         "primordial_soup"
     ],
@@ -134,8 +133,6 @@ elements.flesh_plant = {
                 let p = getPixel((pixel.x + dx), (pixel.y + dy))
                 if (p) {
                     if (elements[p.element].state === "solid" && elements[p.element].category === "life" && elements.flesh_plant.ignore.indexOf(p.element) === -1) {
-                        changePixel(p, "red_ice")
-                    } else if (p.element === "plant") {
                         p.temp = -25
                         changePixel(p, "flesh_plant")
                     }
