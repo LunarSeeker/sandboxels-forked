@@ -581,6 +581,47 @@ elements.zombie_head = {
 
 //
 
+// Life
+elements.chicken = {
+    color: ["#ba5700", "#d18038", "#d4ccc5"],
+    behavior: [
+        "XX|XX|XX",
+        "XX|FX%3 AND L2:egg%0.5|M2%10",
+        "XX|M1%33|XX"
+    ],
+    breakInto: ["feather", "blood"],
+    burn: 2,
+    burnTime: 100,
+    category: "life",
+    density: 400,
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    tempHigh: 120,
+    tempLow: -18,
+    reactions: {
+        "corn_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "corn": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "flower_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "grass_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "oxygen": { elem2: "carbon_dioxide", chance: 0.3 },
+        "plague": { elem1: "plague", chance: 0.1 },
+        "potato_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "pumpkin_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "pumpkin": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
+        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
+        "rice": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "seeds": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "spider": { elem2: null, chance: 0.1, func: behaviors.FEEDPIXEL },
+        "stink_bug": { elem2: "stench", chance: 0.025, func: behaviors.FEEDPIXEL },
+        "sun": { elem1: "cooked_meat" },
+        "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
+        "wheat_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 }
+    }
+}
+//
+
 elements.bless.reactions.blue_goo = { elem2: "water" }
 elements.bless.reactions.flesh_plant = { elem2: "plant" }
 elements.bless.reactions.inversium = { elem2: null }

@@ -31,9 +31,15 @@ elements.dwarf = {
 }
 
 elements.philosophers_stone = {
+    tick: function (pixel) {
+        var t = pixelTicks + pixel.x + pixel.y
+        pixel.color = "rgb(" + Math.floor(126 * (1 - Math.cos(t * Math.PI / 90 + 4 * Math.PI / 3))) + "," + Math.floor(127 * (1 - Math.cos(t * Math.PI / 90 + 2 * Math.PI / 3))) + "," + Math.floor(127 * (1 - Math.cos(t * Math.PI / 90))) + ")"
+        doDefaults(pixel)
+    },
     behavior: behaviors.POWDER,
     category: "magic",
-    color: "#e60000",
+    color: ["#ff0000", "#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#ff00ff"],
+    darkText: true,
     density: 1,
     excludeRandom: true,
     state: "solid",
@@ -97,6 +103,28 @@ elements.primordial_chaos = {
     movable: false,
     state: "liquid",
     viscosity: 0,
+    tick: function (pixel) {
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y, true) && pixelMap[x][y].element === "water" && pixel.start !== pixelTicks) {
+                changePixel(pixel, "water")
+                return
+            }
+        }
+        var top = mousePos.y - Math.floor(mouseSize / 2)
+        var bottom = mousePos.y + Math.floor(mouseSize / 2)
+        var left = mousePos.x - Math.floor(mouseSize / 2)
+        var right = mousePos.x + Math.floor(mouseSize / 2)
+        if (pixel.x > left && pixel.x < right && pixel.y > top && pixel.y < bottom) {
+            pixel.color = choose(["#122250", "#000000"])
+        }
+        else {
+            pixel.color = choose(["#ffffff", "#000000"])
+        }
+        doDefaults(pixel)
+    },
     reactions: {
         "blood": { elem1: ["dwarf", "homunculus"], elem2: null },
         "cancer": { elem1: ["poison", "plague"], elem2: null },
@@ -113,6 +141,7 @@ elements.ichor = {
     behavior: behaviors.LIQUID,
     category: "magic",
     color: "#ffff00",
+    darkText: true,
     density: 100,
     extinguish: true,
     state: "liquid",

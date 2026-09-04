@@ -44,8 +44,7 @@ elements.plutonium = {
     radioactive: true,
     state: "solid",
     tick(pixel) {
-        irradiateNearby(pixel, 1, 0.8)
-        //releaseElement("radiation")
+        irradiateNearby(pixel, 2, 0.8)
     }
 }
 
@@ -59,7 +58,7 @@ elements.irradiated_matter = {
     radioactive: true,
     state: "solid",
     tick(pixel) {
-        irradiateNearby(pixel, 2, 0.4)
+        irradiateNearby(pixel, 1, 0.1)
     }
 }
 // End of stuff taken from nuclear.js
@@ -73,7 +72,8 @@ elements.fluorine_20 = {
     tick: function (pixel) {
         if (Math.random() < decay(11006.2)) {
             changePixel(pixel, "neon")
-            releaseElement("radiation")
+        } else {
+            irradiateNearby(pixel, 1, 0.4)
         }
     }
 }
@@ -86,7 +86,6 @@ elements.oxygen_20 = {
     tick: function (pixel) {
         if (Math.random() < decay(13510)) {
             changePixel(pixel, "fluorine_20")
-            releaseElement("radiation")
         }
     }
 }
@@ -203,14 +202,13 @@ elements.arsenic = {
         "kelp": { elem1: null, elem2: "dirty_water" },
         "lichen": { elem1: null, elem2: null },
         "meat": { elem2: "rotten_meat" },
-        "mushroom_cap": { elem1: null, elem2: null, chance: 0.01 },
-        "mushroom_gill": { elem1: null, elem2: null, chance: 0.01 },
+        "mushroom_cap": { elem1: null, elem2: null },
+        "mushroom_gill": { elem1: null, elem2: null },
         "mushroom_spore": { elem1: null, elem2: null },
-        "mushroom_stalk": { elem1: null, elem2: null, chance: 0.01 },
+        "mushroom_stalk": { elem1: null, elem2: null },
         "petal": { elem1: null, elem2: "dead_plant" },
         "pistil": { elem1: null, elem2: "dead_plant" },
         "plant": { elem1: null, elem2: "dead_plant" },
-        "pollen": { elem2: null, chance: 0.01 },
         "rat": { elem2: "rotten_meat" },
         "salt_water": { elem1: null, elem2: "dirty_water" },
         "slug": { elem1: null, elem2: "slime" },
@@ -225,7 +223,7 @@ elements.arsenic = {
         "water": { elem1: null, elem2: "dirty_water" },
         "worm": { elem1: null, elem2: "dead_bug" },
         "yeast": { elem1: null, elem2: null },
-        "hair": { elem1: null, elem2: null, chance: 0.01 }
+        "hair": { elem1: null, elem2: null }
     },
 }
 
@@ -270,7 +268,6 @@ elements.arsenic_gas = {
         "petal": { elem1: null, elem2: "dead_plant" },
         "pistil": { elem1: null, elem2: "dead_plant" },
         "plant": { elem1: null, elem2: "dead_plant" },
-        "pollen": { elem2: null, chance: 0.01 },
         "rat": { elem2: "rotten_meat" },
         "salt_water": { elem1: null, elem2: "dirty_water" },
         "slug": { elem1: null, elem2: "slime" },
@@ -284,7 +281,7 @@ elements.arsenic_gas = {
         "water": { elem1: null, elem2: "dirty_water" },
         "worm": { elem1: null, elem2: "dead_bug" },
         "yeast": { elem1: null, elem2: null },
-        "hair": { elem1: null, elem2: null, chance: 0.01 }
+        "hair": { elem1: null, elem2: null }
     },
 }
 

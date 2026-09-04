@@ -55,11 +55,11 @@ elements.gloob = {
 }
 
 elements.groove = {
-    behavior: behaviors.WALL,
+    behavior: behaviors.SUPERFLUID,
+    breakInto: ["water", "bless"],
     category: "glooby",
     color: ["#e5edc2", "#bec797"],
-    state: "solid",
-    breakInto: ["water", "bless"],
+    state: "liquid",
     tick: function (pixel) {
         pixel.temp = clamp(pixel.temp, 0, 20)
     }
