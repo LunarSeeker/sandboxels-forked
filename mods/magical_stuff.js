@@ -103,37 +103,16 @@ elements.primordial_chaos = {
     movable: false,
     state: "liquid",
     viscosity: 0,
-    tick: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coords = adjacentCoords[i]
-            var x = pixel.x + coords[0]
-            var y = pixel.y + coords[1]
-            if (!isEmpty(x, y, true) && pixelMap[x][y].element === "water" && pixel.start !== pixelTicks) {
-                changePixel(pixel, "water")
-                return
-            }
-        }
-        var top = mousePos.y - Math.floor(mouseSize / 2)
-        var bottom = mousePos.y + Math.floor(mouseSize / 2)
-        var left = mousePos.x - Math.floor(mouseSize / 2)
-        var right = mousePos.x + Math.floor(mouseSize / 2)
-        if (pixel.x > left && pixel.x < right && pixel.y > top && pixel.y < bottom) {
-            pixel.color = choose(["#122250", "#000000"])
-        }
-        else {
-            pixel.color = choose(["#ffffff", "#000000"])
-        }
-        doDefaults(pixel)
-    },
     reactions: {
-        "blood": { elem1: ["dwarf", "homunculus"], elem2: null },
-        "cancer": { elem1: ["poison", "plague"], elem2: null },
-        "clay": { elem1: ["dwarf", "homunculus"], elem2: "cell" },
-        "dirt": { elem1: ["algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: null },
-        "grass": { elem1: ["potato", "bee", "plant", "ant"], elem2: null },
+        "blood": { elem1: ["dwarf", "homunculus"], elem2: "blood" },
+        "cancer": { elem1: "cancer", elem2: "cancer" },
+        "clay": { elem1: ["dwarf", "homunculus"], elem2: "clay" },
+        "dirt": { elem1: ["algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: "dirt" },
+        "grass": { elem1: ["potato", "bee", "plant", "ant"], elem2: "grass" },
         "light": { elem1: ["algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: null },
         "oxygen": { elem1: ["dwarf", "homunculus", "algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: null },
-        "poison": { elem1: ["cancer", "plague"], elem2: null },
+        "poison": { elem1: ["cancer", "plague"], elem2: "poison" },
+        "water": { elem1: ["potato", "bee", "plant", "ant", "dwarf", "algae", "fish"], elem2: "water" },
     }
 }
 
