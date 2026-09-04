@@ -44,7 +44,7 @@ elements.plutonium = {
     radioactive: true,
     state: "solid",
     tick(pixel) {
-        irradiateNearby(pixel, 1, 0.8)
+        irradiateNearby(pixel, 2, 0.8)
     }
 }
 
@@ -58,7 +58,7 @@ elements.irradiated_matter = {
     radioactive: true,
     state: "solid",
     tick(pixel) {
-        irradiateNearby(pixel, 2, 0.4)
+        irradiateNearby(pixel, 1, 0.1)
     }
 }
 // End of stuff taken from nuclear.js
@@ -72,6 +72,8 @@ elements.fluorine_20 = {
     tick: function (pixel) {
         if (Math.random() < decay(11006.2)) {
             changePixel(pixel, "neon")
+        } else {
+            irradiateNearby(pixel, 1, 0.4)
         }
     }
 }
