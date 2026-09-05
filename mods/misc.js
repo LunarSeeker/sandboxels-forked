@@ -12,15 +12,15 @@ elements.red_ice = {
     reactions: {
         "blood": { elem2: "red_ice", temp: 30 },
         "body": { elem2: "red_ice", temp: 30 },
-        "cactus": { elem2: "flesh_plant", temp: -25 },
+        "cactus": { elem2: "red_water", temp: -25 },
         "cloud": { elem2: "red_steam", temp: -150 },
         "dirty_water": { elem2: "red_water", temp: -30 },
         "frozen_plant": { elem2: "red_ice", temp: 30 },
-        "grass": { elem2: "flesh_plant", temp: -25 },
+        "grass": { elem2: "red_water", temp: -25 },
         "head": { elem2: "red_ice", temp: 30 },
         "ice": { elem2: "red_ice", temp: 30 },
         "iron": { elem2: "rust", chance: 0.05 },
-        "plant": { elem2: "flesh_plant", temp: -25 },
+        "plant": { elem2: "red_water", temp: -25 },
         "pool_water": { elem2: "red_water", temp: -30 },
         "rain_cloud": { elem2: "red_steam", temp: -150 },
         "salt_water": { elem2: "red_water", temp: -30 },
@@ -47,15 +47,15 @@ elements.red_water = {
     reactions: {
         "blood": { elem2: "red_ice", temp: 30 },
         "body": { elem2: "red_ice", temp: 30 },
-        "cactus": { elem2: "flesh_plant", temp: -25 },
+        "cactus": { elem2: "red_water", temp: -25 },
         "cloud": { elem2: "red_steam", temp: -150 },
         "dirty_water": { elem2: "red_water", temp: -30 },
         "frozen_plant": { elem2: "red_ice", temp: 30 },
-        "grass": { elem2: "flesh_plant", temp: -25 },
+        "grass": { elem2: "red_water", temp: -25 },
         "head": { elem2: "red_ice", temp: 30 },
         "ice": { elem2: "red_ice", temp: 30 },
         "iron": { elem2: "rust", chance: 0.05 },
-        "plant": { elem2: "flesh_plant", temp: -25 },
+        "plant": { elem2: "red_water", temp: -25 },
         "pool_water": { elem2: "red_water", temp: -30 },
         "rain_cloud": { elem2: "red_steam", temp: -150 },
         "salt_water": { elem2: "red_water", temp: -30 },
@@ -82,15 +82,15 @@ elements.red_steam = {
     reactions: {
         "blood": { elem2: "red_ice", temp: 30 },
         "body": { elem2: "red_ice", temp: 30 },
-        "cactus": { elem2: "flesh_plant", temp: -25 },
+        "cactus": { elem2: "red_water", temp: -25 },
         "cloud": { elem2: "red_steam", temp: -150 },
         "dirty_water": { elem2: "red_water", temp: -30 },
         "frozen_plant": { elem2: "red_ice", temp: 30 },
-        "grass": { elem2: "flesh_plant", temp: -25 },
+        "grass": { elem2: "red_water", temp: -25 },
         "head": { elem2: "red_ice", temp: 30 },
         "ice": { elem2: "red_ice", temp: 30 },
         "iron": { elem2: "rust", chance: 0.05 },
-        "plant": { elem2: "flesh_plant", temp: -25 },
+        "plant": { elem2: "red_water", temp: -25 },
         "pool_water": { elem2: "red_water", temp: -30 },
         "rain_cloud": { elem2: "red_steam", temp: -150 },
         "salt_water": { elem2: "red_water", temp: -30 },
@@ -99,57 +99,6 @@ elements.red_steam = {
         "sugar_water": { elem2: "red_water", temp: -30 },
         "water": { elem2: "red_water", temp: -30 },
     }
-}
-
-elements.flesh_plant = {
-    behavior: behaviors.WALL,
-    breakInto: ["blood", "meat", "bone"],
-    category: "life",
-    color: "#1d84de",
-    density: 1050,
-    state: "solid",
-    stateHigh: "red_ice",
-    stateLow: "red_steam",
-    temp: -25,
-    tempHigh: 30,
-    tempLow: -150,
-    ignore: [
-        "cancer",
-        "coral",
-        "fiber",
-        "flesh_plant",
-        "hazmat_body",
-        "hazmat_head",
-        "hazmat",
-        "hive",
-        "pinecone",
-        "pollen",
-        "primordial_soup"
-    ],
-    tick: function (pixel) {
-        for (let dx = -1; dx <= 1; dx++) {
-            for (let dy = -1; dy <= 1; dy++) {
-                if (dx === 0 && dy === 0) continue
-                let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p) {
-                    if (elements[p.element].state === "solid" && elements[p.element].category === "life" && elements.flesh_plant.ignore.indexOf(p.element) === -1) {
-                        p.temp = -25
-                        changePixel(p, "flesh_plant")
-                    }
-                }
-            }
-        }
-    },
-    reactions: {
-        "cancer": { elem1: "cancer", chance: 0.01 },
-        "fallout": { elem1: "cancer", chance: 0.05 },
-        "neutron": { elem1: "ash", chance: 0.05 },
-        "oxygen": { elem2: "carbon_dioxide", chance: 0.5 },
-        "plague": { elem1: "plague", chance: 0.1 },
-        "radiation": { elem1: "cancer", chance: 0.4 },
-        "sun": { elem1: "ash" },
-        "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
-    },
 }
 
 elements.inversium = {
@@ -161,14 +110,14 @@ elements.inversium = {
     state: "liquid",
     viscosity: 0.5,
     reactions: {
-        "cactus": { elem2: "flesh_plant", temp: -25 },
+        "cactus": { elem2: "red_water", temp: -25 },
         "cancer": { elem2: "cell" },
-        "dead_plant": { elem2: "flesh_plant", temp: -25 },
+        "dead_plant": { elem2: "red_water", temp: -25 },
         "dirty_water": { elem1: null, elem2: "red_water", temp: -35 },
         "frozen_plant": { elem2: "red_ice", temp: 30 },
         "gold": { elem1: null, elem2: "lead" },
         "ice": { elem1: null, elem2: "red_ice", temp: 30 },
-        "plant": { elem2: "flesh_plant", temp: -25 },
+        "plant": { elem2: "red_water", temp: -25 },
         "pool_water": { elem1: null, elem2: "red_water", temp: -25 },
         "salt_water": { elem1: null, elem2: "red_water", temp: -25 },
         "salt": { elem2: "sugar" },
@@ -223,7 +172,6 @@ elements.time = {
         "ant": { elem1: null, elem2: "dead_bug" },
         "bee": { elem1: null, elem2: "dead_bug" },
         "body": { elem1: null, elem2: "rotten_meat" },
-        "flesh_plant": { elem1: null, elem2: "rotten_meat" },
         "fly": { elem1: null, elem2: "dead_bug" },
         "grass": { elem1: null, elem2: "dead_plant" },
         "head": { elem1: null, elem2: "rotten_meat" },
@@ -264,7 +212,7 @@ elements.scp_409 = {
             for (let dy = -1; dy <= 1; dy++) {
                 if (dx === 0 && dy === 0) continue
                 let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p && elements.scp_409.ignore.indexOf(p.element) === -1 && elements[p.element].category !== "energy") {
+                if (p && elements[p.element].state == "solid" && elements.scp_409.ignore.indexOf(p.element) === -1 && elements[p.element].category !== "energy") {
                     changePixel(p, "scp_409")
                 }
             }
@@ -623,7 +571,6 @@ elements.chicken = {
 //
 
 elements.bless.reactions.blue_goo = { elem2: "water" }
-elements.bless.reactions.flesh_plant = { elem2: "plant" }
 elements.bless.reactions.inversium = { elem2: null }
 elements.bless.reactions.red_ice = { elem2: "ice" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
