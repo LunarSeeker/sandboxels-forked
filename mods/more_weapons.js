@@ -1,3 +1,13 @@
+//Random integer from 0 to n
+function randomIntegerFromZeroToValue(value) {
+    var absoluteValuePlusOne = Math.abs(value) + 1
+    if (value >= 0) { //Positive case
+        return Math.floor(Math.random() * absoluteValuePlusOne)
+    } else { //Negative case: flip sign
+        return 0 - Math.floor(Math.random() * absoluteValuePlusOne)
+    };
+};
+
 function randomChoice(array) {
     if (array.length === 0) { throw new Error(`The array ${array} is empty`) };
     return array[(randomIntegerFromZeroToValue(array.length - 1))]
