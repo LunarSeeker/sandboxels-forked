@@ -22,3 +22,27 @@ elements.subzero_bomb = {
         doDefaults(pixel)
     }
 }
+
+elements.ultrahot_bomb = {
+    category: "weapons",
+    color: "#ff0000",
+    cooldown: defaultCooldown,
+    density: 1500,
+    excludeRandom: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.start === pixelTicks) { return }
+        if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
+            if (outOfBounds(pixel.x, pixel.y + 1) || (pixelMap[pixel.x][pixel.y + 1].element !== "ultrahot_bomb")) {
+                for (i = 0; i < currentPixels.length; i++) {
+                    var newPixel = currentPixels[i]
+                    if (newPixel.temp < 999) {
+                        newPixel.temp += 999
+                    }
+                }
+                explodeAt(pixel.x, pixel.y + 1, 20, "flash")
+            }
+        }
+        doDefaults(pixel)
+    }
+}
