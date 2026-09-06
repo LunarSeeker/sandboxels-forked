@@ -18,7 +18,8 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "radiation",
         "super_acid",
         "time",
-        "uranium"
+        "uranium",
+        "wall",
     ])
 
     for (let dx = -radius; dx <= radius; dx++) {
@@ -365,7 +366,8 @@ elements.hazmat_body = {
         "sun": { elem1: "cooked_meat" },
         "termite": { elem2: "dead_bug", oneway: true },
         "worm": { elem2: "slime", chance: 0.05, oneway: true },
-        "alcohol": { chance: 0.05, attr1: { "panic": 0 } }
+        "alcohol": { chance: 0.05, attr1: { "panic": 0 } },
+        "irradiated_matter": { elem2: null }
     },
     properties: {
         dead: false,
@@ -506,7 +508,8 @@ elements.hazmat_head = {
     reactions: {
         "beans": { elem2: [null, null, null, null, null, null, null, null, "stench"], chance: 0.2 },
         "sun": { elem1: "cooked_meat" },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } }
+        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
+        "irradiated_matter": { elem2: null }
     },
     properties: {
         dead: false
