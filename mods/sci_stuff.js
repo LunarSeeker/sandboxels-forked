@@ -3,22 +3,16 @@ function decay(ms) { //Taken from decays.js
 }
 
 function removeHazard(pixel) {
-    for (i = 0; i < adjacentCoords.length; i++) {
-        //if (Math.random() < 0.5) {
-        var checkPosX = pixel.x + adjacentCoords[i][0]
-        var checkPosY = pixel.y + adjacentCoords[i][1]
-        if (!isEmpty(checkPosX, checkPosY, true)) {
-            var newElement = pixelMap[checkPosX][checkPosY].element
-            if (newElement && (newElement.radioactive == true)) {
-                if (typeof (pixel[newElement]) === "undefined") {
-                    pixel[newElement] = 0
-                };
-                pixel[newElement]++
-                deletePixel(checkPosX, checkPosY)
-            };
-        };
-        //};
-    };
+    for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+            if (dx === 0 && dy === 0) continue
+            let p = getPixel((pixel.x + dx), (pixel.y + dy))
+            if (p && elements[p.element].radioactive && Math.random() < 0.9) {
+                p.temp = 20
+                changePixel(p, "waste_barrel")
+            }
+        }
+    }
 }
 
 // Beginning of stuff taken from nuclear.js
@@ -39,6 +33,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "time",
         "uranium",
         "wall",
+        "waste_barrel",
     ])
 
     for (let dx = -radius; dx <= radius; dx++) {
@@ -82,6 +77,17 @@ elements.irradiated_matter = {
     }
 }
 // End of stuff taken from nuclear.js
+elements.fallout.radioactive = true
+elements.uranium.radioactive = true
+elements.waste_barrel = {
+    behavior: behaviors.WALL,
+    category: "special",
+    color: "#d5e614",
+    state: "solid",
+    tick(pixel) {
+        removeHazard(pixel)
+    }
+}
 //Start of stuff taken from decays.js
 elements.fluorine_20 = {
     behavior: behaviors.GAS,
