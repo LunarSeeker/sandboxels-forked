@@ -11,6 +11,7 @@ elements.red_ice = {
     tempLow: 0,
     reactions: {
         "bee": { elem2: "red_ice" },
+        "blood_ice": { elem2: "red_ice" },
         "blood": { elem2: "red_ice" },
         "body": { elem2: "red_ice" },
         "cactus": { elem2: "red_water" },
@@ -56,6 +57,7 @@ elements.red_water = {
     tempLow: -100,
     reactions: {
         "bee": { elem2: "red_ice" },
+        "blood_ice": { elem2: "red_ice" },
         "blood": { elem2: "red_ice" },
         "body": { elem2: "red_ice" },
         "cactus": { elem2: "red_water" },
@@ -104,6 +106,7 @@ elements.red_steam = {
     tempHigh: -100,
     reactions: {
         "bee": { elem2: "red_ice" },
+        "blood_ice": { elem2: "red_ice" },
         "blood": { elem2: "red_ice" },
         "body": { elem2: "red_ice" },
         "cactus": { elem2: "red_water" },
@@ -141,21 +144,15 @@ elements.inversium = {
     state: "liquid",
     viscosity: 0.5,
     reactions: {
-        "blood": { elem2: "red_ice" },
-        "body": { elem2: "red_ice" },
-        "cactus": { elem2: "red_water" },
-        "cancer": { elem2: "cell" },
-        "dead_plant": { elem2: "red_water" },
         "dirty_water": { elem1: null, elem2: "red_water", temp: -35 },
         "frozen_plant": { elem2: "red_ice" },
         "gold": { elem1: null, elem2: "lead" },
         "ice": { elem1: null, elem2: "red_ice", temp: 30 },
-        "plant": { elem2: "red_water" },
         "pool_water": { elem1: null, elem2: "red_water", temp: -25 },
         "salt_water": { elem1: null, elem2: "red_water", temp: -25 },
         "salt": { elem2: "sugar" },
         "slush": { elem1: null, elem2: "red_ice", temp: 25 },
-        "snow": { elem2: "red_ice" },
+        "snow": { elem1: null, elem2: "red_ice" },
         "sugar_water": { elem1: null, elem2: "red_water", temp: -25 },
         "steam": { elem1: null, elem2: "red_steam", temp: -150 },
         "water": { elem1: null, elem2: "red_water", temp: -30 },
@@ -174,10 +171,11 @@ elements.blue_goo = {
         "bless",
         "blue_goo",
         "inversium",
-        "strange_matter",
         "midas_touch",
-        "water",
+        "red_water",
         "salt_water",
+        "strange_matter",
+        "water",
         "time"
     ],
     state: "liquid",
@@ -235,9 +233,13 @@ elements.scp_409 = {
     excludeRandom: true,
     ignore: [
         "granite",
+        "ichor",
+        "magic_drill",
         "philosophers_stone",
         "scp_409",
+        "stable_aether",
         "strange_matter",
+        "wall",
         "time"
     ],
     state: "solid",
@@ -246,7 +248,7 @@ elements.scp_409 = {
             for (let dy = -1; dy <= 1; dy++) {
                 if (dx === 0 && dy === 0) continue
                 let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p && elements[p.element].state == "solid" && elements.scp_409.ignore.indexOf(p.element) === -1 && elements[p.element].category !== "energy") {
+                if (p && elements[p.element].state !== "gas" && elements.scp_409.ignore.indexOf(p.element) === -1 && elements[p.element].category !== "energy") {
                     changePixel(p, "scp_409")
                 }
             }
