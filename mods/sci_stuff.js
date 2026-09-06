@@ -3,15 +3,22 @@ function decay(ms) { //Taken from decays.js
 }
 
 function removeHazard(pixel) {
-    for (let dx = -radius; dx <= radius; dx++) {
-        for (let dy = -radius; dy <= radius; dy++) {
-            if (dx === 0 && dy === 0) continue
-            let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && (elements[p.element].radioactive == true)) {
-                deletePixel(p.x, p.y)
-            }
-        }
-    }
+    for (i = 0; i < adjacentCoords.length; i++) {
+        //if (Math.random() < 0.5) {
+        var checkPosX = pixel.x + adjacentCoords[i][0]
+        var checkPosY = pixel.y + adjacentCoords[i][1]
+        if (!isEmpty(checkPosX, checkPosY, true)) {
+            var newElement = pixelMap[checkPosX][checkPosY].element
+            if (newElement && (newElement.radioactive == true)) {
+                if (typeof (pixel[newElement]) === "undefined") {
+                    pixel[newElement] = 0
+                };
+                pixel[newElement]++
+                deletePixel(checkPosX, checkPosY)
+            };
+        };
+        //};
+    };
 }
 
 // Beginning of stuff taken from nuclear.js
