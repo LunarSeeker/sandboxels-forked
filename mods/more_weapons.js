@@ -1,3 +1,20 @@
+colorstochoose = [
+    "#000000",
+    "#0000ff",
+    "#00ff00",
+    "#00ffff",
+    "#53574b",
+    "#65686a",
+    "#88ff77",
+    "#a51002",
+    "#bd1102",
+    "#ff0000",
+    "#ff00ff",
+    "#ff8800",
+    "#ffff00",
+    "#ffffff"
+]
+
 //Random integer from 0 to n
 function randomIntegerFromZeroToValue(value) {
     var absoluteValuePlusOne = Math.abs(value) + 1
@@ -75,7 +92,7 @@ elements.color_bomb = {
             if (outOfBounds(pixel.x, pixel.y + 1) || (pixelMap[pixel.x][pixel.y + 1].element !== "color_bomb")) {
                 for (i = 0; i < currentPixels.length; i++) {
                     var newPixel = currentPixels[i]
-                    newPixel.color = randomChoice(["#ff0000", "#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#ff00ff"])
+                    newPixel.color = randomChoice(colorstochoose)
                 }
                 explodeAt(pixel.x, pixel.y + 1, 20, "flash")
             }
