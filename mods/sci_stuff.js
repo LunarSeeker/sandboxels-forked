@@ -2,6 +2,18 @@ function decay(ms) { //Taken from decays.js
     return 1 / (Math.pow(Math.log10(ms * 30 + 1), 2) * 10)
 }
 
+function removeHazard(pixel) {
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+            if (dx === 0 && dy === 0) continue
+            let p = getPixel((pixel.x + dx), (pixel.y + dy))
+            if (p && elements[p.element].radioactive) {
+                deletePixel(p.x, p.y)
+            }
+        }
+    }
+}
+
 // Beginning of stuff taken from nuclear.js
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
@@ -335,27 +347,28 @@ elements.hazmat = {
     forceSaveColor: true
 }
 elements.hazmat_body = {
-    color: ["#08271d", "#6f9904", "#4b4931"],
     breakInto: ["blood", "meat", "bone"],
     burn: 10,
     burnInto: "cooked_meat",
     burnTime: 250,
     category: "life",
+    color: ["#08271d", "#6f9904", "#4b4931"],
     conduct: .01,
     density: 1500,
     forceSaveColor: true,
     hidden: true,
+    pickElement: "hazmat",
     state: "solid",
     stateHigh: "cooked_meat",
     stateLow: "frozen_meat",
     temp: 30,
     tempHigh: 150,
     tempLow: -30,
-    pickElement: "hazmat",
     reactions: {
         "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
         "bee": { elem2: "dead_bug", oneway: true },
         "egg": { elem2: "yolk", chance: 0.5, oneway: true },
+        "fallout": { elem2: null },
         "firefly": { elem2: "dead_bug", oneway: true },
         "flea": { elem2: "dead_bug", oneway: true },
         "fly": { elem2: "dead_bug", oneway: true },
@@ -365,9 +378,8 @@ elements.hazmat_body = {
         "stink_bug": { elem2: "stench", oneway: true },
         "sun": { elem1: "cooked_meat" },
         "termite": { elem2: "dead_bug", oneway: true },
-        "worm": { elem2: "slime", chance: 0.05, oneway: true },
-        "alcohol": { chance: 0.05, attr1: { "panic": 0 } },
-        "irradiated_matter": { elem2: null }
+        "uranium": { elem2: null },
+        "worm": { elem2: "slime", chance: 0.05, oneway: true }
     },
     properties: {
         dead: false,
@@ -390,9 +402,9 @@ elements.hazmat_body = {
         doHeat(pixel)
         doBurning(pixel)
         doElectricity(pixel)
+        removeHazard(pixel)
         if (pixel.dead) {
-            // Turn into plastic if pixelTicks-dead > 500
-            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
+            if (pixelTicks - pixel.dead > 200) {
                 changePixel(pixel, "plastic")
             }
             return
@@ -488,28 +500,28 @@ elements.hazmat_body = {
     }
 }
 elements.hazmat_head = {
-    color: ["#ffff00", "#f1f100", "#d29720", "#eda63d"],
+    breakInto: ["blood", "meat", "bone"],
+    burn: 10,
+    burnInto: "cooked_meat",
+    burnTime: 250,
     category: "life",
-    hidden: true,
-    density: 1080,
-    state: "solid",
+    color: ["#ffff00", "#f1f100", "#d29720", "#eda63d"],
     conduct: .01,
+    density: 1080,
+    forceSaveColor: true,
+    hidden: true,
+    pickElement: "hazmat",
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
     temp: 30,
     tempHigh: 150,
-    stateHigh: "cooked_meat",
     tempLow: -30,
-    stateLow: "frozen_meat",
-    burn: 10,
-    burnTime: 250,
-    burnInto: "cooked_meat",
-    breakInto: ["blood", "meat", "bone"],
-    forceSaveColor: true,
-    pickElement: "hazmat",
     reactions: {
         "beans": { elem2: [null, null, null, null, null, null, null, null, "stench"], chance: 0.2 },
+        "fallout": { elem2: null },
         "sun": { elem1: "cooked_meat" },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "irradiated_matter": { elem2: null }
+        "uranium": { elem2: null }
     },
     properties: {
         dead: false
@@ -518,9 +530,9 @@ elements.hazmat_head = {
         doHeat(pixel)
         doBurning(pixel)
         doElectricity(pixel)
+        removeHazard(pixel)
         if (pixel.dead) {
-            // Turn into plastic if pixelTicks-dead > 500
-            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
+            if (pixelTicks - pixel.dead > 200) {
                 changePixel(pixel, "plastic")
                 return
             }
