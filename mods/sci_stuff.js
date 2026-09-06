@@ -7,7 +7,7 @@ function removeHazard(pixel) {
         for (let dy = -radius; dy <= radius; dy++) {
             if (dx === 0 && dy === 0) continue
             let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && elements[p.element].radioactive) {
+            if (p && (elements[p.element].radioactive == true)) {
                 deletePixel(p.x, p.y)
             }
         }
@@ -404,7 +404,8 @@ elements.hazmat_body = {
         doElectricity(pixel)
         removeHazard(pixel)
         if (pixel.dead) {
-            if (pixelTicks - pixel.dead > 200) {
+            // Turn into plastic if pixelTicks-dead > 500
+            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
                 changePixel(pixel, "plastic")
             }
             return
@@ -532,7 +533,8 @@ elements.hazmat_head = {
         doElectricity(pixel)
         removeHazard(pixel)
         if (pixel.dead) {
-            if (pixelTicks - pixel.dead > 200) {
+            // Turn into plastic if pixelTicks-dead > 500
+            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
                 changePixel(pixel, "plastic")
                 return
             }
