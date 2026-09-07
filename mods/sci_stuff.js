@@ -15,6 +15,9 @@ function removeHazard(pixel) {
     }
 }
 
+elements.gray_goo.hazard = true
+elements.infection.hazard = true
+
 // Beginning of stuff taken from nuclear.js
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
@@ -200,6 +203,7 @@ elements.arsenic = {
     category: "powders",
     color: "#478800",
     density: 0.5782,
+    hazard: true,
     state: "solid",
     tempHigh: 614, // From what I can gather, arsenic has a melting point hotter than this, but since it turns into gas at this temp, I'll just go with this.
     stateHigh: "arsenic_gas",
