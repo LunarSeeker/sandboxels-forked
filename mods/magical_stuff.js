@@ -1,3 +1,19 @@
+removeElementsDark = [ //For elements not in the "life" category
+    "ant_wall",
+    "charcoal",
+    "coal",
+    "dwarf",
+    "feather",
+    "ice",
+    "light",
+    "oil",
+    "plastic",
+    "slime",
+    "steam",
+    "waste_barrel",
+    "water",
+]
+
 function decay(ms) { //Taken from decays.js
     return 1 / (Math.pow(Math.log10(ms * 30 + 1), 2) * 10)
 }
@@ -31,14 +47,9 @@ elements.dwarf = {
 }
 
 elements.philosophers_stone = {
-    tick: function (pixel) {
-        var t = pixelTicks + pixel.x + pixel.y
-        pixel.color = "rgb(" + Math.floor(126 * (1 - Math.cos(t * Math.PI / 90 + 4 * Math.PI / 3))) + "," + Math.floor(127 * (1 - Math.cos(t * Math.PI / 90 + 2 * Math.PI / 3))) + "," + Math.floor(127 * (1 - Math.cos(t * Math.PI / 90))) + ")"
-        doDefaults(pixel)
-    },
     behavior: behaviors.POWDER,
     category: "magic",
-    color: ["#ff0000", "#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#ff00ff"],
+    color: ["#ff0000", "#ff8800", "#ffff00", "#0000ff", "#ff00ff"],
     darkText: true,
     density: 1,
     excludeRandom: true,
@@ -116,6 +127,79 @@ elements.primordial_chaos = {
     }
 }
 
+elements.dark_ice = {
+    alias: "corrupted_ice",
+    behavior: "WALL",
+    breakInto: [
+        "snow",
+        "fallout"
+    ],
+    category: "solids",
+    color: ["#1a193c", "#00003c"],
+    desc: "Cold substance.",
+    excludeRandom: true,
+    hardness: 0.9,
+    insulate: true,
+    isFood: true,
+    stain: 1,
+    state: "solid",
+    stateHigh: "dark_water",
+    tempHigh: 1,
+    temp: -75
+}
+
+elements.dark_water = {
+    behavior: "SUPERFLUID",
+    category: "liquids",
+    color: "#00003c",
+    density: 999,
+    excludeRandom: true,
+    stain: 1,
+    state: "liquid",
+    stateHigh: "dark_steam",
+    stateLow: "dark_ice",
+    temp: 20,
+    tempHigh: 100,
+    viscosity: 5,
+    reactions: {
+        "dirty_water": { elem2: "fallout" },
+        "salt_water": { elem2: "salt" },
+        "sugar_water": { elem2: "sugar" },
+    },
+    tick: function (pixel) {
+        for (i = 0; i < adjacentCoords.length; i++) {
+            //if (Math.random() < 0.5) {
+            var checkPosX = pixel.x + adjacentCoords[i][0]
+            var checkPosY = pixel.y + adjacentCoords[i][1]
+            if (!isEmpty(checkPosX, checkPosY, true)) {
+                var newElement = pixelMap[checkPosX][checkPosY].element
+                var newCategory = elements[newElement].category
+                if (removeElementsDark.includes(newElement) || newCategory === "food" || newCategory === "life") {
+                    if (typeof (pixel[newElement]) === "undefined") {
+                        pixel[newElement] = 0
+                    };
+                    pixel[newElement]++
+                    deletePixel(checkPosX, checkPosY)
+                };
+            };
+            //};
+        };
+    },
+}
+
+elements.dark_steam = {
+    category: "gases",
+    behavior: "gas",
+    color: "#00003c",
+    density: 999,
+    stain: 1,
+    excludeRandom: true,
+    state: "gas",
+    stateLow: "dark_water",
+    temp: 150,
+    tempLow: 99
+}
+
 elements.ichor = {
     behavior: behaviors.LIQUID,
     category: "magic",
@@ -127,4 +211,7 @@ elements.ichor = {
     viscosity: 1
 }
 
+elements.bless.reactions.dark_ice = { elem2: null }
+elements.bless.reactions.dark_steam = { elem2: null }
+elements.bless.reactions.dark_water = { elem2: null }
 elements.ichor.reactions = elements.bless.reactions
