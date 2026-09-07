@@ -7,13 +7,16 @@ function removeHazard(pixel) {
         for (let dy = -1; dy <= 1; dy++) {
             if (dx === 0 && dy === 0) continue
             let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && elements[p.element].radioactive && Math.random() < 0.9) {
+            if (p && (elements[p.element].radioactive || elements[p.element].hazard) && Math.random() < 0.9) {
                 p.temp = 20
                 changePixel(p, "waste_barrel")
             }
         }
     }
 }
+
+elements.gray_goo.hazard = true
+elements.infection.hazard = true
 
 // Beginning of stuff taken from nuclear.js
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
@@ -200,6 +203,7 @@ elements.arsenic = {
     category: "powders",
     color: "#478800",
     density: 0.5782,
+    hazard: true,
     state: "solid",
     tempHigh: 614, // From what I can gather, arsenic has a melting point hotter than this, but since it turns into gas at this temp, I'll just go with this.
     stateHigh: "arsenic_gas",
