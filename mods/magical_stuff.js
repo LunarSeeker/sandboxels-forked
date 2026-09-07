@@ -129,7 +129,7 @@ elements.primordial_chaos = {
 
 elements.dark_ice = {
     alias: "corrupted_ice",
-    behavior: "WALL",
+    behavior: behaviors.WALL,
     breakInto: [
         "snow",
         "fallout"
@@ -149,7 +149,7 @@ elements.dark_ice = {
 }
 
 elements.dark_water = {
-    behavior: "SUPERFLUID",
+    behavior: behaviors.SUPERFLUID,
     category: "liquids",
     color: "#00003c",
     density: 999,
@@ -189,7 +189,7 @@ elements.dark_water = {
 
 elements.dark_steam = {
     category: "gases",
-    behavior: "gas",
+    behavior: behaviors.GAS,
     color: "#00003c",
     density: 999,
     stain: 1,
