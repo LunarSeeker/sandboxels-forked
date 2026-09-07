@@ -148,6 +148,7 @@ elements.blue_goo = {
     color: ["#b0e9f7", "#0008ff", "#09c8f7"],
     density: 0.75,
     excludeRandom: true,
+    hazard: true,
     ignore: [
         "bless",
         "blue_goo",
@@ -566,7 +567,7 @@ elements.chicken = {
     tempLow: -18,
     reactions: {
         "corn_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "corn": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "corn": { elem2: null, chance: 0.5, func: behaviors.FEEDPIXEL },
         "flower_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
         "grass_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
         "oxygen": { elem2: "carbon_dioxide", chance: 0.3 },
