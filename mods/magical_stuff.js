@@ -4,10 +4,12 @@ removeElementsDark = [ //For elements not in the "life" category
     "coal",
     "dwarf",
     "feather",
+    "hair",
     "ice",
     "light",
     "oil",
     "plastic",
+    "skin",
     "slime",
     "steam",
     "waste_barrel",
@@ -134,13 +136,13 @@ elements.dark_ice = {
         "snow",
         "fallout"
     ],
-    category: "solids",
+    category: "magic",
     color: ["#1a193c", "#00003c"],
     desc: "Cold substance.",
     excludeRandom: true,
     hardness: 0.9,
+    hidden: true,
     insulate: true,
-    isFood: true,
     stain: 1,
     state: "solid",
     stateHigh: "dark_water",
@@ -150,7 +152,7 @@ elements.dark_ice = {
 
 elements.dark_water = {
     behavior: behaviors.SUPERFLUID,
-    category: "liquids",
+    category: "magic",
     color: "#00003c",
     density: 999,
     excludeRandom: true,
@@ -160,11 +162,12 @@ elements.dark_water = {
     stateLow: "dark_ice",
     temp: 20,
     tempHigh: 100,
+    tempLow: 0,
     viscosity: 5,
     reactions: {
         "dirty_water": { elem2: "fallout" },
-        "salt_water": { elem2: "salt" },
-        "sugar_water": { elem2: "sugar" },
+        "salt_water": { elem2: null },
+        "sugar_water": { elem2: null },
     },
     tick: function (pixel) {
         for (i = 0; i < adjacentCoords.length; i++) {
@@ -188,16 +191,64 @@ elements.dark_water = {
 }
 
 elements.dark_steam = {
-    category: "gases",
+    category: "magic",
     behavior: behaviors.GAS,
     color: "#00003c",
     density: 999,
-    stain: 1,
     excludeRandom: true,
+    hidden: true,
+    stain: 1,
     state: "gas",
     stateLow: "dark_water",
     temp: 150,
     tempLow: 99
+}
+
+elements.electric_gas = {
+    behavior: behaviors.GAS,
+    category: "magic",
+    color: "#ffff00",
+    conduct: 1,
+    density: 20,
+    excludeRandom: true,
+    stain: -0.75,
+    state: "gas",
+    tick: function (pixel) {
+        doDefaults(pixel)
+        if (pixel.freq !== undefined && pixelTicks % (pixel.freq * 4) !== 0) return
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y, true)) {
+                chargePixel(pixelMap[x][y])
+            }
+        }
+    },
+}
+
+elements.liquid_shock = {
+    behavior: behaviors.LIQUID,
+    category: "magic",
+    color: "#ffff00",
+    conduct: 1,
+    density: 20,
+    excludeRandom: true,
+    stain: -0.75,
+    state: "liquid",
+    viscosity: 1,
+    tick: function (pixel) {
+        doDefaults(pixel)
+        if (pixel.freq !== undefined && pixelTicks % (pixel.freq * 4) !== 0) return
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y, true)) {
+                chargePixel(pixelMap[x][y])
+            }
+        }
+    },
 }
 
 elements.ichor = {

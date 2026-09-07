@@ -611,6 +611,26 @@ elements.hazmat_head = {
     }
 }
 
+elements.solar_panel = {
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#3e98d0",
+    conduct: 1,
+    darkText: true,
+    hardness: 0.8,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    stateHigh: "molten_iron",
+    temp: 15,
+    tempHigh: 200,
+    reactions: {
+        "light": { charge1: 1, elem2: null },
+        "liquid_light": { charge1: 1, elem2: null }
+    }
+}
+
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.irradiated_matter = { elem2: "gold" }

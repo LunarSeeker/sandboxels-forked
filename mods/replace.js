@@ -43,7 +43,7 @@ function updateReplaceDescriptions() {
 };
 
 elements.replace = {
-    color: ["#ff0000", "#ff0000", "#ff0000", "#7f00ff", "#0000ff", "#0000ff", "#0000ff"],
+    color: ["#ff0000", "#7f00ff", "#0000ff"],
     tool: function (pixel) {
         if (pixel.element === replaceFrom) {
             changePixel(pixel, replaceTo, true)
@@ -62,7 +62,7 @@ elements.alt_replace = {
     },
     category: "edit",
     desc: "Changes pixels of a specified type to another specified type, but keeping their non-element-based properties.<br/>Currently replacing \"" + replaceFrom + "\" with \"" + replaceTo + "\".<br/><span onclick=replaceElementPrompt() style=\"color: #ff00ff;\";>Press [\"] or click here</span> to open the replace prompt.",
-    hidden: true,
+    //hidden: true,
 }
 
 elements.alt_alt_replace = {
@@ -75,5 +75,5 @@ elements.alt_alt_replace = {
     },
     category: "edit",
     desc: "Changes pixels of a specified type to another specified type, but keeping their non-element-based properties except for color.<br/>Currently replacing \"" + replaceFrom + "\" with \"" + replaceTo + "\".<br/><span onclick=replaceElementPrompt() style=\"color: #ff00ff;\";>Press [\"] or click here</span> to open the replace prompt.",
-    hidden: true,
+    //hidden: true,
 }
