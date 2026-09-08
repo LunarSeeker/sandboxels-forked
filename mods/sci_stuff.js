@@ -7,7 +7,7 @@ function removeHazard(pixel) {
         for (let dy = -1; dy <= 1; dy++) {
             if (dx === 0 && dy === 0) continue
             let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && (elements[p.element].radioactive || elements[p.element].hazard) && Math.random() < 0.9) {
+            if (p && (elements[p.element].radioactive || elements[p.element].hazard) && Math.random() < 0.8) {
                 p.temp = 20
                 changePixel(p, "waste_barrel")
             }
@@ -15,8 +15,10 @@ function removeHazard(pixel) {
     }
 }
 
+elements.filler.hazard = true
 elements.gray_goo.hazard = true
 elements.infection.hazard = true
+elements.lattice.hazard = true
 
 // Beginning of stuff taken from nuclear.js
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
@@ -87,6 +89,8 @@ elements.waste_barrel = {
     category: "special",
     color: "#d5e614",
     state: "solid",
+    stateHigh: "molten_plastic",
+    tempHigh: 250,
     tick(pixel) {
         removeHazard(pixel)
     }
