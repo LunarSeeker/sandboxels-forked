@@ -83,7 +83,8 @@ elements.black_hole = { //Taken from  black_hole.js and then modified slightly
 
             let touching = pixelMap[nx]?.[ny]
             if (touching && !excludeBlackHole.includes(touching.element)) {
-                changePixel(touching, "black_hole")
+                //changePixel(touching, "black_hole")
+                deletePixel(nx, ny)
             }
         }
     },
