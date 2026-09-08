@@ -1,3 +1,13 @@
+excludeBlackHole = [
+    "black_hole",
+    "bless",
+    "gray_goo",
+    "ichor",
+    "pipe_wall",
+    "pipe",
+    "stable_aether",
+    "wall",
+]
 //The Moon
 elements.lunar_dust = {
     behavior: behaviors.POWDER,
@@ -36,3 +46,47 @@ elements.mars_rock = {
     stateHigh: "magma",
     tempHigh: 800
 }
+//Other
+elements.black_hole = { //Taken from  black_hole.js and then modified slightly
+    category: "special",
+    color: "#000000",
+    density: 99999,
+    hardness: 1,
+    state: "solid",
+    tick: function (pixel) {
+        // Attract other pixels within a 9-pixel radius
+        for (let dx = -9; dx <= 9; dx++) {
+            for (let dy = -9; dy <= 9; dy++) {
+                let x = pixel.x + dx
+                let y = pixel.y + dy
+
+                // Ignore out-of-bounds
+                if (!isEmpty(x, y, true)) {
+                    let other = pixelMap[x]?.[y]
+                    if (other && !excludeBlackHole.includes(other.element)) {
+                        // Attraction: move other pixel towards the black hole
+                        tryMove(other, other.x + Math.sign(pixel.x - other.x), other.y + Math.sign(pixel.y - other.y))
+                    }
+                }
+            }
+        }
+
+        // Convert touching pixels into black holes
+        const dirs = [
+            [1, 0], [-1, 0], [0, 1], [0, -1],
+            [1, 1], [-1, -1], [1, -1], [-1, 1]
+        ]
+        for (let d of dirs) {
+            let nx = pixel.x + d[0]
+            let ny = pixel.y + d[1]
+            if (isEmpty(nx, ny, true)) continue
+
+            let touching = pixelMap[nx]?.[ny]
+            if (touching && !excludeBlackHole.includes(touching.element)) {
+                changePixel(touching, "black_hole")
+            }
+        }
+    },
+}
+
+elements.bless.reactions.black_hole = { elem2: null }
