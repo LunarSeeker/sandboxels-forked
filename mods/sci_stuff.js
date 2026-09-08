@@ -24,6 +24,7 @@ elements.lattice.hazard = true
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
     const excludedElements = new Set([
+        "black_hole",
         "bless",
         "concrete",
         "deuterium",
