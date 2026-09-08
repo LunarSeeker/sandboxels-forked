@@ -271,7 +271,7 @@ elements.odd_radio = {
                 var x = pixel.x + adjacentCoords[i][0]
                 var y = pixel.y + adjacentCoords[i][1]
                 if (isEmpty(x, y)) {
-                    if (Math.random() < 0.2) { continue }
+                    if (Math.random() > 0.2) { continue }
                     createPixel("odd_radiowave", x, y)
                 }
             }
