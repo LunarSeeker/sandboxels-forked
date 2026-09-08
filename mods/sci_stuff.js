@@ -7,7 +7,7 @@ function removeHazard(pixel) {
         for (let dy = -1; dy <= 1; dy++) {
             if (dx === 0 && dy === 0) continue
             let p = getPixel((pixel.x + dx), (pixel.y + dy))
-            if (p && (elements[p.element].radioactive || elements[p.element].hazard) && Math.random() < 0.8) {
+            if (p && (elements[p.element].radioactive || elements[p.element].hazard) && Math.random() < 0.9) {
                 p.temp = 20
                 changePixel(p, "waste_barrel")
             }
@@ -24,6 +24,9 @@ elements.lattice.hazard = true
 function irradiateNearby(pixel, radius = 1, intensity = 1) {
     // List of elements to explicitly exclude
     const excludedElements = new Set([
+        "black_hole",
+        "bless",
+        "concrete",
         "deuterium",
         "fallout",
         "gray_goo",
@@ -33,10 +36,10 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "ichor",
         "lead",
         "philosophers_stone",
-        "radiation",
+        "sun",
         "super_acid",
         "time",
-        "uranium",
+        "tritium",
         "wall",
         "waste_barrel",
     ])
@@ -48,7 +51,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
             if (p && !elements[p.element].radioactive && !excludedElements.has(p.element) && Math.random() < 0.1 * intensity) {
                 p.temp += 15 * intensity
                 p.irradiated = (p.irradiated || 0) + intensity
-                if (p.irradiated > 10 && Math.random() < 0.2) {
+                if (p.irradiated > 10 && Math.random() < 0.2 && elements[p.element].state === "solid") {
                     changePixel(p, "irradiated_matter")
                 }
             }
@@ -64,26 +67,25 @@ elements.plutonium = {
     radioactive: true,
     state: "solid",
     tick(pixel) {
-        irradiateNearby(pixel, 2, 0.8)
+        irradiateNearby(pixel, 3, 1)
     }
 }
 
 elements.irradiated_matter = {
     behavior: behaviors.POWDER,
-    burn: 80,
+    burn: 40,
     burnTime: 250,
     category: "powders",
     color: "#777733",
     density: 900,
-    radioactive: true,
+    hazard: true,
     state: "solid",
-    tick(pixel) {
-        irradiateNearby(pixel, 1, 0.1)
-    }
 }
 // End of stuff taken from nuclear.js
 elements.fallout.radioactive = true
+elements.radiation.radioactive = true
 elements.uranium.radioactive = true
+
 elements.waste_barrel = {
     behavior: behaviors.WALL,
     category: "special",
@@ -119,6 +121,8 @@ elements.oxygen_20 = {
     tick: function (pixel) {
         if (Math.random() < decay(13510)) {
             changePixel(pixel, "fluorine_20")
+        } else {
+            irradiateNearby(pixel, 2, 0.2)
         }
     }
 }

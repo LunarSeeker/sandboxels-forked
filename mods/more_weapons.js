@@ -48,7 +48,7 @@ elements.subzero_bomb = {
                         newPixel.temp = -273
                     }
                 }
-                explodeAt(pixel.x, pixel.y + 1, 20, "flash")
+                explodeAt(pixel.x, pixel.y + 1, 2, "flash")
             }
         }
         doDefaults(pixel)
@@ -72,7 +72,7 @@ elements.ultrahot_bomb = {
                         newPixel.temp += 999
                     }
                 }
-                explodeAt(pixel.x, pixel.y + 1, 20, "flash")
+                explodeAt(pixel.x, pixel.y + 1, 2, "flash")
             }
         }
         doDefaults(pixel)
@@ -94,7 +94,7 @@ elements.color_bomb = {
                     var newPixel = currentPixels[i]
                     newPixel.color = randomChoice(colorstochoose)
                 }
-                explodeAt(pixel.x, pixel.y + 1, 20, "flash")
+                explodeAt(pixel.x, pixel.y + 1, 3, "flash")
             }
         }
         doDefaults(pixel)

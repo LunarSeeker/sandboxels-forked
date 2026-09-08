@@ -324,16 +324,15 @@ elements.odd_radiowave = {
         }
     },
     reactions: {
-        "body": { elem2: "dwarf" },
         "cancer": { elem2: "wheat_seed" },
         "cell": { elem2: "ant" },
+        "dwarf": { elem2: "human" },
         "flower_seed": { elem2: "sapling" },
         "fly": { elem2: "firefly" },
         "grass": { elem2: "sapling" },
-        "head": { elem2: "dwarf" },
         "homunculus": { elem2: "human" },
         "infection": { elem2: "wheat_seed" },
-        "plant": { elem2: "firefly" },
+        "plant": { elem2: "snake" },
         "slug": { elem2: "snail" },
         "tagpole": { elem2: "frog" },
     },
