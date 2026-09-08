@@ -219,10 +219,13 @@ elements.scp_409 = {
     color: "#f7f7f2",
     excludeRandom: true,
     ignore: [
+        "black_hole",
         "granite",
         "ichor",
         "magic_drill",
         "philosophers_stone",
+        "pipe_wall",
+        "pipe",
         "scp_409",
         "stable_aether",
         "strange_matter",
