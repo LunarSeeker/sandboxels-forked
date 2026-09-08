@@ -2,7 +2,6 @@ removeElementsDark = [ //For elements not in the "life" category
     "ant_wall",
     "charcoal",
     "coal",
-    "dwarf",
     "feather",
     "hair",
     "ice",
@@ -39,12 +38,14 @@ elements.dwarf = {
         "beans": { elem2: [null, null, null, "stench"], chance: 0.05 },
         "diamond": { elem2: null, chance: 0.1 },
         "fallout": { elem1: "rotten_meat", chance: 0.02 },
+        "gold_coin": { elem2: null },
         "gold": { elem2: null },
         "light": { stain1: "#825043" },
         "neutron": { elem1: "rotten_meat", chance: 0.02 },
         "oxygen": { elem2: "carbon_dioxide", chance: 0.4 },
         "radiation": { elem1: "rotten_meat", chance: 0.1 },
-        "sun": { elem1: "cooked_meat" }
+        "silver": { elem2: null, chance: 0.05 },
+        "sun": { elem1: "cooked_meat" },
     }
 }
 
@@ -57,6 +58,7 @@ elements.philosophers_stone = {
     excludeRandom: true,
     state: "solid",
     reactions: {
+        "amalgam": { elem2: "silver" },
         "ash": { elem2: "diamond" },
         "cancer": { elem2: "skin" },
         "copper": { elem2: "bronze" },
@@ -68,6 +70,7 @@ elements.philosophers_stone = {
         "oil": { elem2: "gold" },
         "poison": { elem2: "vaccine" },
         "rust": { elem2: "steel" },
+        "static": { elem2: "rainbow" },
         "tin": { elem2: "brass" },
         "unstable_aether": { elem2: "stable_aether" },
         "zinc": { elem2: "bronze" },
@@ -157,7 +160,6 @@ elements.dark_water = {
     color: "#00003c",
     density: 999,
     excludeRandom: true,
-    hazard: true,
     stain: 1,
     state: "liquid",
     stateHigh: "dark_steam",
@@ -253,6 +255,91 @@ elements.liquid_shock = {
     },
 }
 
+elements.odd_radio = {
+    behavior: behaviors.WALL,
+    breakInto: ["copper", "dna"],
+    category: "magic",
+    color: "#6e2f04",
+    desc: "Speeds up evolution.",
+    excludeRandom: true,
+    hardness: 0.9,
+    state: "solid",
+    tick: function (pixel) {
+        doDefaults(pixel)
+        if (pixelTicks % 3 === 0) {
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coords = adjacentCoords[i]
+                var x = pixel.x + coords[0]
+                var y = pixel.y + coords[1]
+                if (!isEmpty(x, y, true)) {
+                    if (Math.random() > 0.3) { continue }
+                    createPixel("odd_radiowave", x, y)
+                }
+            }
+        }
+    },
+}
+
+elements.odd_radiowave = {
+    category: "energy",
+    color: "#542607",
+    density: 0.0001,
+    ignoreAir: true,
+    insulate: true,
+    state: "gas",
+    tick: function (pixel) {
+        if (Math.random() < 0.02) {
+            deletePixel(pixel.x, pixel.y)
+            return
+        }
+        if (pixel.bx === undefined) {
+            // choose 1, 0, or -1
+            pixel.bx = Math.random() < 0.5 ? 1 : Math.random() < 0.5 ? 0 : -1
+            pixel.by = Math.random() < 0.5 ? 1 : Math.random() < 0.5 ? 0 : -1
+            // if both are 0, make one of them 1 or -1
+            if (pixel.bx === 0 && pixel.by === 0) {
+                if (Math.random() < 0.5) { pixel.bx = Math.random() < 0.5 ? 1 : -1 }
+                else { pixel.by = Math.random() < 0.5 ? 1 : -1 }
+            }
+        }
+        // move and invert direction if hit
+        if (pixel.bx && !tryMove(pixel, pixel.x + pixel.bx, pixel.y)) {
+            if (!isEmpty((pixel.x + pixel.bx), pixel.y, true)) {
+                var newPixel = pixelMap[pixel.x + pixel.bx][pixel.y]
+                if (!elements[newPixel.element].insulate) {
+                    newPixel.temp += 1
+                    pixelTempCheck(newPixel)
+                }
+            }
+            pixel.bx = -pixel.bx
+        }
+        if (!pixel.del && pixel.by && !tryMove(pixel, pixel.x, pixel.y + pixel.by)) {
+            if (!isEmpty(pixel.x, (pixel.y + pixel.by), true)) {
+                var newPixel = pixelMap[pixel.x][pixel.y + pixel.by]
+                if (!elements[newPixel.element].insulate) {
+                    newPixel.temp += 1
+                    pixelTempCheck(newPixel)
+                }
+            }
+            pixel.by = -pixel.by
+        }
+    },
+    reactions: {
+        "body": { elem2: "dwarf" },
+        "cancer": { elem2: "wheat_seed" },
+        "cell": { elem2: "ant" },
+        "flower_seed": { elem2: "sapling" },
+        "fly": { elem2: "firefly" },
+        "grass": { elem2: "sapling" },
+        "head": { elem2: "dwarf" },
+        "homunculus": { elem2: "human" },
+        "infection": { elem2: "wheat_seed" },
+        "plant": { elem2: "firefly" },
+        "slug": { elem2: "snail" },
+        "tagpole": { elem2: "frog" },
+    },
+}
+
 elements.ichor = {
     behavior: behaviors.LIQUID,
     category: "magic",
@@ -260,6 +347,7 @@ elements.ichor = {
     darkText: true,
     density: 100,
     extinguish: true,
+    stain: -1,
     state: "liquid",
     viscosity: 1
 }
