@@ -266,13 +266,12 @@ elements.odd_radio = {
     state: "solid",
     tick: function (pixel) {
         doDefaults(pixel)
-        if (pixelTicks % 3 === 0) {
+        if (pixelTicks % 4 === 0) {
             for (var i = 0; i < adjacentCoords.length; i++) {
-                var coords = adjacentCoords[i]
-                var x = pixel.x + coords[0]
-                var y = pixel.y + coords[1]
-                if (!isEmpty(x, y, true)) {
-                    if (Math.random() > 0.3) { continue }
+                var x = pixel.x + adjacentCoords[i][0]
+                var y = pixel.y + adjacentCoords[i][1]
+                if (isEmpty(x, y)) {
+                    if (Math.random() < 0.2) { continue }
                     createPixel("odd_radiowave", x, y)
                 }
             }
