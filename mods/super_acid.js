@@ -1,5 +1,6 @@
 acidBlacklist = [
 	"acid",
+	"black_hole",
 	"bless",
 	"border",
 	"gloob",
@@ -7,11 +8,16 @@ acidBlacklist = [
 	"gray_goo",
 	"groove",
 	"hydrogen",
+	"ichor",
+	"image",
 	"midas_touch",
+	"pipe_wall",
+	"pipe",
 	"portal_in",
 	"portal_out",
 	"stable_aether",
 	"super_acid",
+	"time",
 	"void",
 	"wall",
 	"warp",
@@ -23,7 +29,7 @@ elements.super_acid = {
 	breakInto: ["hydrogen", "water"],
 	category: "liquids",
 	color: "#77b300",
-	density: 300,
+	density: 1000,
 	state: "liquid",
 	tick: function (pixel) {
 		for (i = 0; i < adjacentCoords.length; i++) {
