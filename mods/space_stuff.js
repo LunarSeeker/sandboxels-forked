@@ -1,12 +1,19 @@
 excludeBlackHole = [
     "black_hole",
     "bless",
+    "border",
     "gray_goo",
     "ichor",
+    "image",
     "pipe_wall",
     "pipe",
+    "portal_in",
+    "portal_out",
     "stable_aether",
+    "time",
+    "void",
     "wall",
+    "warp",
 ]
 //The Moon
 elements.lunar_dust = {
@@ -47,7 +54,7 @@ elements.mars_rock = {
     tempHigh: 800
 }
 //Other
-elements.black_hole = { //Taken from  black_hole.js and then modified slightly
+elements.black_hole = { //Taken from  black_hole.js and then modified to destroy elements
     category: "special",
     color: "#000000",
     density: 99999,

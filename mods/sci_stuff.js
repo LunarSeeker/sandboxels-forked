@@ -26,6 +26,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
     const excludedElements = new Set([
         "black_hole",
         "bless",
+        "border",
         "concrete",
         "deuterium",
         "fallout",
@@ -34,13 +35,21 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "hazmat_head",
         "hazmat",
         "ichor",
+        "image",
         "lead",
         "philosophers_stone",
+        "pipe_wall",
+        "pipe",
+        "portal_in",
+        "portal_out",
+        "stable_aether",
         "sun",
         "super_acid",
         "time",
         "tritium",
+        "void",
         "wall",
+        "warp",
         "waste_barrel",
     ])
 
@@ -97,7 +106,7 @@ elements.waste_barrel = {
         removeHazard(pixel)
     }
 }
-//Start of stuff taken from decays.js
+//Start of stuff taken from decays.js (contains some modifications)
 elements.fluorine_20 = {
     behavior: behaviors.GAS,
     category: "gases",
@@ -125,6 +134,34 @@ elements.oxygen_20 = {
             irradiateNearby(pixel, 2, 0.2)
         }
     }
+}
+elements.polonium_213 = {
+    behavior: behaviors.POWDER,
+    category: "powders",
+    color: "#dcf007",
+    radioactive: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (Math.random() < decay(3.705 / 1000)) {
+            changePixel(pixel, "lead")
+        } else {
+            irradiateNearby(pixel, 2, 4)
+        }
+    },
+}
+elements.polonium_210 = {
+    behavior: behaviors.POWDER,
+    category: "powders",
+    color: "#dcf007",
+    radioactive: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (Math.random() < 0.8) {
+            changePixel(pixel, "lead")
+        } else {
+            irradiateNearby(pixel, 4, 5)
+        }
+    },
 }
 //End of stuff taken from decays.js
 
