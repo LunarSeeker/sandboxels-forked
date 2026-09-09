@@ -142,24 +142,10 @@ elements.polonium_213 = {
     radioactive: true,
     state: "solid",
     tick: function (pixel) {
-        if (Math.random() > decay(3.705 / 1000)) {
+        if (Math.random() < 0.03) {
             changePixel(pixel, "lead")
         } else {
             irradiateNearby(pixel, 4, 4)
-        }
-    },
-}
-elements.polonium_210 = {
-    behavior: behaviors.POWDER,
-    category: "powders",
-    color: "#dcf007",
-    radioactive: true,
-    state: "solid",
-    tick: function (pixel) {
-        if (Math.random() < 0.5) {
-            changePixel(pixel, "lead")
-        } else {
-            irradiateNearby(pixel, 4, 8)
         }
     },
 }
