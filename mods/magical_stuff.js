@@ -19,13 +19,63 @@ function decay(ms) { //Taken from decays.js
     return 1 / (Math.pow(Math.log10(ms * 30 + 1), 2) * 10)
 }
 
+elements.dwarf_wall = {
+    behavior: behaviors.WALL,
+    breakInto: "dust",
+    colorPattern: textures.BRICK,
+    colorKey: {
+        "l": "#986c51",
+        "r": "#8a6249",
+        "d": "#383838",
+        "w": "#212121"
+    },
+    category: "solids",
+    hardness: 0.9,
+    hidden: true,
+    insulate: true,
+    state: "solid",
+    stateHigh: "magma",
+    tempHigh: 5000,
+    darkText: true
+}
+
 elements.dwarf = {
     color: ["#f3e7db", "#f7ead0", "#eadaba", "#d7bd96", "#a07e56", "#825c43", "#604134", "#3a312a"],
-    behavior: [
-        "XX|XX|XX",
-        "M2%0.5|XX|M2%0.5",
-        "XX|M1|XX"
-    ],
+    behavior: function (pixel) {
+        behaviors.CRAWLER2(pixel, function (pixel, newX, _newY) {
+            if (!pixel.dwarf_hilled && !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "dwarf_wall") {
+                pixel.dwarf_hilled = true
+            }
+        }, function (pixel, newX, _newY) {
+            if (Math.random() < 0.01 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && eLists.CRAWLTHRU.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
+                if (!pixel.dwarf_hilled || !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "dwarf_wall") {
+                    var wallCoords = [
+                        [-1, -1], [1, -1],
+                        [-1, 0], [1, 0],
+                        [0, 1]
+                    ]
+                    if (!isEmpty(pixel.x, pixel.y - 2)) {
+                        wallCoords.push([0, -1])
+                    }
+                    if (Math.random() < 0.15) { wallCoords.push([-1, 1]) }
+                    if (Math.random() < 0.15) { wallCoords.push([1, 1]) }
+                    // loop through wallCoords, change pixel to dwarf_wall if in crawlthru
+                    for (var i = 0; i < wallCoords.length; i++) {
+                        var x = pixel.x + newX + wallCoords[i][0]
+                        var y = pixel.y + 1 + wallCoords[i][1]
+                        if (!isEmpty(x, y, true) && eLists.CRAWLTHRU.indexOf(pixelMap[x][y].element) !== -1) {
+                            changePixel(pixelMap[x][y], "dwarf_wall")
+                        }
+                    }
+                    deletePixel(pixel.x + newX, pixel.y + 1)
+                    tryMove(pixel, pixel.x + newX, pixel.y + 1)
+                }
+            }
+            else if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && eLists.CRAWLTHRU.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
+                swapPixels(pixel, pixelMap[pixel.x + newX][pixel.y - 1])
+            }
+        })
+    },
     breakInto: "rotten_meat",
     category: "life",
     density: 500,

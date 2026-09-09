@@ -29,7 +29,7 @@ elements.super_acid = {
 	breakInto: ["hydrogen", "water"],
 	category: "liquids",
 	color: "#77b300",
-	density: 1000,
+	density: 300,
 	state: "liquid",
 	tick: function (pixel) {
 		for (i = 0; i < adjacentCoords.length; i++) {

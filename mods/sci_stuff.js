@@ -142,10 +142,9 @@ elements.polonium_213 = {
     radioactive: true,
     state: "solid",
     tick: function (pixel) {
-        if (Math.random() < 0.03) {
+        irradiateNearby(pixel, 2, 4)
+        if (Math.random() < decay(0.0375)) {
             changePixel(pixel, "lead")
-        } else {
-            irradiateNearby(pixel, 4, 4)
         }
     },
 }
