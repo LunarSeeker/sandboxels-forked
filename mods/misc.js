@@ -12,6 +12,8 @@ elements.red_ice = {
     tempLow: 0,
     ignore: [
         "bone",
+        "hazmat_body",
+        "hazmat_head",
     ],
     tick: function (pixel) {
         for (let dx = -1; dx <= 1; dx++) {
@@ -37,6 +39,7 @@ elements.red_ice = {
         "grape": { elem2: "red_water" },
         "hair": { elem2: "red_water" },
         "ice_cream": { elem2: "red_water" },
+        "ice_nine": { elem2: "red_water" },
         "ice": { elem2: "red_ice", temp: 30 },
         "infection_ice": { elem2: "red_water" },
         "infection": { elem2: "red_water" },
@@ -80,9 +83,6 @@ elements.red_water = {
     temp: -20,
     tempHigh: 0,
     tempLow: -100,
-    ignore: [
-        "bone",
-    ],
     tick: function (pixel) {
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
@@ -124,9 +124,10 @@ elements.red_water.reactions.tuff = { elem2: "wet_sand", color2: "#bb6a19", chan
 elements.inversium = {
     behavior: behaviors.LIQUID,
     category: "special",
-    color: ["#000090", "#0000ff"],
+    color: "#0000ff",
     density: 50,
     excludeRandom: true,
+    renderer: renderPresets.WOODCHAR,
     state: "liquid",
     viscosity: 0.5,
     reactions: {

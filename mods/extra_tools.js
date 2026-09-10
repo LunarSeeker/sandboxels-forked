@@ -21,15 +21,18 @@ elements.give_life = {
             pixel.element = randomChoice(['bee', 'ant'])
         }
         if (pixel.element == 'cancer' || pixel.element == 'dna') {
-            pixel.temp = 20
             pixel.element = 'cell'
         } else if (pixel.element == 'meat' || pixel.element == 'cooked_meat' || pixel.element == 'rotten_meat') {
             pixel.temp = 20
-            pixel.element = randomChoice(['human', 'snail', 'frog'])
+            pixel.element = randomChoice(['bird', 'fish'])
         }
         if (pixel.element == 'dead_plant' || pixel.element == 'ash' || pixel.element == 'zombie_head') {
             pixel.temp = 20
             pixel.element = randomChoice(['plant', 'grass', 'sapling'])
+        }
+        if (pixel.element == 'feather' || pixel.element == 'yolk') {
+            pixel.temp = 20
+            pixel.element = 'bird'
         }
     },
     category: 'tools',

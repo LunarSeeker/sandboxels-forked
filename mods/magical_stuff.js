@@ -15,8 +15,23 @@ removeElementsDark = [ //For elements not in the "life" category
     "water",
 ]
 
-function decay(ms) { //Taken from decays.js
-    return 1 / (Math.pow(Math.log10(ms * 30 + 1), 2) * 10)
+let magic_textures = {
+    p_stone: [
+        "t",
+        "T",
+        "b",
+        "w",
+        "B",
+        "c",
+        "C"
+    ],
+    dark_ice: [
+        "p",
+        "b",
+        "B",
+        "c",
+        "p"
+    ]
 }
 
 elements.dwarf_wall = {
@@ -99,12 +114,15 @@ elements.dwarf = {
 elements.philosophers_stone = {
     behavior: behaviors.POWDER,
     category: "magic",
-    colorPattern: textures.BRICK,
+    colorPattern: magic_textures.p_stone,
     colorKey: {
-        "l": "#ff0000",
-        "r": "#ff00ff",
-        "d": "#ff8800",
-        "w": "#0000ff"
+        t: "#ff8800",
+        T: "#ffff00",
+        b: "#00ff00",
+        w: "#00ffff",
+        B: "#0000ff",
+        c: "#ff00ff",
+        C: "#3D1A78"
     },
     darkText: true,
     density: 1,
@@ -145,7 +163,8 @@ elements.stable_aether = {
     behavior: behaviors.WALL,
     category: "magic",
     color: ["#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff"],
-    state: "solid"
+    renderer: renderPresets.HUESHIFT,
+    state: "solid",
 }
 
 elements.unstable_aether = {
@@ -155,7 +174,7 @@ elements.unstable_aether = {
     density: 0.5,
     state: "gas",
     tick: function (pixel) {
-        if (Math.random() < decay(1160)) {
+        if (Math.random() < 0.05) {
             changePixel(pixel, "gold")
         }
     }
@@ -193,7 +212,13 @@ elements.dark_ice = {
         "fallout"
     ],
     category: "magic",
-    color: ["#1a193c", "#00003c"],
+    colorPattern: magic_textures.dark_ice,
+    colorKey: {
+        p: "#1a193c",
+        b: "#3a2c13",
+        B: "#3a1c13",
+        c: "#3a3013",
+    },
     desc: "Cold substance.",
     excludeRandom: true,
     hardness: 0.9,
