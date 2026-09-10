@@ -22,14 +22,8 @@ function decay(ms) { //Taken from decays.js
 elements.dwarf_wall = {
     behavior: behaviors.WALL,
     breakInto: "dust",
-    colorPattern: textures.BRICK,
-    colorKey: {
-        "l": "#986c51",
-        "r": "#8a6249",
-        "d": "#383838",
-        "w": "#212121"
-    },
     category: "solids",
+    color: "#8a6249",
     hardness: 0.9,
     hidden: true,
     insulate: true,
@@ -86,6 +80,7 @@ elements.dwarf = {
     tempLow: -50,
     reactions: {
         "beans": { elem2: [null, null, null, "stench"], chance: 0.05 },
+        "copper": { elem2: null },
         "diamond": { elem2: null, chance: 0.1 },
         "fallout": { elem1: "rotten_meat", chance: 0.02 },
         "gold_coin": { elem2: null },
@@ -96,13 +91,21 @@ elements.dwarf = {
         "radiation": { elem1: "rotten_meat", chance: 0.1 },
         "silver": { elem2: null, chance: 0.05 },
         "sun": { elem1: "cooked_meat" },
+        "tungsten": { elem2: null, chance: 0.01 },
+        "zinc": { elem2: null },
     }
 }
 
 elements.philosophers_stone = {
     behavior: behaviors.POWDER,
     category: "magic",
-    color: ["#ff0000", "#ff8800", "#ffff00", "#0000ff", "#ff00ff"],
+    colorPattern: textures.BRICK,
+    colorKey: {
+        "l": "#ff0000",
+        "r": "#ff00ff",
+        "d": "#ff8800",
+        "w": "#0000ff"
+    },
     darkText: true,
     density: 1,
     excludeRandom: true,
