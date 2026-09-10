@@ -79,7 +79,21 @@ elements.red_water = {
     stateLow: "red_steam",
     temp: -20,
     tempHigh: 0,
-    tempLow: -100
+    tempLow: -100,
+    ignore: [
+        "bone",
+    ],
+    tick: function (pixel) {
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p && elements[p.element].state !== "gas" && elements.red_ice.ignore.indexOf(p.element) === -1 && elements[p.element].category === "life") {
+                    changePixel(p, "red_water")
+                }
+            }
+        }
+    },
 }
 
 elements.red_steam = {
