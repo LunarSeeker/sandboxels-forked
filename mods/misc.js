@@ -10,37 +10,32 @@ elements.red_ice = {
     state: "solid",
     stateLow: "red_water",
     tempLow: 0,
+    ignore: [
+        "bone",
+    ],
+    tick: function (pixel) {
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p && elements[p.element].state !== "gas" && elements.red_ice.ignore.indexOf(p.element) === -1 && elements[p.element].category === "life") {
+                    changePixel(p, "red_ice")
+                }
+            }
+        }
+    },
     reactions: {
-        "algae": { elem2: "red_water" },
-        "ant": { elem2: "red_water" },
         "antibody_ice": { elem2: "red_water" },
         "antibody": { elem2: "red_water" },
-        "bee": { elem2: "red_water" },
-        "bird": { elem2: "red_water" },
         "blood_ice": { elem2: "red_water" },
         "blood": { elem2: "red_water" },
-        "body": { elem2: "red_water" },
-        "cactus": { elem2: "red_water" },
-        "cancer": { elem2: "red_water" },
-        "cell": { elem2: "red_water" },
-        "chicken": { elem2: "red_water" },
         "cloud": { elem2: "red_steam", temp: -150 },
         "cream": { elem2: "red_water" },
-        "dead_plant": { elem2: "red_water" },
         "dirty_ice": { elem2: "red_ice", temp: 30 },
         "dirty_water": { elem2: "red_water", temp: -30 },
-        "dna": { elem2: "red_water" },
-        "evergreen": { elem2: "red_water" },
-        "firefly": { elem2: "red_water" },
-        "fish": { elem2: "red_water" },
-        "flower_seed": { elem2: "red_water" },
-        "fly": { elem2: "red_water" },
         "foam": { elem2: "red_water" },
-        "frozen_plant": { elem2: "red_water" },
         "grape": { elem2: "red_water" },
-        "grass": { elem2: "red_water" },
         "hair": { elem2: "red_water" },
-        "head": { elem2: "red_water" },
         "ice_cream": { elem2: "red_water" },
         "ice": { elem2: "red_ice", temp: 30 },
         "infection_ice": { elem2: "red_water" },
@@ -48,15 +43,11 @@ elements.red_ice = {
         "iron": { elem2: "rust", chance: 0.05 },
         "juice": { elem2: "red_water" },
         "lettuce": { elem2: "red_water" },
-        "lichen": { elem2: "red_water" },
         "meat": { elem2: "red_water" },
         "packed_snow": { elem2: "red_water" },
-        "petal": { elem2: "red_water" },
         "pickle": { elem2: "red_water" },
-        "plant": { elem2: "red_water" },
         "pool_water": { elem2: "red_water", temp: -30 },
         "rain_cloud": { elem2: "red_steam", temp: -150 },
-        "rat": { elem2: "red_water" },
         "rime": { elem2: "red_water" },
         "rotten_meat": { elem2: "red_water" },
         "salt_water": { elem2: "red_water", temp: -30 },
@@ -64,18 +55,12 @@ elements.red_ice = {
         "skin": { elem2: "red_water" },
         "slush": { elem2: "red_water" },
         "snow": { elem2: "red_water" },
-        "spider": { elem2: "red_water" },
         "steam": { elem2: "red_steam", temp: -150 },
-        "stink_bug": { elem2: "red_water" },
         "sugar_water": { elem2: "red_water", temp: -30 },
         "tea": { elem2: "red_water" },
         "tomato": { elem2: "red_water" },
-        "tree_branch": { elem2: "red_water" },
-        "vine": { elem2: "red_water" },
         "water": { elem2: "red_water", temp: -30 },
         "yolk": { elem2: "red_water" },
-        "zombie_body": { elem2: "red_water" },
-        "zombie_head": { elem2: "red_water" },
     },
 }
 
