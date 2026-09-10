@@ -80,6 +80,7 @@ elements.dwarf = {
     tempLow: -50,
     reactions: {
         "beans": { elem2: [null, null, null, "stench"], chance: 0.05 },
+        "copper": { elem2: null },
         "diamond": { elem2: null, chance: 0.1 },
         "fallout": { elem1: "rotten_meat", chance: 0.02 },
         "gold_coin": { elem2: null },
@@ -90,6 +91,8 @@ elements.dwarf = {
         "radiation": { elem1: "rotten_meat", chance: 0.1 },
         "silver": { elem2: null, chance: 0.05 },
         "sun": { elem1: "cooked_meat" },
+        "tungsten": { elem2: null, chance: 0.01 },
+        "zinc": { elem2: null },
     }
 }
 
