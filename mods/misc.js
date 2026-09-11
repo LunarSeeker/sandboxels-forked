@@ -12,13 +12,8 @@ elements.red_ice = {
     tempLow: 0,
     ignore: [
         "bone",
-        "fish",
-        "flesh_plant",
-        "grass",
         "hazmat_body",
         "hazmat_head",
-        "plant",
-        "red_fish",
     ],
     tick: function (pixel) {
         for (let dx = -1; dx <= 1; dx++) {
@@ -42,7 +37,6 @@ elements.red_ice = {
         "dirty_ice": { elem2: "red_ice", temp: 30 },
         "dirty_water": { elem2: "red_water", temp: -30 },
         "fiber": { elem2: "red_water" },
-        "fish": { elem2: "red_fish", temp: -20 },
         "foam": { elem2: "red_water" },
         "grape": { elem2: "red_water" },
         "hair": { elem2: "red_water" },
@@ -57,7 +51,6 @@ elements.red_ice = {
         "meat": { elem2: "red_water" },
         "packed_snow": { elem2: "red_water" },
         "pickle": { elem2: "red_water" },
-        "plant": { elem2: "flesh_plant", temp: -20 },
         "pool_water": { elem2: "red_water", temp: -30 },
         "rain_cloud": { elem2: "red_steam", temp: -150 },
         "rime": { elem2: "red_water" },
@@ -128,96 +121,6 @@ elements.red_water.reactions.mudstone = { elem2: "mud", chance: 0.00035 }
 elements.red_water.reactions.rock = { elem2: "wet_sand", chance: 0.00035 }
 elements.red_water.reactions.ruins = { elem2: "rock", chance: 0.00035 }
 elements.red_water.reactions.tuff = { elem2: "wet_sand", color2: "#bb6a19", chance: 0.00035 }
-
-elements.flesh_plant = {
-    behavior: behaviors.WALL,
-    breakInto: "meat",
-    burn: 10,
-    burnInto: "cooked_meat",
-    burnTime: 250,
-    category: "life",
-    color: "#8fbf00",
-    density: 1050,
-    forceSaveColor: true,
-    renderer: renderPresets.PLANTCHAR,
-    state: "solid",
-    stateHigh: "meat",
-    stateLow: "red_steam",
-    temp: -20,
-    tempHigh: 20,
-    tempLow: -100,
-    reactions: {
-        "vinegar": { elem1: "red_ice", elem2: null, chance: 0.035 },
-        "baking_soda": { elem1: "red_ice", elem2: null, chance: 0.01 },
-        "bleach": { elem1: "red_ice", elem2: null, chance: 0.05 },
-        "alcohol": { elem1: "red_ice", elem2: null, chance: 0.035 },
-        "mercury": { elem1: "red_ice", elem2: null, chance: 0.01 },
-        "sugar": { elem1: "red_ice", elem2: null, chance: 0.001 },
-        "stench": { elem2: null, chance: 0.25 },
-        "chlorine": { stain1: "#a2bf00" },
-        "oxygen": { elem2: "carbon_dioxide", chance: 0.5 }
-    },
-}
-
-elements.red_fish = {
-    alias: "Otherworldly Fish",
-    color: "#ac505f",
-    behavior: [
-        "XX|M2%5|SW:red_ice,red_water,primordial_soup%14",
-        "XX|FX%0.5|BO",
-        "M2|M1|M2 AND SW:red_ice,red_water,primordial_soup%5"
-    ],
-    breakInto: "red_water",
-    burn: 20,
-    burnTime: 200,
-    category: "life",
-    conduct: 0.2,
-    density: 1080,
-    eggColor: ["#211316", "#2C1A1D", "#503734"],
-    foodNeed: 20,
-    state: "solid",
-    stateHigh: "red_ice",
-    stateHighColor: "#dbe4b9",
-    stateLow: ["red_steam", "red_steam", "red_steam", "red_steam"],
-    temp: -20,
-    tempHigh: 20,
-    tempLow: -120,
-    reactions: {
-        "fly": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "firefly": { elem2: null, chance: 0.3, func: behaviors.FEEDPIXEL },
-        "bee": { elem2: null, chance: 0.05, func: behaviors.FEEDPIXEL },
-        "worm": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "ant": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
-        "stink_bug": { elem2: "stench", chance: 0.025, func: behaviors.FEEDPIXEL },
-        "dead_bug": { elem2: null, chance: 0.04, func: behaviors.FEEDPIXEL },
-        "lichen": { elem2: null, chance: 0.04, func: behaviors.FEEDPIXEL },
-        "termite": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
-        "flea": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
-        "mushroom_cap": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
-        "mushroom_gill": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
-        "seeds": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "flower_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "wheat_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "corn_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "corn": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "potato_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "grass_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "crumb": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "pumpkin": { elem2: null, chance: 0.025, func: behaviors.FEEDPIXEL },
-        "pumpkin_seed": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "rice": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "coffee_bean": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "coffee_ground": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "nut": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "nut_meat": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "nut_butter": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "jelly": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
-        "spider": { elem2: null, chance: 0.1, func: behaviors.FEEDPIXEL },
-        "web": { elem2: null, chance: 0.1, func: behaviors.FEEDPIXEL },
-        "plague": { elem1: "plague", chance: 0.05 },
-        "carbon_dioxide": { elem2: "oxygen", chance: 0.5 },
-    },
-}
 
 elements.inversium = {
     behavior: behaviors.LIQUID,
@@ -298,9 +201,7 @@ elements.time = {
 }
 
 elements.bless.reactions.blue_goo = { elem2: "water" }
-elements.bless.reactions.flesh_plant = { elem2: "plant", temp: 20 }
 elements.bless.reactions.inversium = { elem2: null }
-elements.bless.reactions.red_fish = { elem2: "fish", temp: 20 }
 elements.bless.reactions.red_ice = { elem2: "ice", temp: -20 }
 elements.bless.reactions.red_steam = { elem2: "steam", temp: 100 }
 elements.bless.reactions.red_water = { elem2: "water", temp: 20 }

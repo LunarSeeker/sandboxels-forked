@@ -177,11 +177,18 @@ elements.zombie_body = {
                         pixel.dir *= -1
                         break
                     }
-                    else if (seenPixel.dead || seenPixel.temp > 200) {
+                    else if (seenPixel.temp > 150) {
                         pixel.panic += 5
                         pixel.dir *= -1
                         if (seenPixel.panic) delete seenPixel.panic
                         break
+                    } else if (elements[seenPixel.element].category == "life") {
+                        if (pixel.dir != 1 && pixelMap[x2][y2].x > pixel.x) {
+                            pixel.dir = 1
+                        }
+                        else if (pixel.dir != -1 && pixelMap[x2][y2].x < pixel.x) {
+                            pixel.dir = -1
+                        }
                     }
                 }
             }
@@ -348,7 +355,120 @@ elements.zombie_head = {
     }
 }
 
+//The Flesh
+elements.infectious_flesh = {//Some stuff taken from scp.js
+    behavior: behaviors.LIQUID,
+    burn: 5,
+    burnInto: "cooked_meat",
+    burnTime: 400,
+    category: "life",
+    color: ["#E5D6C7", "#f7ead0"],
+    density: 2000,
+    state: "liquid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    tempHigh: 300,
+    tempLow: 0,
+    viscosity: 6000,
+    reactions: {
+        "meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "cooked_meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "sun": { elem1: "cooked_meat" },
+    },
+    tick: function (pixel) {
+        if (Math.random() < 0.45) {
+            let y = Math.random() < 0.5 ? 0 : -1
+            let xDir = Math.random() < 0.5 ? 1 : -1
+            for (let x = 1; x < 20; x++) {
+                let x2 = pixel.x + (x * xDir)
+                let y2 = pixel.y + y
+                if (!isEmpty(x2, y2, true)) {
+                    let seenPixel = pixelMap[x2][y2]
+                    if (elements[seenPixel.element].category == "life") {
+                        if (pixel.dir != 1 && pixelMap[x2][y2].x > pixel.x) {
+                            pixel.dir = 1
+                        }
+                        else if (pixel.dir != -1 && pixelMap[x2][y2].x < pixel.x) {
+                            pixel.dir = -1
+                        }
+                    }
+                    if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
+                        break
+                    }
+                }
+            }
+        }
+
+        if (!pixel.dir || pixel.dir == undefined) {
+            pixel.dir = 0
+        }
+
+        if (pixel.panic > 0 || !pixel.panic || pixel.panic == undefined) {
+            pixel.panic = 0
+        }
+        if (Math.random() < 0.05) { // Move 5% chance
+            var movesToTry = [
+                [1 * pixel.dir, 0],
+                [1 * pixel.dir, -1],
+            ]
+            let moved = false
+            // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
+            while (movesToTry.length > 0) {
+                var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
+                if (isEmpty(pixel.x + move[0], pixel.y + move[1] - 1)) {
+                    var origx = pixel.x + move[0]
+                    var origy = pixel.y + move[1]
+                    tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy
+                }
+                if (!isEmpty(pixel.x + move[0], pixel.y + move[1], true)) {
+                    var hitPixel = pixelMap[pixel.x + move[0]][pixel.y + move[1]]
+                    if (hitPixel.element == "infectious_flesh" && hitPixel.dir != pixel.dir) {
+                        hitPixel.dir = pixel.dir
+                    }
+                    if (hitPixel.element == "infectious_flesh" && pixel.level && (hitPixel.level < pixel.level || !hitPixel.level)) {
+                        hitPixel.level = pixel.level
+                    }
+                }
+            }
+            // 5% chance to change direction
+            if (Math.random() < 0.05 || !moved) {
+                pixel.dir *= -1
+            }
+        }
+        // homeostasis
+        if (pixel.temp > 47) { pixel.temp -= 1 }
+        else if (pixel.temp < 20) { pixel.temp += 1 }
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y) && !outOfBounds(x, y) && Math.random() > 0.05) {
+                var shatter = pixelMap[x][y]
+                if (shatter.element == "glass" || shatter.element == "rad_glass" || shatter.element == "stained_glass") {
+                    breakPixel(shatter)
+                }
+            }
+        }
+    },
+    onCollide: function (_pixel1, pixel2) {
+        if (elements[pixel2.element].category == "life") {
+            if (pixel2.element == "tree_branch") {
+                pixel2.element = "wood"
+            }
+            else {
+                pixel2.element = "infectious_flesh"
+            }
+        }
+        else if (pixel2.element == "skin" || pixel2.element == "meat" || pixel2.element == "cured_meat" || pixel2.element == "rotten_meat" || pixel2.element == "cooked_meat") {
+            pixel2.element = "infectious_flesh"
+        }
+        else if (pixel2.element == "dust" || pixel2.element == "cloth" || pixel2.element == "cloth_scrap" || pixel2.element == "hair" || pixel2.element == "loose_hair") {
+            deletePixel(pixel2.x, pixel2.y)
+        }
+    },
+}
+
 //
-//
+elements.bless.reactions.infectious_flesh = { elem2: null }
 elements.bless.reactions.zombie_body = { elem2: null }
 elements.bless.reactions.zombie_head = { elem2: null }
