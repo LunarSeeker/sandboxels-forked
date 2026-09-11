@@ -40,7 +40,7 @@ elements.red_ice = {
         "cream": { elem2: "red_water" },
         "dirty_ice": { elem2: "red_ice", temp: 30 },
         "dirty_water": { elem2: "red_water", temp: -30 },
-        "fish": { elem2: "red_fish" },
+        "fish": { elem2: "red_fish", temp: -20 },
         "foam": { elem2: "red_water" },
         "grape": { elem2: "red_water" },
         "hair": { elem2: "red_water" },
@@ -142,7 +142,7 @@ elements.flesh_plant = {
     stateHigh: "meat",
     stateLow: "red_steam",
     temp: -20,
-    tempHigh: 2,
+    tempHigh: 20,
     tempLow: -100,
     reactions: {
         "vinegar": { elem1: "red_ice", elem2: null, chance: 0.035 },
@@ -296,7 +296,9 @@ elements.time = {
 }
 
 elements.bless.reactions.blue_goo = { elem2: "water" }
+elements.bless.reactions.flesh_plant = { elem2: "water", temp: 20 }
 elements.bless.reactions.inversium = { elem2: null }
-elements.bless.reactions.red_ice = { elem2: "ice" }
-elements.bless.reactions.red_steam = { elem2: "steam" }
-elements.bless.reactions.red_water = { elem2: "water" }
+elements.bless.reactions.red_fish = { elem2: "fish", temp: 20 }
+elements.bless.reactions.red_ice = { elem2: "ice", temp: -20 }
+elements.bless.reactions.red_steam = { elem2: "steam", temp: 100 }
+elements.bless.reactions.red_water = { elem2: "water", temp: 20 }
