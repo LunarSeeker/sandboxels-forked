@@ -32,6 +32,7 @@ elements.red_ice = {
         }
     },
     reactions: {
+        "ant_wall": { elem2: "red_water" },
         "antibody_ice": { elem2: "red_water" },
         "antibody": { elem2: "red_water" },
         "blood_ice": { elem2: "red_water" },
@@ -40,6 +41,7 @@ elements.red_ice = {
         "cream": { elem2: "red_water" },
         "dirty_ice": { elem2: "red_ice", temp: 30 },
         "dirty_water": { elem2: "red_water", temp: -30 },
+        "fiber": { elem2: "red_water" },
         "fish": { elem2: "red_fish", temp: -20 },
         "foam": { elem2: "red_water" },
         "grape": { elem2: "red_water" },
@@ -296,7 +298,7 @@ elements.time = {
 }
 
 elements.bless.reactions.blue_goo = { elem2: "water" }
-elements.bless.reactions.flesh_plant = { elem2: "water", temp: 20 }
+elements.bless.reactions.flesh_plant = { elem2: "plant", temp: 20 }
 elements.bless.reactions.inversium = { elem2: null }
 elements.bless.reactions.red_fish = { elem2: "fish", temp: 20 }
 elements.bless.reactions.red_ice = { elem2: "ice", temp: -20 }
