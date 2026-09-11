@@ -55,7 +55,7 @@ elements.red_ice = {
         "meat": { elem2: "red_water" },
         "packed_snow": { elem2: "red_water" },
         "pickle": { elem2: "red_water" },
-        "plant": { elem2: "flesh_plant" },
+        "plant": { elem2: "flesh_plant", temp: -20 },
         "pool_water": { elem2: "red_water", temp: -30 },
         "rain_cloud": { elem2: "red_steam", temp: -150 },
         "rime": { elem2: "red_water" },
@@ -141,6 +141,7 @@ elements.flesh_plant = {
     state: "solid",
     stateHigh: "meat",
     stateLow: "red_steam",
+    temp: -20,
     tempHigh: 2,
     tempLow: -100,
     reactions: {
