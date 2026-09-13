@@ -103,38 +103,12 @@ elements.color_bomb = {
     }
 }
 
-elements.terraformer = {
-    category: "weapons",
-    color: "#ff0000",
-    cooldown: defaultCooldown,
-    density: 1500,
-    excludeRandom: true,
-    state: "solid",
-    tick: function (pixel) {
-        if (pixel.start === pixelTicks) { return }
-        if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
-            if (outOfBounds(pixel.x, pixel.y + 1) || (pixelMap[pixel.x][pixel.y + 1].element !== "terraformer")) {
-                for (i = 0; i < currentPixels.length; i++) {
-                    var newPixel = currentPixels[i]
-                    if (newPixel.category === "land") {
-                        changePixel(newPixel, "dirt")
-                    } else if (newPixel.category === "liquids") {
-                        changePixel(newPixel, "water")
-                    }
-                }
-                explodeAt(pixel.x, pixel.y + 1, 20, "flash")
-            }
-        }
-        doDefaults(pixel)
-    }
-}
-
 elements.dirt_bomb = {
     color: "#776248",
     behavior: [
         "XX|XX|XX",
         "XX|XX|XX",
-        "M2|M1 AND EX:60>dirt,dirt,dirt,dirt|M2"
+        "M2|M1 AND EX:60>dirt,tsunami,dirt,dirt|M2"
     ],
     category: "weapons",
     density: 1500,

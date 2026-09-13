@@ -410,7 +410,7 @@ elements.odd_radiowave = {
         "grass": { elem2: "sapling" },
         "homunculus": { elem2: "human" },
         "infection": { elem2: "wheat_seed" },
-        "plant": { elem2: "snake" },
+        "plant": { elem2: "sapling" },
         "slug": { elem2: "snail" },
         "tagpole": { elem2: "frog" },
     },

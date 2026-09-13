@@ -367,14 +367,20 @@ elements.infectious_flesh = {//Some stuff taken from scp.js
     state: "liquid",
     stateHigh: "cooked_meat",
     stateLow: "frozen_meat",
-    tempHigh: 300,
-    tempLow: 0,
+    tempHigh: 200,
+    tempLow: -18,
     viscosity: 6000,
     reactions: {
-        "blood": { elem2: "infected_blood" },
+        "blood": { color2: ["#ff0000", "#ee0000"], elem2: "contaminated_liquid" },
         "cooked_meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "dirty_water": { color2: ["#0e824e", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
         "meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "milk": { color2: ["#0e824e", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
+        "rotten_meat": { color2: ["#9e4839", "#b8b165", "#b89765", "#a14940"], elem2: "infectious_flesh" },
+        "salt_water": { color2: ["#8eaae6", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
+        "soda": { color2: ["#422016", "#0c6934"], elem2: "contaminated_liquid" },
         "sun": { elem1: "cooked_meat" },
+        "water": { color2: ["#0e824e", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
     },
     tick: function (pixel) {
         if (Math.random() < 0.45) {
@@ -457,7 +463,7 @@ elements.infectious_flesh = {//Some stuff taken from scp.js
                 pixel2.element = "infectious_flesh"
             }
         }
-        else if (pixel2.element == "skin" || pixel2.element == "meat" || pixel2.element == "cured_meat" || pixel2.element == "rotten_meat" || pixel2.element == "cooked_meat") {
+        else if (pixel2.element == "skin" || pixel2.element == "cured_meat") {
             pixel2.element = "infectious_flesh"
         }
         else if (pixel2.element == "dust" || pixel2.element == "cloth" || pixel2.element == "cloth_scrap" || pixel2.element == "hair" || pixel2.element == "loose_hair") {
@@ -465,7 +471,7 @@ elements.infectious_flesh = {//Some stuff taken from scp.js
         }
     },
 }
-elements.infected_blood = {
+elements.contaminated_liquid = {
     behavior: behaviors.LIQUID,
     category: "liquids",
     color: ["#990000", "#dd0000"],
@@ -473,39 +479,25 @@ elements.infected_blood = {
     stain: 0.1,
     state: "liquid",
     stateHigh: ["steam", "salt", "oxygen"],
-    tempHigh: 125,
-    tempLow: 0,
+    stateLow: "frozen_meat",
+    tempHigh: 200,
+    tempLow: -18,
     viscosity: 100,
     reactions: {
-        "skin": { elem1: "infectious_flesh", elem2: "infectious_flesh" },
-        "plague": { elem1: "infection", elem2: null },
-        "rotten_meat": { elem1: "infection" },
-        "rotten_cheese": { elem1: "infection" },
-        "virus": { elem1: "infection", elem2: null },
-        "cancer": { elem1: "infection" },
-        "cyanide": { elem1: "infection", elem2: null },
-        "cyanide_gas": { elem1: "infection", elem2: null },
-        "mushroom_spore": { elem1: "infection", elem2: null },
-        "mushroom_gill": { elem1: "infection" },
-        "dirty_water": { elem1: "infection", elem2: null },
-        "rad_steam": { elem1: "infection" },
-        "rad_glass": { elem1: "infection" },
-        "rad_shard": { elem1: "infection" },
-        "rad_cloud": { elem1: "infection" },
-        "fallout": { elem1: "infection" },
-        "oxidized_copper": { elem1: "infection", chance: 0.05 },
-        "rat": { elem1: "infectious_flesh", elem2: "infectious_flesh" },
-        "flea": { elem1: "infectious_flesh", elem2: null },
-        "worm": { elem1: "infectious_flesh", elem2: null },
-        "mercury": { elem1: "infection", elem2: null, chance: 0.5 },
-        "lead": { elem1: "infection", elem2: null, chance: 0.1 },
-        "oxygen": { elem2: null, chance: 0.1 },
-        "carbon_dioxide": { elem2: null, chance: 0.1 },
-        "blood": { elem2: "infected_blood" }
+        "blood": { color2: ["#ff0000", "#ee0000"], elem2: "contaminated_liquid" },
+        "cooked_meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "dirty_water": { color2: ["#0e824e", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
+        "meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "milk": { color2: ["#0e824e", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
+        "rotten_meat": { color2: ["#9e4839", "#b8b165", "#b89765", "#a14940"], elem2: "infectious_flesh" },
+        "salt_water": { color2: ["#8eaae6", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
+        "soda": { color2: ["#422016", "#0c6934"], elem2: "contaminated_liquid" },
+        "sun": { elem1: ["steam", "salt", "oxygen"] },
+        "water": { color2: ["#0e824e", "#07755a", "#0c6934"], elem2: "contaminated_liquid" },
     },
 }
 //
-elements.bless.reactions.infected_blood = { elem2: "antibody" }
+elements.bless.reactions.contaminated_liquid = { elem2: "antibody" }
 elements.bless.reactions.infectious_flesh = { elem2: null }
 elements.bless.reactions.zombie_body = { elem2: null }
 elements.bless.reactions.zombie_head = { elem2: null }
