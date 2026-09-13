@@ -8,7 +8,6 @@ acidBlacklist = [
 	"hydrogen",
 	"ichor",
 	"image",
-	"midas_touch",
 	"pipe_wall",
 	"pipe",
 	"portal_in",

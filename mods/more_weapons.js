@@ -103,12 +103,26 @@ elements.color_bomb = {
     }
 }
 
+elements.acid_bomb = {
+    color: "#776248",
+    behavior: [
+        "XX|XX|XX",
+        "XX|XX|XX",
+        "M2|M1 AND EX:60>acid,acid,acid|M2"
+    ],
+    category: "weapons",
+    density: 1500,
+    excludeRandom: true,
+    state: "solid",
+    cooldown: defaultCooldown
+}
+
 elements.dirt_bomb = {
     color: "#776248",
     behavior: [
         "XX|XX|XX",
         "XX|XX|XX",
-        "M2|M1 AND EX:60>dirt,tsunami,dirt,dirt|M2"
+        "M2|M1 AND EX:60>dirt,dirt,dirt|M2"
     ],
     category: "weapons",
     density: 1500,

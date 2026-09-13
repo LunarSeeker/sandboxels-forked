@@ -17,6 +17,7 @@ function removeHazard(pixel) {
 
 elements.filler.hazard = true
 elements.gray_goo.hazard = true
+elements.ice_nine.hazard = true
 elements.infection.hazard = true
 elements.lattice.hazard = true
 
@@ -134,19 +135,6 @@ elements.oxygen_20 = {
             irradiateNearby(pixel, 2, 0.2)
         }
     }
-}
-elements.polonium_213 = {
-    behavior: behaviors.POWDER,
-    category: "powders",
-    color: "#dcf007",
-    radioactive: true,
-    state: "solid",
-    tick: function (pixel) {
-        irradiateNearby(pixel, 2, 4)
-        if (Math.random() < decay(0.0375)) {
-            changePixel(pixel, "lead")
-        }
-    },
 }
 //End of stuff taken from decays.js
 

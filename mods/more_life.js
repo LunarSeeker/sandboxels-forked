@@ -505,6 +505,38 @@ elements.contaminated_liquid = {
     },
 }
 //
+
+elements.odd_fish = {
+    breakInto: "blood",
+    category: "life",
+    color: "#ac6450",
+    conduct: 0.2,
+    density: 1080,
+    eggColor: ["#e9c5c5", "#a79093", "#dca49e"],
+    foodNeed: 20,
+    state: "solid",
+    stateLow: ["frozen_meat", "frozen_meat", "frozen_meat", "frozen_fish"],
+    temp: 20,
+    tempLow: -40,
+    behavior: [
+        "XX|M2%5|SW:lamp_oil,oil%14",
+        "XX|FX%0.5|BO",
+        "M2|M1|M2 AND SW:lamp_oil,oil%5"
+    ],
+    reactions: {
+        "cancer": { elem2: null, chance: 0.5, func: behaviors.FEEDPIXEL },
+        "crumb": { elem2: null, func: behaviors.FEEDPIXEL },
+        "dead_bug": { elem2: null, func: behaviors.FEEDPIXEL },
+        "dead_plant": { elem2: null, func: behaviors.FEEDPIXEL },
+        "oxygen": { elem2: "carbon_dioxide" },
+        "plant": { elem2: null, chance: 0.25, func: behaviors.FEEDPIXEL },
+        "plastic": { elem2: null, chance: 0.5, func: behaviors.FEEDPIXEL },
+        "pool_water": { elem1: null },
+        "salt_water": { elem1: null },
+        "smoke": { elem2: null, chance: 0.2, func: behaviors.FEEDPIXEL },
+        "water": { elem1: null },
+    },
+}
 elements.bless.reactions.contaminated_liquid = { elem2: "antibody" }
 elements.bless.reactions.infectious_flesh = { elem2: null }
 elements.bless.reactions.zombie_body = { elem2: null }
