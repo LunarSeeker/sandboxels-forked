@@ -371,8 +371,9 @@ elements.infectious_flesh = {//Some stuff taken from scp.js
     tempLow: 0,
     viscosity: 6000,
     reactions: {
-        "meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "blood": { elem2: "infected_blood" },
         "cooked_meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
+        "meat": { color2: ["#9e4839", "#ba6449", "#d2856c", "#a14940"], elem2: "infectious_flesh" },
         "sun": { elem1: "cooked_meat" },
     },
     tick: function (pixel) {
@@ -425,9 +426,6 @@ elements.infectious_flesh = {//Some stuff taken from scp.js
                     if (hitPixel.element == "infectious_flesh" && hitPixel.dir != pixel.dir) {
                         hitPixel.dir = pixel.dir
                     }
-                    if (hitPixel.element == "infectious_flesh" && pixel.level && (hitPixel.level < pixel.level || !hitPixel.level)) {
-                        hitPixel.level = pixel.level
-                    }
                 }
             }
             // 5% chance to change direction
@@ -467,8 +465,47 @@ elements.infectious_flesh = {//Some stuff taken from scp.js
         }
     },
 }
-
+elements.infected_blood = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: ["#990000", "#dd0000"],
+    density: 1060,
+    stain: 0.1,
+    state: "liquid",
+    stateHigh: ["steam", "salt", "oxygen"],
+    tempHigh: 125,
+    tempLow: 0,
+    viscosity: 100,
+    reactions: {
+        "skin": { elem1: "infectious_flesh", elem2: "infectious_flesh" },
+        "plague": { elem1: "infection", elem2: null },
+        "rotten_meat": { elem1: "infection" },
+        "rotten_cheese": { elem1: "infection" },
+        "virus": { elem1: "infection", elem2: null },
+        "cancer": { elem1: "infection" },
+        "cyanide": { elem1: "infection", elem2: null },
+        "cyanide_gas": { elem1: "infection", elem2: null },
+        "mushroom_spore": { elem1: "infection", elem2: null },
+        "mushroom_gill": { elem1: "infection" },
+        "dirty_water": { elem1: "infection", elem2: null },
+        "rad_steam": { elem1: "infection" },
+        "rad_glass": { elem1: "infection" },
+        "rad_shard": { elem1: "infection" },
+        "rad_cloud": { elem1: "infection" },
+        "fallout": { elem1: "infection" },
+        "oxidized_copper": { elem1: "infection", chance: 0.05 },
+        "rat": { elem1: "infectious_flesh", elem2: "infectious_flesh" },
+        "flea": { elem1: "infectious_flesh", elem2: null },
+        "worm": { elem1: "infectious_flesh", elem2: null },
+        "mercury": { elem1: "infection", elem2: null, chance: 0.5 },
+        "lead": { elem1: "infection", elem2: null, chance: 0.1 },
+        "oxygen": { elem2: null, chance: 0.1 },
+        "carbon_dioxide": { elem2: null, chance: 0.1 },
+        "blood": { elem2: "infected_blood" }
+    },
+}
 //
+elements.bless.reactions.infected_blood = { elem2: "antibody" }
 elements.bless.reactions.infectious_flesh = { elem2: null }
 elements.bless.reactions.zombie_body = { elem2: null }
 elements.bless.reactions.zombie_head = { elem2: null }
