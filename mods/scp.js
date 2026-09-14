@@ -1999,6 +1999,7 @@ elements.scp_009 = {
         "meat": { elem2: "scp_009_meat", chance: 0.15 },
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
+        "plant": { elem2: "red_plant" },
         "pool_water": { elem2: "scp_009", chance: 0.5 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2010,7 +2011,7 @@ elements.scp_009 = {
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "snow": { elem2: "red_snow", chance: 0.4 },
         "soda": { elem2: "scp_009", chance: 0.25 },
-        "steam": { elem2: "scp_009", chance: 0.15 },
+        "steam": { elem2: "red_steam", chance: 0.15 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_water": { elem2: "scp_009", chance: 0.25 },
         "tadpole": { elem2: "scp_009_meat", chance: 0.15 },
@@ -5249,19 +5250,19 @@ elements.scp_261 = {
                             if (isEmpty(x, y)) {
                                 if (Math.random() < 0.5) {
                                     createPixel("packet", x, y)
-                                    if (Math.random() < 0.06666) {
+                                    if (Math.random() < 0.06) {
                                         pixelMap[x][y].has = "crumb"
                                     }
-                                    else if (Math.random() < 0.23333) {
+                                    else if (Math.random() < 0.25) {
                                         pixelMap[x][y].has = "toast"
                                     }
                                     else if (Math.random() < 0.4) {
                                         pixelMap[x][y].has = "bread"
                                     }
-                                    else if (Math.random() < 0.56666) {
+                                    else if (Math.random() < 0.56) {
                                         pixelMap[x][y].has = "cooked_meat"
                                     }
-                                    else if (Math.random() < 0.73333) {
+                                    else if (Math.random() < 0.75) {
                                         pixelMap[x][y].has = "chocolate"
                                     }
                                     else {
