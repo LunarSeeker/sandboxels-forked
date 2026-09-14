@@ -3919,10 +3919,11 @@ elements.scp_063 = {
     category: "scp",
     color: ["#CAE8E9", "#CCEAED", "#A2CFD4", "#A6D6D8", "#8CCBD7"],
     darkText: true,
-    dead_stuff: ["dead_bug", "meat", "cooked_meat", "rotten_meat", "cured_meat", "dead_plant", "frozen_plant"],
+    dead_stuff: ["dead_bug", "meat", "cooked_meat", "rotten_meat", "cancer", "cured_meat", "dead_plant", "frozen_plant", "zombie_body", "zombie_head"],
     density: 1052,
+    ignore: ["wall", "black_hole", "gray_goo", "midas_touch", "blood", "skin", "hair", "strange_matter", "sun", "light", "smoke", "fire", "tree_branch", "wood"],
     state: "solid",
-    stateHigh: ["molten_plastic", "molten_plastic", "fire", "dioxin"],
+    stateHigh: ["molten_plastic", "dioxin"],
     tempHigh: 190,
     tick: function (pixel) {
         for (i = 0; i < adjacentCoords.length; i++) {
@@ -3931,13 +3932,15 @@ elements.scp_063 = {
             var checkPosY = pixel.y + adjacentCoords[i][1]
             if (!isEmpty(checkPosX, checkPosY, true)) {
                 var newElement = pixelMap[checkPosX][checkPosY].element
-                if ((elements[newElement].category !== "life" && elements[newElement].category !== "scp") || elements.scp_063.dead_stuff.indexOf(newElement) !== -1) {
-                    if (typeof (pixel[newElement]) === "undefined") {
-                        pixel[newElement] = 0
+                if (elements.scp_063.ignore.indexOf(newElement) === -1) {
+                    if ((elements[newElement].category !== "life" && elements[newElement].category !== "scp") || elements.scp_063.dead_stuff.indexOf(newElement) !== -1) {
+                        if (typeof (pixel[newElement]) === "undefined") {
+                            pixel[newElement] = 0
+                        };
+                        pixel[newElement]++
+                        deletePixel(checkPosX, checkPosY)
                     };
-                    pixel[newElement]++
-                    deletePixel(checkPosX, checkPosY)
-                };
+                }
             };
             //};
         };
