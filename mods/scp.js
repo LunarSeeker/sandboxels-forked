@@ -107,58 +107,58 @@ elements.body.reactions.level_0 = {
             deletePixel(pixel2.x, pixel2.y)
         }
     }
-},
-    elements.body.reactions.level_1 = {
-        chance: 0.5, func: function (pixel1, pixel2) {
-            if (!pixel1.level || pixel1.level > pixel2.level) {
-                pixel1.level = pixel2.level
-                deletePixel(pixel2.x, pixel2.y)
-            }
+}
+elements.body.reactions.level_1 = {
+    chance: 0.5, func: function (pixel1, pixel2) {
+        if (!pixel1.level || pixel1.level > pixel2.level) {
+            pixel1.level = pixel2.level
+            deletePixel(pixel2.x, pixel2.y)
         }
-    },
-    elements.body.reactions.level_2 = {
-        chance: 0.5, func: function (pixel1, pixel2) {
-            if (!pixel1.level || pixel1.level > pixel2.level) {
-                pixel1.level = pixel2.level
-                deletePixel(pixel2.x, pixel2.y)
-            }
+    }
+}
+elements.body.reactions.level_2 = {
+    chance: 0.5, func: function (pixel1, pixel2) {
+        if (!pixel1.level || pixel1.level > pixel2.level) {
+            pixel1.level = pixel2.level
+            deletePixel(pixel2.x, pixel2.y)
         }
-    },
-    elements.body.reactions.level_3 = {
-        chance: 0.5, func: function (pixel1, pixel2) {
-            if (!pixel1.level || pixel1.level > pixel2.level) {
-                pixel1.level = pixel2.level
-                deletePixel(pixel2.x, pixel2.y)
-            }
+    }
+}
+elements.body.reactions.level_3 = {
+    chance: 0.5, func: function (pixel1, pixel2) {
+        if (!pixel1.level || pixel1.level > pixel2.level) {
+            pixel1.level = pixel2.level
+            deletePixel(pixel2.x, pixel2.y)
         }
-    },
-    elements.body.reactions.level_4 = {
-        chance: 0.5, func: function (pixel1, pixel2) {
-            if (!pixel1.level || pixel1.level > pixel2.level) {
-                pixel1.level = pixel2.level
-                deletePixel(pixel2.x, pixel2.y)
-            }
+    }
+}
+elements.body.reactions.level_4 = {
+    chance: 0.5, func: function (pixel1, pixel2) {
+        if (!pixel1.level || pixel1.level > pixel2.level) {
+            pixel1.level = pixel2.level
+            deletePixel(pixel2.x, pixel2.y)
         }
-    },
-    elements.body.reactions.level_5 = {
-        chance: 0.5, func: function (pixel1, pixel2) {
-            if (!pixel1.level || pixel1.level > pixel2.level) {
-                pixel1.level = pixel2.level
-                deletePixel(pixel2.x, pixel2.y)
-            }
+    }
+}
+elements.body.reactions.level_5 = {
+    chance: 0.5, func: function (pixel1, pixel2) {
+        if (!pixel1.level || pixel1.level > pixel2.level) {
+            pixel1.level = pixel2.level
+            deletePixel(pixel2.x, pixel2.y)
         }
-    },
+    }
+}
 
-    hyperCoords = [
-        [0, 1],
-        [0, 1],
-        [1, -1],
-        [-1, -1],
-        [1, 0],
-        [-1, 0],
-        [1, 0],
-        [-1, 0]
-    ]
+hyperCoords = [
+    [0, 1],
+    [0, 1],
+    [1, -1],
+    [-1, -1],
+    [1, 0],
+    [-1, 0],
+    [1, 0],
+    [-1, 0]
+]
 
 destroyCoords = [
     [0, 1],
@@ -169,22 +169,6 @@ destroyCoords = [
     [-1, 0],
     [-1, 0]
 ]
-
-elements.metanarrative_ontokinetic_hume_stabilizing_anomaly_neutralizing_all_powerful_eraser = {
-    color: ["#FDB5FF", "#FDB5FF", "#D397D5", "#A979AA", "#7F5B80", "#543C55", "#2A1E2B", "#000000", "#000000"],
-    behavior: [
-        "DL|DL|DL",
-        "DL|DL|DL",
-        "DL|DL|DL",
-    ],
-    tool: function (pixel) {
-        pixel.del = true
-    },
-    category: "tools",
-    canPlace: false,
-    desc: "Use on something to truly delete it.",
-    hidden: true,
-}
 
 currentLevel = 0
 elements.keycard_terminal = {
@@ -522,7 +506,7 @@ elements.site_nuke = {
     behavior: behaviors.WALL,
     behaviorOn: [
         "XX|XX|XX",
-        "XX|EX:300>plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,radiation,radiation,radiation,rad_steam,electric,electric,electric|XX",
+        "XX|EX:300>plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,radiation,radiation,radiation,rad_steam,electric,electric,electric|XX",
         "M2|M1|M2",
     ],
     conduct: 1,
@@ -852,10 +836,7 @@ elements.scp_001_sdl = {
         }
     },
     tool: function (pixel) {
-        if (pixel.element === "light") {
-            deletePixel(pixel.x, pixel.y)
-        }
-        if (pixel.element === "scp_001_light") {
+        if (pixel.element === "light" || pixel.element === "scp_001_light") {
             deletePixel(pixel.x, pixel.y)
         }
     },
@@ -906,10 +887,7 @@ elements.scp_001_light = {
                     newPixel.temp += 1
                     pixelTempCheck(newPixel)
                 }
-                if (!elements.light.reactions[newPixel.element]) {
-                    pixel.color = newPixel.color
-                }
-                else if (!elements.scp_001_light.reactions[newPixel.element]) {
+                if (!elements.scp_001_light.reactions[newPixel.element]) {
                     pixel.color = newPixel.color
                 }
             }
@@ -1814,14 +1792,8 @@ elements.head_008 = {
             }
         }
 
-        if (isEmpty(pixel.x, pixel.y - 1, true) && Math.random() < 0.005) {
-            createPixel("scp_008", pixel.x, pixel.y)
-        }
-        if (isEmpty(pixel.x + 1, pixel.y, true) && Math.random() < 0.01) {
+        if (isEmpty(pixel.x + 1, pixel.y, true) && Math.random() < 0.005) {
             createPixel("scp_008", pixel.x + 1, pixel.y)
-        }
-        if (isEmpty(pixel.x - 1, pixel.y, true) && Math.random() < 0.01) {
-            createPixel("scp_008", pixel.x - 1, pixel.y)
         }
 
         // Find the body
@@ -1979,14 +1951,14 @@ elements.infected_blood = {
         "epsom_salt": { elem1: "infection", chance: 0.3 }
     },
     viscosity: 15,
-    tempHigh: 124.55,
-    stateHigh: ["scp_008", "scp_008", "scp_008", "salt", "oxygen"],
     tempLow: 0,
+    tempHigh: 125,
     stateLow: ["scp_008", "infection"],
-    category: "liquids",
-    hidden: true,
+    stateHigh: ["scp_008", "scp_008", "scp_008", "salt", "oxygen"],
     state: "liquid",
+    hidden: true,
     density: 1060,
+    category: "liquids",
     stain: 0.05
 }
 
@@ -2027,6 +1999,7 @@ elements.scp_009 = {
         "meat": { elem2: "scp_009_meat", chance: 0.15 },
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
+        "plant": { elem2: "red_plant" },
         "pool_water": { elem2: "scp_009", chance: 0.5 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2038,7 +2011,7 @@ elements.scp_009 = {
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "snow": { elem2: "red_snow", chance: 0.4 },
         "soda": { elem2: "scp_009", chance: 0.25 },
-        "steam": { elem2: "scp_009", chance: 0.15 },
+        "steam": { elem2: "red_steam", chance: 0.15 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_water": { elem2: "scp_009", chance: 0.25 },
         "tadpole": { elem2: "scp_009_meat", chance: 0.15 },
@@ -3936,22 +3909,39 @@ elements.redacted = {
 
 elements.scp_063 = {
     color: ["#CAE8E9", "#CCEAED", "#A2CFD4", "#A6D6D8", "#8CCBD7"],
-    name: "SCP-063",
     behavior: [
         "XX|DL|XX",
         "DL|XX|DL",
         "M2%80 AND DL|M1 AND DL|M2%80 AND DL",
     ],
-    ignore: ["scp_063", "head_049", "body_049", "head_096", "body_096", "head_049_1", "body_049_1", "head_008", "body_008", "head_012_1", "body_012_1", "scp_999", "scp_682", "head", "body", "plant", "grass", "algae", "cell", "cancer", "worm", "flea", "termite", "ant", "spider", "fly", "firefly", "bee", "stink_bug", "human", "bird", "rat", "frog", "tadpole", "fish", "slug", "snail", "sapling", "evergreen", "cactus", "kelp", "coral", "pistil", "tree_branch", "vine", "bamboo_plant", "mushroom_stalk", "mushroom_gill", "mushroom_cap", "lichen", "homunculus", "root", "hyphae", "skin", "porcelain"],
-    category: "scp",
-    tempHigh: 190,
-    stateHigh: ["molten_plastic", "molten_plastic", "fire", "dioxin"],
     burn: 10,
-    burnTime: 300,
     burnInto: "dioxin",
-    state: "solid",
+    burnTime: 300,
+    category: "scp",
+    darkText: true,
+    dead_stuff: ["dead_bug", "meat", "cooked_meat", "rotten_meat", "cured_meat", "dead_plant", "frozen_plant"],
     density: 1052,
-    darkText: true
+    state: "solid",
+    stateHigh: ["molten_plastic", "molten_plastic", "fire", "dioxin"],
+    tempHigh: 190,
+    tick: function (pixel) {
+        for (i = 0; i < adjacentCoords.length; i++) {
+            //if (Math.random() < 0.5) {
+            var checkPosX = pixel.x + adjacentCoords[i][0]
+            var checkPosY = pixel.y + adjacentCoords[i][1]
+            if (!isEmpty(checkPosX, checkPosY, true)) {
+                var newElement = pixelMap[checkPosX][checkPosY].element
+                if ((elements[newElement].category !== "life" && elements[newElement].category !== "scp") || elements.scp_063.dead_stuff.indexOf(newElement) !== -1) {
+                    if (typeof (pixel[newElement]) === "undefined") {
+                        pixel[newElement] = 0
+                    };
+                    pixel[newElement]++
+                    deletePixel(checkPosX, checkPosY)
+                };
+            };
+            //};
+        };
+    },
 }
 
 elements.scp_096 = {
@@ -5260,19 +5250,19 @@ elements.scp_261 = {
                             if (isEmpty(x, y)) {
                                 if (Math.random() < 0.5) {
                                     createPixel("packet", x, y)
-                                    if (Math.random() < 0.06666) {
+                                    if (Math.random() < 0.06) {
                                         pixelMap[x][y].has = "crumb"
                                     }
-                                    else if (Math.random() < 0.23333) {
+                                    else if (Math.random() < 0.25) {
                                         pixelMap[x][y].has = "toast"
                                     }
                                     else if (Math.random() < 0.4) {
                                         pixelMap[x][y].has = "bread"
                                     }
-                                    else if (Math.random() < 0.56666) {
+                                    else if (Math.random() < 0.56) {
                                         pixelMap[x][y].has = "cooked_meat"
                                     }
-                                    else if (Math.random() < 0.73333) {
+                                    else if (Math.random() < 0.75) {
                                         pixelMap[x][y].has = "chocolate"
                                     }
                                     else {
