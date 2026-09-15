@@ -1,50 +1,6 @@
 /* by nekonico */
 
 window.addEventListener("load", () => {
-    document.getElementById("elementButton-scp_001_light")?.remove()
-    document.getElementById("elementButton-melted_head")?.remove()
-    document.getElementById("elementButton-melted_body")?.remove()
-    document.getElementById("elementButton-melted_animal")?.remove()
-    document.getElementById("elementButton-melted_plant")?.remove()
-    document.getElementById("elementButton-fused_organism")?.remove()
-    document.getElementById("elementButton-head_008")?.remove()
-    document.getElementById("elementButton-body_008")?.remove()
-    document.getElementById("elementButton-head_012_1")?.remove()
-    document.getElementById("elementButton-body_012_1")?.remove()
-    document.getElementById("elementButton-complete_012")?.remove()
-    document.getElementById("elementButton-head_035")?.remove()
-    document.getElementById("elementButton-body_035")?.remove()
-    document.getElementById("elementButton-head_049")?.remove()
-    document.getElementById("elementButton-body_049")?.remove()
-    document.getElementById("elementButton-head_049_1")?.remove()
-    document.getElementById("elementButton-body_049_1")?.remove()
-    document.getElementById("elementButton-head_173")?.remove()
-    document.getElementById("elementButton-body_173")?.remove()
-    document.getElementById("elementButton-scp_229")?.remove()
-    document.getElementById("elementButton-packet")?.remove()
-    document.getElementById("elementButton-can")?.remove()
-    document.getElementById("elementButton-head_457")?.remove()
-    document.getElementById("elementButton-body_457")?.remove()
-    document.getElementById("elementButton-head_1000")?.remove()
-    document.getElementById("elementButton-body_1000")?.remove()
-    document.getElementById("elementButton-head_1015")?.remove()
-    document.getElementById("elementButton-body_1015")?.remove()
-    document.getElementById("elementButton-penny_converter")?.remove()
-    document.getElementById("elementButton-infected_blood")?.remove()
-    document.getElementById("elementButton-infected_meat")?.remove()
-    document.getElementById("elementButton-frozen_infected_meat")?.remove()
-    document.getElementById("elementButton-red_snow")?.remove()
-    document.getElementById("elementButton-packed_red_snow")?.remove()
-    document.getElementById("elementButton-red_snow_cloud")?.remove()
-    document.getElementById("elementButton-red_plant")?.remove()
-    document.getElementById("elementButton-scp_009_meat")?.remove()
-    document.getElementById("elementButton-scp_009_plant")?.remove()
-    document.getElementById("elementButton-red_cloud")?.remove()
-    document.getElementById("elementButton-red_rain")?.remove()
-    document.getElementById("elementButton-head_096")?.remove()
-    document.getElementById("elementButton-body_096")?.remove()
-    document.getElementById("elementButton-redacted")?.remove()
-
     vendingNormD = Object.keys(elements).filter(function (e) {
         return elements[e].state == "liquid" && elements[e].movable == true && elements[e].category != "scp" && (elements[e].category == "food" || (elements[e].id == elements.water.id || elements[e].id == elements.sugar_water.id || elements[e].id == elements.seltzer.id || elements[e].id == elements.dirty_water.id || elements[e].id == elements.slime.id || elements[e].id == elements.neutral_acid.id || elements[e].id == elements.blood.id || elements[e].id == elements.sap.id || elements[e].id == elements.dye.id) || elements[e].isFood) && !elements[e].tool
     })
@@ -1405,7 +1361,6 @@ elements.fused_organism = {
             var y = pixel.y + coords[1]
             if (!isEmpty(x, y) && !outOfBounds(x, y) && Math.random() > 0.05) {
                 var shatter = pixelMap[x][y]
-                let old = shatter.element
                 if (shatter.element == "glass" || shatter.element == "rad_glass" || shatter.element == "stained_glass") {
                     breakPixel(shatter)
                 }
@@ -1490,53 +1445,52 @@ elements.fused_organism = {
 }
 
 elements.scp_008 = {
-    name: "SCP-008",
-    color: "#11111f",
     behavior: [
         "M2|M1|M2",
-        "M1|XX|M1",
+        "M1|DL%1|M1",
         "M2|M1|M2",
     ],
-    reactions: {
-        "head": { elem1: null, elem2: "head_008", chance: 0.5 },
-        "cactus": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
-        "kelp": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
-        "algae": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
-        "pistil": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
-        "sapling": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
-        "lichen": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
-        "vine": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
-        "plant": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
-        "grass": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
-        "evergreen": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
-        "tree_branch": { elem1: null, elem2: ["wood", "wood", "wood", "wood", "wood", "wood", "dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
-        "skin": { elem1: null, elem2: "infected_meat", chance: 0.3 },
-        "blood": { elem1: null, elem2: "infected_blood", chance: 0.6 },
-        "meat": { elem1: null, elem2: "infected_meat", chance: 0.4 },
-        "rotten_meat": { elem1: null, elem2: "infected_meat", chance: 0.5 },
-        "frozen_meat": { elem1: null, elem2: "frozen_infected_meat", chance: 0.3 },
-        "frog": { elem2: ["scp_008", "infected_meat", "infected_meat"], chance: 0.5 },
-        "bird": { elem2: ["scp_008", "infected_meat", "infected_meat", "feather"], chance: 0.5 },
-        "ant": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
-        "fly": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
-        "spider": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
-        "worm": { elem2: ["scp_008", "dead_bug", "slime"], chance: 0.5 },
-        "bee": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
-        "fish": { elem2: ["scp_008", "infected_meat", "infected_meat"], chance: 0.5 },
-        "rat": { elem2: ["scp_008", "infected_meat", "infected_meat", "infected_meat"], chance: 0.5 },
-        "firefly": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
-        "dead_bug": { elem2: ["scp_008", "scp_008", "calcium"], chance: 0.0025 },
-        "chlorine": { elem1: null, chance: 0.001 },
-        "liquid_chlorine": { elem1: null, chance: 0.001 },
-        "light": { elem1: null, chance: 0.001 },
-    },
-    tempHigh: 750,
-    stateHigh: null,
-    tempLow: -100,
-    stateLow: "frozen_008",
     category: "scp",
+    color: "#11111f",
+    density: 600,
     state: "gas",
-    density: 100,
+    stateHigh: null,
+    stateLow: "frozen_008",
+    tempHigh: 750,
+    tempLow: -100,
+    reactions: {
+        "algae": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
+        "ant": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
+        "bee": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
+        "bird": { elem2: ["scp_008", "infected_meat", "infected_meat", "feather"], chance: 0.5 },
+        "blood": { elem1: null, elem2: "infected_blood", chance: 0.6 },
+        "cactus": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
+        "chlorine": { elem1: null, chance: 0.001 },
+        "dead_bug": { elem2: ["scp_008", "scp_008", "calcium"], chance: 0.0025 },
+        "evergreen": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
+        "firefly": { elem2: "scp_008", chance: 0.5 },
+        "fish": { elem2: ["scp_008", "infected_meat", "infected_meat"], chance: 0.5 },
+        "fly": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
+        "frog": { elem2: ["scp_008", "infected_meat", "infected_meat"], chance: 0.5 },
+        "frozen_meat": { elem1: null, elem2: "frozen_infected_meat", chance: 0.3 },
+        "grass": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
+        "head": { elem1: null, elem2: "head_008", chance: 0.5 },
+        "kelp": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
+        "lichen": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
+        "light": { elem1: null, chance: 0.001 },
+        "liquid_chlorine": { elem1: null, chance: 0.001 },
+        "meat": { elem1: null, elem2: "infected_meat", chance: 0.4 },
+        "pistil": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
+        "plant": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
+        "rat": { elem2: ["scp_008", "infected_meat", "infected_meat", "infected_meat"], chance: 0.5 },
+        "rotten_meat": { elem1: null, elem2: "infected_meat", chance: 0.5 },
+        "sapling": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.2 },
+        "skin": { elem1: null, elem2: "infected_meat", chance: 0.3 },
+        "spider": { elem2: ["scp_008", "dead_bug", "dead_bug"], chance: 0.5 },
+        "tree_branch": { elem1: null, elem2: ["wood", "wood", "wood", "wood", "wood", "wood", "dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
+        "vine": { elem1: null, elem2: ["dead_plant", "dead_plant", "scp_008"], chance: 0.4 },
+        "worm": { elem2: ["scp_008", "dead_bug", "slime"], chance: 0.5 },
+    },
 }
 
 elements.frozen_008 = {
@@ -1792,10 +1746,6 @@ elements.head_008 = {
             }
         }
 
-        if (isEmpty(pixel.x + 1, pixel.y, true) && Math.random() < 0.005) {
-            createPixel("scp_008", pixel.x + 1, pixel.y)
-        }
-
         // Find the body
         if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_008") {
             var body = pixelMap[pixel.x][pixel.y + 1]
@@ -1984,7 +1934,7 @@ elements.scp_009 = {
         "body": { elem2: "scp_009_meat", chance: 0.04 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "coffee": { elem2: "scp_009", chance: 0.25 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009_plant", chance: 0.025 },
         "dirty_ice": { elem2: "scp_009", chance: 0.25 },
         "dirty_water": { elem2: "scp_009", chance: 0.4 },
         "fish": { elem2: "scp_009_meat", chance: 0.15 },
@@ -1999,7 +1949,7 @@ elements.scp_009 = {
         "meat": { elem2: "scp_009_meat", chance: 0.15 },
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
-        "plant": { elem2: "red_plant" },
+        "plant": { elem2: "scp_009_plant" },
         "pool_water": { elem2: "scp_009", chance: 0.5 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2069,7 +2019,7 @@ elements.scp_009_meat = {
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009_plant", chance: 0.025 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2125,7 +2075,7 @@ elements.scp_009_plant = {
         "body": { elem2: "scp_009_meat", chance: 0.004 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "coffee": { elem2: "scp_009", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009_plant", chance: 0.025 },
         "dirty_ice": { elem2: "scp_009", chance: 0.25 },
         "dirty_water": { elem2: "scp_009", chance: 0.025 },
         "fish": { elem2: "scp_009_meat", chance: 0.015 },
@@ -2140,7 +2090,7 @@ elements.scp_009_plant = {
         "meat": { elem2: "scp_009_meat", chance: 0.015 },
         "milk": { elem2: "scp_009", chance: 0.025 },
         "neutral_acid": { elem2: "scp_009", chance: 0.025 },
-        "plant": { elem2: "red_plant" },
+        "plant": { elem2: "scp_009_plant" },
         "pool_water": { elem2: "scp_009", chance: 0.025 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2162,74 +2112,18 @@ elements.scp_009_plant = {
         "yolk": { elem2: "scp_009" },
     },
     behavior: behaviors.WALL,
-    category: "scp",
-    tempHigh: 300,
-    stateHigh: "fire",
     burn: 85,
     burnTime: 45,
-    temp: 2.66,
-    tempLow: -7,
-    stateLow: "red_plant",
-    state: "solid",
-    density: 1050,
-    hazard: true,
-    hidden: true,
-}
-
-elements.red_plant = {
-    color: ["#AA3527", "#AA3227", "#AA2C27", "#A11D1D"],
-    reactions: {
-        "rain_cloud": { elem2: "red_rain", chance: 0.4 },
-        "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
-        "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
-        "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
-        "salt_ice": { elem2: "scp_009", chance: 0.25 },
-        "sugar_ice": { elem2: "scp_009", chance: 0.25 },
-        "juice_ice": { elem2: "scp_009", chance: 0.25 },
-        "dirty_ice": { elem2: "scp_009", chance: 0.25 },
-        "ice": { elem2: "scp_009", chance: 0.25 },
-        "water": { elem2: "scp_009", chance: 0.025 },
-        "steam": { elem2: "scp_009", chance: 0.015 },
-        "blood": { elem2: "scp_009", chance: 0.025 },
-        "blood_ice": { elem2: "scp_009", chance: 0.25 },
-        "antibody": { elem2: "scp_009", chance: 0.025 },
-        "salt_water": { elem2: "scp_009", chance: 0.025 },
-        "sugar_water": { elem2: "scp_009", chance: 0.025 },
-        "dirty_water": { elem2: "scp_009", chance: 0.025 },
-        "pool_water": { elem2: "scp_009", chance: 0.025 },
-        "slush": { elem2: "scp_009", chance: 0.025 },
-        "seltzer": { elem2: "scp_009", chance: 0.025 },
-        "juice": { elem2: "scp_009", chance: 0.025 },
-        "soda": { elem2: "scp_009", chance: 0.025 },
-        "milk": { elem2: "scp_009", chance: 0.025 },
-        "slime": { elem2: "scp_009", chance: 0.025 },
-        "tea": { elem2: "scp_009", chance: 0.025 },
-        "coffee": { elem2: "scp_009", chance: 0.025 },
-        "neutral_acid": { elem2: "scp_009", chance: 0.025 },
-        "infection": { elem2: "scp_009", chance: 0.025 },
-        "meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "skin": { elem2: "scp_009_meat", chance: 0.0075 },
-        "body": { elem2: "scp_009_meat", chance: 0.004 },
-        "head": { elem2: "scp_009_meat", chance: 0.005 },
-        "frozen_meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "fish": { elem2: "scp_009_meat", chance: 0.015 },
-        "bird": { elem2: "scp_009_meat", chance: 0.015 },
-        "frog": { elem2: "scp_009_meat", chance: 0.015 },
-        "tadpole": { elem2: "scp_009_meat", chance: 0.015 },
-    },
-    behavior: [
-        "XX|XX|XX",
-        "XX|XX|XX",
-        "M2|M1|M2",
-    ],
     category: "scp",
-    tempHigh: 2,
-    stateHigh: "scp_009_plant",
-    state: "solid",
     density: 1050,
     hazard: true,
     hidden: true,
+    state: "solid",
+    stateHigh: "fire",
+    stateLow: "red_water",
+    temp: 2,
+    tempHigh: 300,
+    tempLow: -7,
 }
 
 elements.red_water = {
@@ -2240,7 +2134,7 @@ elements.red_water = {
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009_plant", chance: 0.025 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2314,7 +2208,7 @@ elements.red_steam = {
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009_plant", chance: 0.025 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2371,7 +2265,7 @@ elements.red_cloud = {
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009_plant", chance: 0.025 },
         "water": { elem2: "scp_009" },
         "blood": { elem2: "scp_009" },
         "blood_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2419,40 +2313,6 @@ elements.red_rain = {
         "XX|CH:red_water%0.05|M1%2.5 AND BO",
         "CR:electric%0.05|CR:electric%0.05|CR:electric%0.05",
     ],
-    reactions: {
-        "rain_cloud": { elem2: "red_rain", chance: 0.4 },
-        "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
-        "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
-        "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
-        "water": { elem2: "scp_009" },
-        "blood": { elem2: "scp_009" },
-        "blood_ice": { elem2: "scp_009", chance: 0.25 },
-        "antibody": { elem2: "scp_009" },
-        "salt_water": { elem2: "scp_009" },
-        "sugar_water": { elem2: "scp_009" },
-        "dirty_water": { elem2: "scp_009" },
-        "pool_water": { elem2: "scp_009" },
-        "slush": { elem2: "scp_009" },
-        "seltzer": { elem2: "scp_009" },
-        "juice": { elem2: "scp_009" },
-        "soda": { elem2: "scp_009" },
-        "milk": { elem2: "scp_009" },
-        "slime": { elem2: "scp_009" },
-        "tea": { elem2: "scp_009" },
-        "coffee": { elem2: "scp_009" },
-        "neutral_acid": { elem2: "scp_009" },
-        "infection": { elem2: "scp_009" },
-        "meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "skin": { elem2: "scp_009_meat", chance: 0.0075 },
-        "body": { elem2: "scp_009_meat", chance: 0.004 },
-        "head": { elem2: "scp_009_meat", chance: 0.005 },
-        "frozen_meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "fish": { elem2: "scp_009_meat", chance: 0.015 },
-        "bird": { elem2: "scp_009_meat", chance: 0.015 },
-        "frog": { elem2: "scp_009_meat", chance: 0.015 },
-        "tadpole": { elem2: "scp_009_meat", chance: 0.015 },
-    },
     category: "scp",
     temp: -70,
     tempLow: -100,
@@ -2482,42 +2342,11 @@ elements.red_snow_cloud = {
     density: 0.55,
     ignoreAir: true,
     conduct: 0.01,
-    reactions: {
-        "rain_cloud": { elem2: "red_rain", chance: 0.4 },
-        "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
-        "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
-        "frozen_plant": { elem2: "scp_009_plant", chance: 0.025 },
-        "dead_plant": { elem2: "red_plant", chance: 0.025 },
-        "water": { elem2: "scp_009" },
-        "blood": { elem2: "scp_009" },
-        "blood_ice": { elem2: "scp_009", chance: 0.25 },
-        "antibody": { elem2: "scp_009" },
-        "salt_water": { elem2: "scp_009" },
-        "sugar_water": { elem2: "scp_009" },
-        "dirty_water": { elem2: "scp_009" },
-        "pool_water": { elem2: "scp_009" },
-        "slush": { elem2: "scp_009" },
-        "seltzer": { elem2: "scp_009" },
-        "juice": { elem2: "scp_009" },
-        "soda": { elem2: "scp_009" },
-        "milk": { elem2: "scp_009" },
-        "slime": { elem2: "scp_009" },
-        "tea": { elem2: "scp_009" },
-        "coffee": { elem2: "scp_009" },
-        "neutral_acid": { elem2: "scp_009" },
-        "infection": { elem2: "scp_009" },
-        "meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "skin": { elem2: "scp_009_meat", chance: 0.0075 },
-        "body": { elem2: "scp_009_meat", chance: 0.004 },
-        "head": { elem2: "scp_009_meat", chance: 0.005 },
-        "frozen_meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "fish": { elem2: "scp_009_meat", chance: 0.015 },
-        "bird": { elem2: "scp_009_meat", chance: 0.015 },
-        "frog": { elem2: "scp_009_meat", chance: 0.015 },
-        "tadpole": { elem2: "scp_009_meat", chance: 0.015 },
-    },
     hidden: true,
 }
+
+elements.red_rain.reactions = elements.red_cloud.reactions
+elements.red_snow_cloud.reactions = elements.red_cloud.reactions
 
 elements.scp_012 = {
     name: "SCP-012",
@@ -2569,11 +2398,11 @@ elements.scp_012 = {
     },
     category: "scp",
     tempHigh: 278,
-    stateHigh: ["ash", "ash", "ash", "smoke", "smoke", "fire"],
     burn: 15,
-    burnTime: 150,
     burnInto: ["ash", "ash", "ash", "smoke", "smoke", "smoke"],
+    burnTime: 150,
     state: "solid",
+    stateHigh: ["ash", "ash", "ash", "smoke", "smoke", "fire"],
     density: 1201
 }
 
@@ -2950,7 +2779,6 @@ elements.scp_035 = {
             var y = pixel.y + coords[1]
             if (!isEmpty(x, y) && !outOfBounds(x, y) && Math.random() > 0.8) {
                 var pixel2 = pixelMap[x][y]
-                let old = pixel2.element
                 if (pixel2.element == "head_008" || pixel2.element == "head" || pixel2.element == "head_1000") {
                     changePixel(pixel2, "head_035")
                     deletePixel(pixel.x, pixel.y)
@@ -2969,24 +2797,24 @@ elements.scp_035 = {
 }
 
 elements.body_035 = {
-    color: ["#069469", "#047e99", "#7f5fb0"],
-    name: "SCP-035",
+    breakInto: ["blood", "meat", "bone"],
+    burn: 10,
+    burnInto: "cooked_meat",
+    burnTime: 250,
     category: "life",
-    hidden: true,
-    density: 1500,
-    state: "solid",
+    color: ["#069469", "#047e99", "#7f5fb0"],
     conduct: .05,
+    density: 1500,
+    forceSaveColor: true,
+    hidden: true,
+    name: "SCP-035",
+    pickElement: "human",
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
     temp: 37,
     tempHigh: 150,
-    stateHigh: "cooked_meat",
     tempLow: -30,
-    stateLow: "frozen_meat",
-    burn: 10,
-    burnTime: 250,
-    burnInto: "cooked_meat",
-    breakInto: ["blood", "meat", "bone"],
-    forceSaveColor: true,
-    pickElement: "human",
     reactions: {
         "cancer": { elem1: "cancer", chance: 0.005 },
         "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
@@ -4415,7 +4243,6 @@ elements.head_096 = {
                     var y = pixel.y + coords[1]
                     if (!isEmpty(x, y) && !outOfBounds(x, y)) {
                         var pixel2 = pixelMap[x][y]
-                        let old = pixel2.element
                         if (isBreakable(pixel2) && pixel2.target) {
                             // times 0.25 if not shiftDown else 1
                             if (Math.random() < (1.5 - (elements[pixel.element].hardness || 0)) && Math.random() > 0.5) {
@@ -4997,7 +4824,6 @@ elements.scp_229 = {
             var y = pixel.y + coords[1]
             if (!isEmpty(x, y) && !outOfBounds(x, y) && pixel.nCD == undefined) {
                 var electric = pixelMap[x][y]
-                let old = electric.element
                 if (electric.element == "brain" || electric.element == "access_door" || electric.element == "keycard_terminal" || electric.element == "level_4" || electric.element == "level_5" || electric.element == "thunder_cloud" || electric.element == "scp_804" && electric.active == true || elements[electric.element].category == "logic" || elements[electric.element].category == "nervous system" && Math.random() > 0.5 || electric.element == "fish" || electric.element == "frog" || electric.element == "rat" || electric.element == "bird" || electric.element == "head" || electric.element == "head_035" || electric.element == "head_1000" || electric.element == "head_008" || elements[electric.element].category == "machines" && Math.random() > 0.5 || electric.element == "battery" || electric.element == "electric" || electric.element == "lightning" || electric.element == "malware" || electric.element == "gray_goo") {
                     deletePixel(electric.x, electric.y)
                     createPixel("scp_229", electric.x, electric.y)
@@ -5059,7 +4885,6 @@ elements.scp_236 = {
                 var y = pixel.y + coords[1]
                 if (!isEmpty(x, y) && !outOfBounds(x, y)) {
                     var pixel2 = pixelMap[x][y]
-                    let old = pixel2.element
                     if (Math.random() < 0.0125 && (elements[pixel2.element].category == "life" || elements[pixel2.element].category == "food" || pixel2.element == "wood" || pixel2.element == "straw" || pixel2.element == "paper" || pixel2.element == "cloth" || pixel2.element == "sponge" || pixel2.element == "bamboo" || pixel2.element == "amber" || pixel2.element == "skin" || pixel2.element == "particleboard" || pixel2.element == "hair" || pixel2.element == "udder")) {
                         if (Math.random() < (1 - (elements[pixel2.element].hardness || 0)) / 4 || Math.random() > 0.5) {
                             pixel2.mimic = pixel2.element
@@ -5106,7 +4931,6 @@ elements.scp_236 = {
                 var y = pixel.y + coords[1]
                 if (!isEmpty(x, y) && !outOfBounds(x, y)) {
                     var pixel2 = pixelMap[x][y]
-                    let old = pixel2.element
                     if ((elements[pixel2.element].category == "life" || elements[pixel2.element].category == "food") && Math.random() < 0.025) {
                         if (Math.random() < (1 - (elements[pixel2.element].hardness || 0)) / 4 || Math.random() > 0.5) {
                             pixel2.mimic = pixel2.element
@@ -5424,7 +5248,7 @@ elements.scp_391 = {
     color: ["#D7D0CA", "#D7BFB5", "#B49171", "#986536", "#B49171", "#623613"],
     properties: { "phase": 2, "rising": 0 },
     tick: function (pixel) {
-        if (Math.random() < 0.0000035 && isEmpty(pixel.x, pixel.y + 1)) {
+        if (Math.random() < 0.0005 && isEmpty(pixel.x, pixel.y + 1)) {
             createPixel("diamond", pixel.x, pixel.y + 1)
         }
         var newX = pixel.x
@@ -6167,7 +5991,6 @@ elements.scp_682 = {
                 var y = pixel.y + coords[1]
                 if (!isEmpty(x, y) && !outOfBounds(x, y)) {
                     var pixel2 = pixelMap[x][y]
-                    let old = pixel2.element
                     if (elements[pixel2.element].isFood == true) {
                         if (Math.random() < (1 - (elements[pixel2.element].hardness || 0)) / 4 || Math.random() > 0.5) {
                             deletePixel(pixel2.x, pixel2.y)
@@ -6960,7 +6783,6 @@ elements.scp_1015 = {
             var y = pixel.y + coords[1]
             if (!isEmpty(x, y) && !outOfBounds(x, y) && Math.random() < 0.05) {
                 var pixel2 = pixelMap[x][y]
-                let old = pixel2.element
                 if (elements[pixel2.element].id == elements.body.id) {
                     pixel2.element = "body_1015"
                     deletePixel(pixel.x, pixel.y)
@@ -7456,12 +7278,17 @@ elements.penny_converter = {
 }
 
 elements.scp_1424 = {
-    name: "SCP-1424",
-    color: ["#E7E7E5", "#DCD9D4", "#ACACAC"],
-    temp: -23,
     properties: {
         dir: 1,
     },
+    category: "scp",
+    color: ["#E7E7E5", "#DCD9D4", "#ACACAC"],
+    conduct: .025,
+    cooldown: defaultCooldown,
+    density: 1580,
+    name: "SCP-1424",
+    state: "solid",
+    temp: -23,
     tick: function (pixel) {
         if (tryMove(pixel, pixel.x, pixel.y + 1)) { } // Fall
         doDefaults(pixel)
@@ -7494,102 +7321,10 @@ elements.scp_1424 = {
         if (pixel.temp > -17) { pixel.temp -= 1 }
         else if (pixel.temp < -22) { pixel.temp += 1 }
     },
-    category: "scp",
-    density: 1580,
-    state: "solid",
-    conduct: .025,
-    cooldown: defaultCooldown,
 }
 
-elements.scp_1600 = {
-    color: "#D6CE02",
-    tick: function (pixel) {
-        if (pixel.start === pixelTicks) { return }
-        if (pixel.charge && elements[pixel.element].behaviorOn) {
-            pixelTick(pixel)
-            return
-        }
-        var viscMove = true
-        if (elements[pixel.element].viscosity) {
-            viscMove = (Math.random() * 100) < 100 / Math.pow(elements[pixel.element].viscosity, 0.25)
-        }
-        if (!viscMove) {
-            var move1Spots = [
-                0
-            ]
-        }
-        else {
-            var move1Spots = [
-                1, 0, -1
-            ]
-        }
-        var moved = false
-        for (var i = 0; i < move1Spots.length; i++) {
-            const j = Math.random() * move1Spots.length | 0
-            if (tryMove(pixel, pixel.x + move1Spots[j], pixel.y + 1)) { moved = true; break }
-            move1Spots.splice(j, 1)
-        }
-        if (!moved) {
-            if (viscMove) {
-                if (Math.random() < 0.5) {
-                    if (!tryMove(pixel, pixel.x + 1, pixel.y)) {
-                        tryMove(pixel, pixel.x - 1, pixel.y)
-                    }
-                } else {
-                    if (!tryMove(pixel, pixel.x - 1, pixel.y)) {
-                        tryMove(pixel, pixel.x + 1, pixel.y)
-                    }
-                }
-            }
-        }
-        if (!isEmpty(pixel.x, pixel.y - 1) && !outOfBounds(pixel.x, pixel.y - 1)) {
-            if (elements[pixelMap[pixel.x][pixel.y - 1].element].state != "liquid" && elements[pixelMap[pixel.x][pixel.y - 1].element].state != "gas") {
-                tryMove(pixel, pixel.x, pixel.y - 1)
-            }
-        }
-        doDefaults(pixel)
-    },
-    onCollide: function (_pixelOG, pixel) {
-        if (elements[pixel.element].id === elements.scp_1600.id) { return }
-        if (elements.scp_1600.reactions[pixel.element]) { return }
-        if (elements.scp_1600.ignore.indexOf(pixel.element) !== -1) return
-        if (Math.random() < (elements[pixel.element].hardness || 0.25)) { return }
-        if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
-            var rgb1 = pixel.color.match(/\d+/g)
-            // average the colors
-            if (hex_is_light(RGBToHex(rgb1)) == false) {
-                var rgb2 = elements.cheese.color[1].match(/\d+/g)
-            }
-            else {
-                var rgb2 = elements.cheese.color[0].match(/\d+/g)
-            }
-            var avg = []
-            for (var j = 0; j < rgb1.length; j++) {
-                avg[j] = Math.floor((rgb1[j] * (1 - 0.4)) + (rgb2[j] * 0.6))
-            }
-            changePixel(pixel, "cheese")
-            pixel.color = "rgb(" + avg.join(",") + ")"
-        }
-    },
-    ignore: ["scp_261", "cheese", "gallium", "brass", "zinc", "sulfur", "body_173", "head_173", "body_096", "head_096", "body_049", "head_049", "scp_035", "scp_1015", "scp_999", "scp_063", "scp_055"],
-    canPlace: true,
-    reactions: {
-        "scp_682": { stain2: "#CA8E2F", chance: 0.05, },
-        "gold": { elem2: "cheese", color2: "#FEDF5E" },
-        "gold_coin": { elem2: "cheese", color2: "#FEDF5E" },
-        "molten_gold": { elem2: "cheese", color2: "#FEDF5E" },
-        "rotten_cheese": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#BBA950", "#BBA950", "#CE9F4B"] },
-        "rotten_meat": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#C2995D", "#C2995D", "#CB7C8E"] },
-        "mercury": { elem2: "cheese", color2: "#393430" },
-        "solid_mercury": { elem2: "cheese", color2: "#393430" },
-        "meat": { elem2: "cheese", color2: "#D5975F" },
-        "skin": { elem2: "cheese", color2: "#D5975F" },
-        "head": { elem2: "cheese", color2: "#D5975F" },
-        "cured_meat": { elem2: "cheese", color2: "#D9A256" },
-        "blood": { elem2: "cheese", color2: "#D36324" },
-        "infection": { elem2: "cheese", color2: "#CE4B4A" },
-    },
-    density: 466.51,
-    state: "liquid",
-    category: "scp",
-}
+elements.bless.reactions.black_acid = { elem2: null }
+elements.bless.reactions.red_snow = { elem2: "snow" }
+elements.bless.reactions.red_steam = { elem2: "steam" }
+elements.bless.reactions.red_water = { elem2: "water" }
+elements.bless.reactions.scp_009 = { elem2: "ice" }
