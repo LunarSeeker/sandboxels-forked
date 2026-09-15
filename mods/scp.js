@@ -3886,391 +3886,391 @@ elements.head_096 = {
         "rotten_meat": { elem2: ["infection", "stench", null], chance: 0.5 },
         "ground_meat": { elem2: null, chance: 5 },
     },
-},
+}
 
-    elements.body_096 = {
-        name: "SCP-096",
-        hidden: true,
-        color: ["#ddd2d6", "#C9BCC2", "#b6adb2"],
-        category: "scp",
-        pickElement: "scp_096",
-        hardness: 1,
-        properties: {
-            dead: false,
-            dir: 1,
-            h: 0,
-            panic: 0,
-        },
-        tick: function (pixel) {
-            if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
-                if (!isEmpty(pixel.x, pixel.y - 2, true)) { // Drag head down
-                    var headpixel = pixelMap[pixel.x][pixel.y - 2]
-                    if (headpixel.element == "head_096") {
-                        if (isEmpty(pixel.x, pixel.y - 1)) {
-                            movePixel(pixelMap[pixel.x][pixel.y - 2], pixel.x, pixel.y - 1)
-                        }
-                        else {
-                            swapPixels(pixelMap[pixel.x][pixel.y - 2], pixelMap[pixel.x][pixel.y - 1])
-                        }
+elements.body_096 = {
+    name: "SCP-096",
+    hidden: true,
+    color: ["#ddd2d6", "#C9BCC2", "#b6adb2"],
+    category: "scp",
+    pickElement: "scp_096",
+    hardness: 1,
+    properties: {
+        dead: false,
+        dir: 1,
+        h: 0,
+        panic: 0,
+    },
+    tick: function (pixel) {
+        if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
+            if (!isEmpty(pixel.x, pixel.y - 2, true)) { // Drag head down
+                var headpixel = pixelMap[pixel.x][pixel.y - 2]
+                if (headpixel.element == "head_096") {
+                    if (isEmpty(pixel.x, pixel.y - 1)) {
+                        movePixel(pixelMap[pixel.x][pixel.y - 2], pixel.x, pixel.y - 1)
+                    }
+                    else {
+                        swapPixels(pixelMap[pixel.x][pixel.y - 2], pixelMap[pixel.x][pixel.y - 1])
                     }
                 }
             }
-            doHeat(pixel)
-            doBurning(pixel)
-            doElectricity(pixel)
+        }
+        doHeat(pixel)
+        doBurning(pixel)
+        doElectricity(pixel)
 
-            // Find the head
-            if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element == "head_096") {
-                var head = pixelMap[pixel.x][pixel.y - 1]
+        // Find the head
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element == "head_096") {
+            var head = pixelMap[pixel.x][pixel.y - 1]
+        }
+        else { var head = null }
+        if (pixel.burning) {
+            pixel.panic += 0.1
+            if (head && pixelTicks - pixel.burnStart > 240) {
+                pixel.color = head.color
             }
-            else { var head = null }
-            if (pixel.burning) {
-                pixel.panic += 0.1
-                if (head && pixelTicks - pixel.burnStart > 240) {
-                    pixel.color = head.color
+        }
+        else if (pixel.panic > 0) {
+            pixel.panic -= 0.1
+        }
+        for (var i = 0; i <= width; i++) {
+            for (var j = 0; j <= height; j++) {
+                if (!isEmpty(i, j, true)) {
+                    if (pixelMap[i][j].target == true && (pixelMap[i][j].element == "body" || pixelMap[i][j].element == "head")) {
+                        var targetExist = true
+                        pixel.h = 1
+                        if (pixel.dir != 1 && pixelMap[i][j].x > pixel.x) {
+                            pixel.dir = 1
+                        }
+                        else if (pixel.dir != -1 && pixelMap[i][j].x < pixel.x) {
+                            pixel.dir = -1
+                        }
+                        else if (pixel.dir != 0 && pixelMap[i][j].x == pixel.x) {
+                            pixel.dir = 0
+                        }
+                    }
+                    if (pixelMap[i][j].target == true && pixelMap[i][j].element != "body" && pixelMap[i][j].element != "head") {
+                        delete pixelMap[i][j].target
+                    }
+                }
+                if (i >= width && j >= height && !targetExist && pixel.h != 0) {
+                    pixel.h = 0
                 }
             }
-            else if (pixel.panic > 0) {
-                pixel.panic -= 0.1
-            }
-            for (var i = 0; i <= width; i++) {
-                for (var j = 0; j <= height; j++) {
-                    if (!isEmpty(i, j, true)) {
-                        if (pixelMap[i][j].target == true && (pixelMap[i][j].element == "body" || pixelMap[i][j].element == "head")) {
-                            var targetExist = true
-                            pixel.h = 1
-                            if (pixel.dir != 1 && pixelMap[i][j].x > pixel.x) {
+        }
+        if (pixel.h == 1) {
+            if (Math.random() < 0.95) {
+                let y = Math.random() < 0.5 ? 0 : -1
+                let xDir = Math.random() < 0.5 ? 1 : -1
+                for (let x = 1; x < 200; x++) {
+                    let x2 = pixel.x + (x * xDir)
+                    let y2 = pixel.y + y
+                    if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
+                        let seenPixel = pixelMap[x2][y2]
+                        if (seenPixel.target == true) {
+                            if (pixel.dir != 1 && seenPixel.x > pixel.x + 1) {
                                 pixel.dir = 1
                             }
-                            else if (pixel.dir != -1 && pixelMap[i][j].x < pixel.x) {
+                            else if (pixel.dir != -1 && seenPixel.x < pixel.x - 1) {
                                 pixel.dir = -1
                             }
-                            else if (pixel.dir != 0 && pixelMap[i][j].x == pixel.x) {
+                            else if (seenPixel.x == pixel.x + 1 || seenPixel.x == pixel.x - 1 || seenPixel.x == pixel.x) {
                                 pixel.dir = 0
                             }
-                        }
-                        if (pixelMap[i][j].target == true && pixelMap[i][j].element != "body" && pixelMap[i][j].element != "head") {
-                            delete pixelMap[i][j].target
-                        }
-                    }
-                    if (i >= width && j >= height && !targetExist && pixel.h != 0) {
-                        pixel.h = 0
-                    }
-                }
-            }
-            if (pixel.h == 1) {
-                if (Math.random() < 0.95) {
-                    let y = Math.random() < 0.5 ? 0 : -1
-                    let xDir = Math.random() < 0.5 ? 1 : -1
-                    for (let x = 1; x < 200; x++) {
-                        let x2 = pixel.x + (x * xDir)
-                        let y2 = pixel.y + y
-                        if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
-                            let seenPixel = pixelMap[x2][y2]
-                            if (seenPixel.target == true) {
-                                if (pixel.dir != 1 && seenPixel.x > pixel.x + 1) {
-                                    pixel.dir = 1
-                                }
-                                else if (pixel.dir != -1 && seenPixel.x < pixel.x - 1) {
-                                    pixel.dir = -1
-                                }
-                                else if (seenPixel.x == pixel.x + 1 || seenPixel.x == pixel.x - 1 || seenPixel.x == pixel.x) {
-                                    pixel.dir = 0
-                                }
-                                break
-                            }
-                        }
-                    }
-                }
-                if (Math.random() < 0.95) {
-                    let y = Math.random() < 0.5 ? 0 : -1
-                    for (let x = 1; x < width; x++) {
-                        let x2 = pixel.x + (x * pixel.dir)
-                        let y2 = pixel.y + y
-                        if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
-                            let seenPixel = pixelMap[x2][y2]
-                            if (elements[seenPixel.element].id == elements.head.id) {
-                                if (!seenPixel.target) {
-                                    seenPixel.target = true
-                                }
-                            }
-                            if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
-                                break
-                            }
-                        }
-                    }
-                }
-                if (Math.random() < 1) {
-                    let yDir = -1
-                    for (let y = 1; y < height; y++) {
-                        let x2 = pixel.x
-                        let y2 = pixel.y + (y * yDir)
-                        if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
-                            if (pixelMap[x2][y2].target == true) {
-                                let seenPixel = pixelMap[x2][y2]
-                                if (seenPixel.y < pixel.y) {
-                                    if (!isEmpty(pixel.x, pixel.y - 1, true)) {
-                                        var headpixel = pixelMap[pixel.x][pixel.y - 1]
-                                        if (headpixel.element == "head_096") {
-                                            if (isEmpty(pixel.x, pixel.y - 3)) {
-                                                tryMove(headpixel, pixel.x, pixel.y - 3)
-                                                if (isEmpty(pixel.x, pixel.y - 2)) {
-                                                    tryMove(pixel, pixel.x, pixel.y - 2)
-                                                }
-                                                else {
-                                                    swapPixels(pixel, pixelMap[pixel.x][pixel.y - 2])
-                                                }
-                                            }
-                                            else {
-                                                swapPixels(headpixel, pixelMap[pixel.x][pixel.y - 3])
-                                                if (isEmpty(pixel.x, pixel.y - 2)) {
-                                                    tryMove(pixel, pixel.x, pixel.y - 2)
-                                                }
-                                                else {
-                                                    swapPixels(pixel, pixelMap[pixel.x][pixel.y - 2])
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                break
-                            }
-                        }
-                    }
-                }
-                if (Math.random() < 1) {
-                    let yDir = 1
-                    for (let y = 1; y < height; y++) {
-                        let x2 = pixel.x
-                        let y2 = pixel.y + (y * yDir)
-                        if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
-                            if (pixelMap[x2][y2].target == true) {
-                                let seenPixel = pixelMap[x2][y2]
-                                if (seenPixel.y > pixel.y) {
-                                    if (!isEmpty(pixel.x, pixel.y - 1, true)) {
-                                        var headpixel = pixelMap[pixel.x][pixel.y - 1]
-                                        if (headpixel.element == "head_096") {
-                                            if (isEmpty(pixel.x, pixel.y + 1)) {
-                                                tryMove(headpixel, pixel.x, pixel.y + 1)
-                                                if (isEmpty(pixel.x, pixel.y + 2)) {
-                                                    tryMove(pixel, pixel.x, pixel.y + 2)
-                                                }
-                                                else {
-                                                    swapPixels(pixel, pixelMap[pixel.x][pixel.y + 2])
-                                                }
-                                            }
-                                            else {
-                                                swapPixels(headpixel, pixelMap[pixel.x][pixel.y + 1])
-                                                if (isEmpty(pixel.x, pixel.y + 2)) {
-                                                    tryMove(pixel, pixel.x, pixel.y + 2)
-                                                }
-                                                else {
-                                                    swapPixels(pixel, pixelMap[pixel.x][pixel.y + 2])
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                break
-                            }
-                        }
-                    }
-                }
-                if (isEmpty(pixel.x, pixel.y - 1) || !isEmpty(pixel.x, pixel.y - 1) && pixelMap[pixel.x][pixel.y - 1].element != "head_096") {
-                    // create blood if decapitated 5% chance
-                    if (Math.random() < 0.05 && !pixel.charge) {
-                        createPixel("blood", pixel.x, pixel.y - 1)
-                    }
-                    if (Math.random() < 0.9 && isEmpty(pixel.x, pixel.y - 1)) {
-                        createPixel("head_096", pixel.x, pixel.y - 1)
-                    }
-                    else if (Math.random() < 0.025 && !isEmpty(pixel.x, pixel.y - 1, true) && !outOfBounds(pixel.x, pixel.y - 1)) {
-                        changePixel(pixelMap[pixel.x][pixel.y - 1], "head_096")
-                    }
-                }
-                else if (head == null) { return }
-                else if (isEmpty(pixel.x + pixel.dir, pixel.y) && !outOfBounds(pixel.x + pixel.dir, pixel.y) && isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1)) {
-                    tryMove(head, pixel.x + pixel.dir, pixel.y - 1)
-                    tryMove(pixel, pixel.x + pixel.dir, pixel.y)
-                }
-                else if (isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1) && isEmpty(pixel.x + pixel.dir, pixel.y - 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 2)) {
-                    tryMove(head, pixel.x + pixel.dir, pixel.y - 2)
-                    tryMove(pixel, pixel.x + pixel.dir, pixel.y - 1)
-                }
-                else if (isEmpty(pixel.x + pixel.dir, pixel.y - 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 2) && isEmpty(pixel.x + pixel.dir, pixel.y - 3) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 3)) {
-                    tryMove(head, pixel.x + pixel.dir, pixel.y - 3)
-                    tryMove(pixel, pixel.x + pixel.dir, pixel.y - 2)
-                }
-                else if (isEmpty(pixel.x + pixel.dir, pixel.y + 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 1) && isEmpty(pixel.x + pixel.dir, pixel.y + 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 2)) {
-                    tryMove(head, pixel.x + pixel.dir, pixel.y + 1)
-                    tryMove(pixel, pixel.x + pixel.dir, pixel.y + 2)
-                }
-                else if (isEmpty(pixel.x + pixel.dir, pixel.y + 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 2) && isEmpty(pixel.x + pixel.dir, pixel.y + 3) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 3)) {
-                    tryMove(head, pixel.x + pixel.dir, pixel.y + 2)
-                    tryMove(pixel, pixel.x + pixel.dir, pixel.y + 3)
-                }
-                else if (!isEmpty(pixel.x + pixel.dir, pixel.y) && !outOfBounds(pixel.x + pixel.dir, pixel.y) && isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1)) {
-                    if (pixelMap[pixel.x + pixel.dir][pixel.y].target == true) {
-                        changePixel(pixelMap[pixel.x + pixel.dir][pixel.y], "blood")
-                    }
-                    else {
-                        tryMove(head, pixel.x + pixel.dir, pixel.y + 2)
-                        if (isBreakable(pixelMap[pixel.x + pixel.dir][pixel.y])) {
-                            breakPixel(pixelMap[pixel.x + pixel.dir][pixel.y])
-                            swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
-                        }
-                        else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].movable == true) {
-                            swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
-                        }
-                        else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].hardness != 1) {
-                            swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
-                        }
-                    }
-                }
-                else if (!isEmpty(pixel.x + pixel.dir, pixel.y) && !outOfBounds(pixel.x + pixel.dir, pixel.y) && !isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1)) {
-                    if (pixelMap[pixel.x + pixel.dir][pixel.y].target == true) {
-                        changePixel(pixelMap[pixel.x + pixel.dir][pixel.y], "blood")
-                    }
-                    else if (pixelMap[pixel.x + pixel.dir][pixel.y - 1].target == true) {
-                        changePixel(pixelMap[pixel.x + pixel.dir][pixel.y - 1], "blood")
-                    }
-                    else {
-                        if (isBreakable(pixelMap[pixel.x + pixel.dir][pixel.y - 1])) {
-                            breakPixel(pixelMap[pixel.x + pixel.dir][pixel.y - 1])
-                            swapPixels(head, pixelMap[pixel.x + pixel.dir][pixel.y - 1])
-                        }
-                        else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y - 1].element].movable == true) {
-                            swapPixels(head, pixelMap[pixel.x + pixel.dir][pixel.y - 1])
-                        }
-                        else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y - 1].element].hardness != 1) {
-                            swapPixels(head, pixelMap[pixel.x + pixel.dir][pixel.y - 1])
-                        }
-                        if (isBreakable(pixelMap[pixel.x + pixel.dir][pixel.y])) {
-                            breakPixel(pixelMap[pixel.x + pixel.dir][pixel.y])
-                            swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
-                        }
-                        else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].movable == true) {
-                            swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
-                        }
-                        else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].hardness != 1) {
-                            swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
-                        }
-                    }
-                }
-                for (var i = 0; i < squareCoords.length; i++) {
-                    var coords = squareCoords[i]
-                    var x = pixel.x + coords[0]
-                    var y = pixel.y + coords[1]
-                    if (!isEmpty(x, y) && !outOfBounds(x, y)) {
-                        var pixel2 = pixelMap[x][y]
-                        let old = pixel2.element
-                        if (isBreakable(pixel2)) {
-                            // times 0.25 if not shiftDown else 1
-                            if (Math.random() < (1.5 - (elements[pixel.element].hardness || 0))) {
-                                breakPixel(pixel2)
-                            }
-                            // if (Math.random() > ((1-(elements[pixel.element].hardness || 1)) * (shiftDown ? 0.5 : 1))) {
-                        }
-                        else if (old === pixel2.element && elements[pixel2.element].movable && !isEmpty(pixel2.x, pixel2.y + 1) && !paused && pixel2.element != "head_096" && pixel2.element != "body_096") {
-                            let x = 0; let y = 0
-                            if (Math.random() < 0.66) x = Math.random() < 0.5 ? 1 : -1
-                            if (Math.random() < 0.66) y = Math.random() < 0.5 ? 1 : -1
-                            tryMove(pixel2, pixel2.x + x, pixel2.y + y)
+                            break
                         }
                     }
                 }
             }
-            else {
-                if (isEmpty(pixel.x, pixel.y - 1) || !isEmpty(pixel.x, pixel.y - 1) && pixelMap[pixel.x][pixel.y - 1].element != "head_096") {
-                    // create blood if decapitated 5% chance
-                    if (Math.random() < 0.05 && !pixel.charge) {
-                        createPixel("blood", pixel.x, pixel.y - 1)
-                    }
-                    if (Math.random() < 0.2 && isEmpty(pixel.x, pixel.y - 1)) {
-                        createPixel("head_096", pixel.x, pixel.y - 1)
-                    }
-                    else if (!isEmpty(pixel.x, pixel.y - 1, true) && !outOfBounds(pixel.x, pixel.y - 1) && (Math.random() < 0.1 || elements[pixelMap[pixel.x][pixel.y].element].state != "solid")) {
-                        changePixel(pixelMap[pixel.x][pixel.y - 1], "head_096")
-                    }
-                }
-                else if (head == null) { return }
-                else if (Math.random() < 0.01) { // Move 1% chance
-                    var movesToTry = [
-                        [1 * pixel.dir, 0],
-                        [1 * pixel.dir, -1],
-                    ]
-                    // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
-                    while (movesToTry.length > 0) {
-                        var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
-                        if (isEmpty(pixel.x + move[0], pixel.y + move[1] - 1)) {
-                            var origx = pixel.x + move[0]
-                            var origy = pixel.y + move[1]
-                            if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
-                                movePixel(head, head.x + move[0], head.y + move[1])
-                                break
-                            }
-                        }
-                    }
-                    // 15% chance to change direction
-                    if (Math.random() < 0.15) {
-                        pixel.dir *= -1
-                    }
-                    // homeostasis
-                    if (pixel.temp > 37) { pixel.temp -= 1 }
-                    else if (pixel.temp < 37) { pixel.temp += 1 }
-                }
-                if (Math.random() < 0.95) {
-                    let y = Math.random() < 0.5 ? 0 : -1
-                    let xDir = Math.random() < 0.5 ? 1 : -1
-                    for (let x = 1; x < 150; x++) {
-                        let x2 = pixel.x + (x * xDir)
-                        let y2 = pixel.y + y
-                        if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
-                            let seenPixel = pixelMap[x2][y2]
-                            if (elements[seenPixel.element].id == elements.head.id) {
-                                pixel.h = 1
+            if (Math.random() < 0.95) {
+                let y = Math.random() < 0.5 ? 0 : -1
+                for (let x = 1; x < width; x++) {
+                    let x2 = pixel.x + (x * pixel.dir)
+                    let y2 = pixel.y + y
+                    if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
+                        let seenPixel = pixelMap[x2][y2]
+                        if (elements[seenPixel.element].id == elements.head.id) {
+                            if (!seenPixel.target) {
                                 seenPixel.target = true
                             }
-                            if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
-                                break
-                            }
                         }
-                    }
-                }
-                for (var i = 0; i < squareCoords.length; i++) {
-                    var coords = squareCoords[i]
-                    var x = pixel.x + coords[0]
-                    var y = pixel.y + coords[1]
-                    if (!isEmpty(x, y) && !outOfBounds(x, y)) {
-                        var pixel2 = pixelMap[x][y]
-                        if (isBreakable(pixel2) && pixel2.target) {
-                            // times 0.25 if not shiftDown else 1
-                            if (Math.random() < (1.5 - (elements[pixel.element].hardness || 0)) && Math.random() > 0.5) {
-                                breakPixel(pixel2)
-                            }
-                            // if (Math.random() > ((1-(elements[pixel.element].hardness || 1)) * (shiftDown ? 0.5 : 1))) {
+                        if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
+                            break
                         }
                     }
                 }
             }
-        },
-        density: 1090,
-        state: "solid",
-        conduct: .005,
-        forceSaveColor: true,
-        reactions: {
-            "homunculus": { elem2: ["blood", "slime", "blood", "slime", "rotten_meat", null] },
-            "head": { elem2: ["blood", "blood", "blood", "bone", null] },
-            "body": { elem2: ["blood", "blood", "meat", "bone", null] },
-            "blood": { elem2: null, chance: 0.5 },
-            "infection": { elem2: null, chance: 0.5 },
-            "meat": { elem2: ["blood", null], chance: 0.5 },
-            "bone_marrow": { elem2: ["blood", null], chance: 0.5 },
-            "bone": { elem2: ["bone_marrow", "blood", "quicklime"], chance: 0.5 },
-            "rotten_meat": { elem2: ["infection", "stench", null], chance: 0.5 },
-            "ground_meat": { elem2: null, chance: 5 },
-        },
-    }
+            if (Math.random() < 1) {
+                let yDir = -1
+                for (let y = 1; y < height; y++) {
+                    let x2 = pixel.x
+                    let y2 = pixel.y + (y * yDir)
+                    if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
+                        if (pixelMap[x2][y2].target == true) {
+                            let seenPixel = pixelMap[x2][y2]
+                            if (seenPixel.y < pixel.y) {
+                                if (!isEmpty(pixel.x, pixel.y - 1, true)) {
+                                    var headpixel = pixelMap[pixel.x][pixel.y - 1]
+                                    if (headpixel.element == "head_096") {
+                                        if (isEmpty(pixel.x, pixel.y - 3)) {
+                                            tryMove(headpixel, pixel.x, pixel.y - 3)
+                                            if (isEmpty(pixel.x, pixel.y - 2)) {
+                                                tryMove(pixel, pixel.x, pixel.y - 2)
+                                            }
+                                            else {
+                                                swapPixels(pixel, pixelMap[pixel.x][pixel.y - 2])
+                                            }
+                                        }
+                                        else {
+                                            swapPixels(headpixel, pixelMap[pixel.x][pixel.y - 3])
+                                            if (isEmpty(pixel.x, pixel.y - 2)) {
+                                                tryMove(pixel, pixel.x, pixel.y - 2)
+                                            }
+                                            else {
+                                                swapPixels(pixel, pixelMap[pixel.x][pixel.y - 2])
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break
+                        }
+                    }
+                }
+            }
+            if (Math.random() < 1) {
+                let yDir = 1
+                for (let y = 1; y < height; y++) {
+                    let x2 = pixel.x
+                    let y2 = pixel.y + (y * yDir)
+                    if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
+                        if (pixelMap[x2][y2].target == true) {
+                            let seenPixel = pixelMap[x2][y2]
+                            if (seenPixel.y > pixel.y) {
+                                if (!isEmpty(pixel.x, pixel.y - 1, true)) {
+                                    var headpixel = pixelMap[pixel.x][pixel.y - 1]
+                                    if (headpixel.element == "head_096") {
+                                        if (isEmpty(pixel.x, pixel.y + 1)) {
+                                            tryMove(headpixel, pixel.x, pixel.y + 1)
+                                            if (isEmpty(pixel.x, pixel.y + 2)) {
+                                                tryMove(pixel, pixel.x, pixel.y + 2)
+                                            }
+                                            else {
+                                                swapPixels(pixel, pixelMap[pixel.x][pixel.y + 2])
+                                            }
+                                        }
+                                        else {
+                                            swapPixels(headpixel, pixelMap[pixel.x][pixel.y + 1])
+                                            if (isEmpty(pixel.x, pixel.y + 2)) {
+                                                tryMove(pixel, pixel.x, pixel.y + 2)
+                                            }
+                                            else {
+                                                swapPixels(pixel, pixelMap[pixel.x][pixel.y + 2])
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break
+                        }
+                    }
+                }
+            }
+            if (isEmpty(pixel.x, pixel.y - 1) || !isEmpty(pixel.x, pixel.y - 1) && pixelMap[pixel.x][pixel.y - 1].element != "head_096") {
+                // create blood if decapitated 5% chance
+                if (Math.random() < 0.05 && !pixel.charge) {
+                    createPixel("blood", pixel.x, pixel.y - 1)
+                }
+                if (Math.random() < 0.9 && isEmpty(pixel.x, pixel.y - 1)) {
+                    createPixel("head_096", pixel.x, pixel.y - 1)
+                }
+                else if (Math.random() < 0.025 && !isEmpty(pixel.x, pixel.y - 1, true) && !outOfBounds(pixel.x, pixel.y - 1)) {
+                    changePixel(pixelMap[pixel.x][pixel.y - 1], "head_096")
+                }
+            }
+            else if (head == null) { return }
+            else if (isEmpty(pixel.x + pixel.dir, pixel.y) && !outOfBounds(pixel.x + pixel.dir, pixel.y) && isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1)) {
+                tryMove(head, pixel.x + pixel.dir, pixel.y - 1)
+                tryMove(pixel, pixel.x + pixel.dir, pixel.y)
+            }
+            else if (isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1) && isEmpty(pixel.x + pixel.dir, pixel.y - 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 2)) {
+                tryMove(head, pixel.x + pixel.dir, pixel.y - 2)
+                tryMove(pixel, pixel.x + pixel.dir, pixel.y - 1)
+            }
+            else if (isEmpty(pixel.x + pixel.dir, pixel.y - 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 2) && isEmpty(pixel.x + pixel.dir, pixel.y - 3) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 3)) {
+                tryMove(head, pixel.x + pixel.dir, pixel.y - 3)
+                tryMove(pixel, pixel.x + pixel.dir, pixel.y - 2)
+            }
+            else if (isEmpty(pixel.x + pixel.dir, pixel.y + 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 1) && isEmpty(pixel.x + pixel.dir, pixel.y + 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 2)) {
+                tryMove(head, pixel.x + pixel.dir, pixel.y + 1)
+                tryMove(pixel, pixel.x + pixel.dir, pixel.y + 2)
+            }
+            else if (isEmpty(pixel.x + pixel.dir, pixel.y + 2) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 2) && isEmpty(pixel.x + pixel.dir, pixel.y + 3) && !outOfBounds(pixel.x + pixel.dir, pixel.y + 3)) {
+                tryMove(head, pixel.x + pixel.dir, pixel.y + 2)
+                tryMove(pixel, pixel.x + pixel.dir, pixel.y + 3)
+            }
+            else if (!isEmpty(pixel.x + pixel.dir, pixel.y) && !outOfBounds(pixel.x + pixel.dir, pixel.y) && isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1)) {
+                if (pixelMap[pixel.x + pixel.dir][pixel.y].target == true) {
+                    changePixel(pixelMap[pixel.x + pixel.dir][pixel.y], "blood")
+                }
+                else {
+                    tryMove(head, pixel.x + pixel.dir, pixel.y + 2)
+                    if (isBreakable(pixelMap[pixel.x + pixel.dir][pixel.y])) {
+                        breakPixel(pixelMap[pixel.x + pixel.dir][pixel.y])
+                        swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
+                    }
+                    else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].movable == true) {
+                        swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
+                    }
+                    else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].hardness != 1) {
+                        swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
+                    }
+                }
+            }
+            else if (!isEmpty(pixel.x + pixel.dir, pixel.y) && !outOfBounds(pixel.x + pixel.dir, pixel.y) && !isEmpty(pixel.x + pixel.dir, pixel.y - 1) && !outOfBounds(pixel.x + pixel.dir, pixel.y - 1)) {
+                if (pixelMap[pixel.x + pixel.dir][pixel.y].target == true) {
+                    changePixel(pixelMap[pixel.x + pixel.dir][pixel.y], "blood")
+                }
+                else if (pixelMap[pixel.x + pixel.dir][pixel.y - 1].target == true) {
+                    changePixel(pixelMap[pixel.x + pixel.dir][pixel.y - 1], "blood")
+                }
+                else {
+                    if (isBreakable(pixelMap[pixel.x + pixel.dir][pixel.y - 1])) {
+                        breakPixel(pixelMap[pixel.x + pixel.dir][pixel.y - 1])
+                        swapPixels(head, pixelMap[pixel.x + pixel.dir][pixel.y - 1])
+                    }
+                    else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y - 1].element].movable == true) {
+                        swapPixels(head, pixelMap[pixel.x + pixel.dir][pixel.y - 1])
+                    }
+                    else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y - 1].element].hardness != 1) {
+                        swapPixels(head, pixelMap[pixel.x + pixel.dir][pixel.y - 1])
+                    }
+                    if (isBreakable(pixelMap[pixel.x + pixel.dir][pixel.y])) {
+                        breakPixel(pixelMap[pixel.x + pixel.dir][pixel.y])
+                        swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
+                    }
+                    else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].movable == true) {
+                        swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
+                    }
+                    else if (elements[pixelMap[pixel.x + pixel.dir][pixel.y].element].hardness != 1) {
+                        swapPixels(pixel, pixelMap[pixel.x + pixel.dir][pixel.y])
+                    }
+                }
+            }
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coords = squareCoords[i]
+                var x = pixel.x + coords[0]
+                var y = pixel.y + coords[1]
+                if (!isEmpty(x, y) && !outOfBounds(x, y)) {
+                    var pixel2 = pixelMap[x][y]
+                    let old = pixel2.element
+                    if (isBreakable(pixel2)) {
+                        // times 0.25 if not shiftDown else 1
+                        if (Math.random() < (1.5 - (elements[pixel.element].hardness || 0))) {
+                            breakPixel(pixel2)
+                        }
+                        // if (Math.random() > ((1-(elements[pixel.element].hardness || 1)) * (shiftDown ? 0.5 : 1))) {
+                    }
+                    else if (old === pixel2.element && elements[pixel2.element].movable && !isEmpty(pixel2.x, pixel2.y + 1) && !paused && pixel2.element != "head_096" && pixel2.element != "body_096") {
+                        let x = 0; let y = 0
+                        if (Math.random() < 0.66) x = Math.random() < 0.5 ? 1 : -1
+                        if (Math.random() < 0.66) y = Math.random() < 0.5 ? 1 : -1
+                        tryMove(pixel2, pixel2.x + x, pixel2.y + y)
+                    }
+                }
+            }
+        }
+        else {
+            if (isEmpty(pixel.x, pixel.y - 1) || !isEmpty(pixel.x, pixel.y - 1) && pixelMap[pixel.x][pixel.y - 1].element != "head_096") {
+                // create blood if decapitated 5% chance
+                if (Math.random() < 0.05 && !pixel.charge) {
+                    createPixel("blood", pixel.x, pixel.y - 1)
+                }
+                if (Math.random() < 0.2 && isEmpty(pixel.x, pixel.y - 1)) {
+                    createPixel("head_096", pixel.x, pixel.y - 1)
+                }
+                else if (!isEmpty(pixel.x, pixel.y - 1, true) && !outOfBounds(pixel.x, pixel.y - 1) && (Math.random() < 0.1 || elements[pixelMap[pixel.x][pixel.y].element].state != "solid")) {
+                    changePixel(pixelMap[pixel.x][pixel.y - 1], "head_096")
+                }
+            }
+            else if (head == null) { return }
+            else if (Math.random() < 0.01) { // Move 1% chance
+                var movesToTry = [
+                    [1 * pixel.dir, 0],
+                    [1 * pixel.dir, -1],
+                ]
+                // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
+                while (movesToTry.length > 0) {
+                    var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
+                    if (isEmpty(pixel.x + move[0], pixel.y + move[1] - 1)) {
+                        var origx = pixel.x + move[0]
+                        var origy = pixel.y + move[1]
+                        if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
+                            movePixel(head, head.x + move[0], head.y + move[1])
+                            break
+                        }
+                    }
+                }
+                // 15% chance to change direction
+                if (Math.random() < 0.15) {
+                    pixel.dir *= -1
+                }
+                // homeostasis
+                if (pixel.temp > 37) { pixel.temp -= 1 }
+                else if (pixel.temp < 37) { pixel.temp += 1 }
+            }
+            if (Math.random() < 0.95) {
+                let y = Math.random() < 0.5 ? 0 : -1
+                let xDir = Math.random() < 0.5 ? 1 : -1
+                for (let x = 1; x < 150; x++) {
+                    let x2 = pixel.x + (x * xDir)
+                    let y2 = pixel.y + y
+                    if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
+                        let seenPixel = pixelMap[x2][y2]
+                        if (elements[seenPixel.element].id == elements.head.id) {
+                            pixel.h = 1
+                            seenPixel.target = true
+                        }
+                        if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
+                            break
+                        }
+                    }
+                }
+            }
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coords = squareCoords[i]
+                var x = pixel.x + coords[0]
+                var y = pixel.y + coords[1]
+                if (!isEmpty(x, y) && !outOfBounds(x, y)) {
+                    var pixel2 = pixelMap[x][y]
+                    if (isBreakable(pixel2) && pixel2.target) {
+                        // times 0.25 if not shiftDown else 1
+                        if (Math.random() < (1.5 - (elements[pixel.element].hardness || 0)) && Math.random() > 0.5) {
+                            breakPixel(pixel2)
+                        }
+                        // if (Math.random() > ((1-(elements[pixel.element].hardness || 1)) * (shiftDown ? 0.5 : 1))) {
+                    }
+                }
+            }
+        }
+    },
+    density: 1090,
+    state: "solid",
+    conduct: .005,
+    forceSaveColor: true,
+    reactions: {
+        "homunculus": { elem2: ["blood", "slime", "blood", "slime", "rotten_meat", null] },
+        "head": { elem2: ["blood", "blood", "blood", "bone", null] },
+        "body": { elem2: ["blood", "blood", "meat", "bone", null] },
+        "blood": { elem2: null, chance: 0.5 },
+        "infection": { elem2: null, chance: 0.5 },
+        "meat": { elem2: ["blood", null], chance: 0.5 },
+        "bone_marrow": { elem2: ["blood", null], chance: 0.5 },
+        "bone": { elem2: ["bone_marrow", "blood", "quicklime"], chance: 0.5 },
+        "rotten_meat": { elem2: ["infection", "stench", null], chance: 0.5 },
+        "ground_meat": { elem2: null, chance: 5 },
+    },
+}
 
 elements.scp_173 = {
     name: "SCP-173",
@@ -4886,7 +4886,7 @@ elements.scp_236 = {
                 if (!isEmpty(x, y) && !outOfBounds(x, y)) {
                     var pixel2 = pixelMap[x][y]
                     if (Math.random() < 0.0125 && (elements[pixel2.element].category == "life" || elements[pixel2.element].category == "food" || pixel2.element == "wood" || pixel2.element == "straw" || pixel2.element == "paper" || pixel2.element == "cloth" || pixel2.element == "sponge" || pixel2.element == "bamboo" || pixel2.element == "amber" || pixel2.element == "skin" || pixel2.element == "particleboard" || pixel2.element == "hair" || pixel2.element == "udder")) {
-                        if (Math.random() < (1 - (elements[pixel2.element].hardness || 0)) / 4 || Math.random() > 0.5) {
+                        if (Math.random() < Math.abs(1 - (elements[pixel2.element].hardness || 0)) / 4 || Math.random() > 0.5) {
                             pixel2.mimic = pixel2.element
                             pixel2.mimicColor = pixel2.color
                             pixel2.element = "scp_236"
@@ -4900,11 +4900,9 @@ elements.scp_236 = {
                 }
             }
             if (Math.random() < 0.75) {
-                let y = Math.random() < 0.5 ? 0 : -1
-                let xDir = Math.random() < 0.5 ? 1 : -1
                 for (let x = 1; x < 10; x++) {
-                    let x2 = pixel.x + (x * xDir)
-                    let y2 = pixel.y + y
+                    let x2 = pixel.x + (x * (Math.random() < 0.5 ? 1 : -1))
+                    let y2 = pixel.y + (Math.random() < 0.5 ? 0 : -1)
                     if (!isEmpty(x2, y2, true) && !outOfBounds(x2, y2)) {
                         let seenPixel = pixelMap[x2][y2]
                         if (elements[seenPixel.element].id == elements.head.id || elements[seenPixel.element].id == elements.body.id || elements[seenPixel.element].id == elements.light.id) {
@@ -4950,8 +4948,7 @@ elements.scp_236 = {
             }
             if (elements[pixel.mimic].movable != true && Math.random() > 0.75 && !tryMove(pixel, pixel.x, pixel.y + 1) || elements[pixel.mimic].movable == true && !tryMove(pixel, pixel.x, pixel.y + 1)) {
                 if (!tryMove(pixel, pixel.x + pixel.dir, pixel.y)) {
-                    let ydir = Math.random() < 0.5 ? 1 : -1
-                    tryMove(pixel, pixel.x + pixel.dir, pixel.y + ydir)
+                    tryMove(pixel, pixel.x + pixel.dir, pixel.y + (Math.random() < 0.5 ? 1 : -1))
                 }
             }
             if (Math.random() < 0.05 && (pixel.awakeStart + 100) < pixelTicks) {
@@ -5098,16 +5095,16 @@ elements.scp_261 = {
                                 }
                                 else if (Math.random() < 0.9) {
                                     createPixel("can", x, y)
-                                    if (Math.random() < 0.23333) {
+                                    if (Math.random() < 0.23) {
                                         pixelMap[x][y].has = "soda"
                                     }
                                     else if (Math.random() < 0.4) {
                                         pixelMap[x][y].has = "seltzer"
                                     }
-                                    else if (Math.random() < 0.56666) {
+                                    else if (Math.random() < 0.56) {
                                         pixelMap[x][y].has = "juice"
                                     }
-                                    else if (Math.random() < 0.73333) {
+                                    else if (Math.random() < 0.73) {
                                         pixelMap[x][y].has = "poison"
                                     }
                                     else {
@@ -5125,19 +5122,19 @@ elements.scp_261 = {
                             else if (!isEmpty(x, y, true) && (elements[pixelMap[x][y].element].state === "liquid" || elements[pixelMap[x][y].element].state === "gas")) {
                                 if (Math.random() < 0.5) {
                                     changePixel(pixelMap[x][y], "packet")
-                                    if (Math.random() < 0.06666) {
+                                    if (Math.random() < 0.06) {
                                         pixelMap[x][y].has = "crumb"
                                     }
-                                    else if (Math.random() < 0.23333) {
+                                    else if (Math.random() < 0.23) {
                                         pixelMap[x][y].has = "toast"
                                     }
                                     else if (Math.random() < 0.4) {
                                         pixelMap[x][y].has = "bread"
                                     }
-                                    else if (Math.random() < 0.56666) {
+                                    else if (Math.random() < 0.56) {
                                         pixelMap[x][y].has = "cooked_meat"
                                     }
-                                    else if (Math.random() < 0.73333) {
+                                    else if (Math.random() < 0.73) {
                                         pixelMap[x][y].has = "chocolate"
                                     }
                                     else {
@@ -5146,16 +5143,16 @@ elements.scp_261 = {
                                 }
                                 else if (Math.random() < 0.9) {
                                     changePixel(pixelMap[x][y], "can")
-                                    if (Math.random() < 0.23333) {
+                                    if (Math.random() < 0.23) {
                                         pixelMap[x][y].has = "soda"
                                     }
                                     else if (Math.random() < 0.4) {
                                         pixelMap[x][y].has = "seltzer"
                                     }
-                                    else if (Math.random() < 0.56666) {
+                                    else if (Math.random() < 0.56) {
                                         pixelMap[x][y].has = "juice"
                                     }
-                                    else if (Math.random() < 0.73333) {
+                                    else if (Math.random() < 0.75) {
                                         pixelMap[x][y].has = "poison"
                                     }
                                     else {
@@ -6179,7 +6176,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (elements[manmade.element].category == "weapons" || manmade.element == "tin" || manmade.element == "lead" || manmade.element == "gallium" || manmade.element == "mercury" || manmade.element == "tungsten" || manmade.element == "nickel" || manmade.element == "zinc" || manmade.element == "gold" || manmade.element == "silver" || manmade.element == "iron" || manmade.element == "copper" || manmade.element == "aluminum") {
+                    else if (elements[manmade.element].category == "weapons" || manmade.element == "odd_radio" || manmade.element == "waste_barrel" || manmade.element == "dwarf_wall" || manmade.element == "philosophers_stone" || manmade.element == "contaminated_liquid") {
                         if (!manmade.repair) {
                             manmade.repair = 20
                         }
