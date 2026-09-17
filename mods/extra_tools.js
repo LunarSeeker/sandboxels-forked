@@ -52,10 +52,17 @@ elements.boil = {
     category: "energy",
     color: "#ff7866",
     tool: function (pixel) {
+        pixel.temp = 100
+        pixelTempCheck(pixel)
+    }
+}
+
+elements.high_temp = {
+    category: "energy",
+    color: "#ff7866",
+    tool: function (pixel) {
         if (elements[pixel.element].tempHigh) {
             pixel.temp = elements[pixel.element].tempHigh
-        } else {
-            pixel.temp = 100
         }
         pixelTempCheck(pixel)
     }
