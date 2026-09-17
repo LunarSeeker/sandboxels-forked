@@ -1,3 +1,5 @@
+dwarfcrawlThru = ["dirt", "sand", "clay_soil", "gravel", "mulch", "color_sand", "grass", "granite", "clay", "ice", "snow", "plant"]
+
 removeElementsDark = [ //For elements not in the "life" category
     "ant_wall",
     "charcoal",
@@ -56,7 +58,7 @@ elements.dwarf = {
                 pixel.dwarf_hilled = true
             }
         }, function (pixel, newX, _newY) {
-            if (Math.random() < 0.01 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && eLists.CRAWLTHRU.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
+            if (Math.random() < 0.01 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
                 if (!pixel.dwarf_hilled || !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "dwarf_wall") {
                     var wallCoords = [
                         [-1, -1], [1, -1],
@@ -72,7 +74,7 @@ elements.dwarf = {
                     for (var i = 0; i < wallCoords.length; i++) {
                         var x = pixel.x + newX + wallCoords[i][0]
                         var y = pixel.y + 1 + wallCoords[i][1]
-                        if (!isEmpty(x, y, true) && eLists.CRAWLTHRU.indexOf(pixelMap[x][y].element) !== -1) {
+                        if (!isEmpty(x, y, true) && dwarfcrawlThru.indexOf(pixelMap[x][y].element) !== -1) {
                             changePixel(pixelMap[x][y], "dwarf_wall")
                         }
                     }
@@ -80,7 +82,7 @@ elements.dwarf = {
                     tryMove(pixel, pixel.x + newX, pixel.y + 1)
                 }
             }
-            else if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && eLists.CRAWLTHRU.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
+            else if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
                 swapPixels(pixel, pixelMap[pixel.x + newX][pixel.y - 1])
             }
         })
@@ -162,8 +164,13 @@ elements.magic_drill = {
 elements.stable_aether = {
     behavior: behaviors.WALL,
     category: "magic",
-    color: ["#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff"],
-    //renderer: renderPresets.HUESHIFT,
+    colorPattern: magic_textures.dark_ice,
+    colorKey: {
+        p: "#ff8800",
+        b: "#ffff00",
+        B: "#00ff00",
+        c: "#0000ff",
+    },
     state: "solid",
 }
 
@@ -212,13 +219,7 @@ elements.dark_ice = {
         "fallout"
     ],
     category: "magic",
-    colorPattern: magic_textures.dark_ice,
-    colorKey: {
-        p: "#1a193c",
-        b: "#3a2c13",
-        B: "#3a1c13",
-        c: "#3a3013",
-    },
+    color: "#00003c",
     desc: "Cold substance.",
     excludeRandom: true,
     hardness: 0.9,

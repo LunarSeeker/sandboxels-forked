@@ -24,11 +24,11 @@ elements.give_life = {
             pixel.element = 'cell'
         } else if (pixel.element == 'meat' || pixel.element == 'cooked_meat' || pixel.element == 'rotten_meat') {
             pixel.temp = 20
-            pixel.element = randomChoice(['bird', 'fish'])
+            pixel.element = randomChoice(['snail', 'fish', 'fly', 'frog'])
         }
         if (pixel.element == 'dead_plant' || pixel.element == 'ash' || pixel.element == 'zombie_head') {
             pixel.temp = 20
-            pixel.element = randomChoice(['plant', 'grass', 'sapling'])
+            pixel.element = randomChoice(['plant', 'grass', 'sapling', 'grass_seed', 'wheat_seed'])
         }
         if (pixel.element == 'feather' || pixel.element == 'yolk') {
             pixel.temp = 20
@@ -64,4 +64,15 @@ elements.absolute_temp = {
         pixel.temp = Math.abs(pixel.temp)
         pixelTempCheck(pixel)
     }
+}
+
+elements.eat = {
+    color: ["#ffba79", "#efff79"],
+    tool: function (pixel) {
+        if (elements[pixel.element].isFood) {
+            deletePixel(pixel.x, pixel.y)
+        }
+    },
+    category: "tools",
+    desc: "Consumes edible pixels."
 }
