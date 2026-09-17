@@ -43,7 +43,6 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "pipe",
         "portal_in",
         "portal_out",
-        "stable_aether",
         "sun",
         "super_acid",
         "time",

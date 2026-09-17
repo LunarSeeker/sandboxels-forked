@@ -1,4 +1,5 @@
 excludeBlackHole = [
+    "art",
     "black_hole",
     "bless",
     "border",
@@ -9,7 +10,6 @@ excludeBlackHole = [
     "pipe",
     "portal_in",
     "portal_out",
-    "stable_aether",
     "time",
     "void",
     "wall",

@@ -6119,12 +6119,12 @@ elements.scp_682 = {
 
 elements.scp_804 = {
     name: "SCP-804",
-    color: ["#C49F4F", "#F2D18E", "#A59F8F", "#7FA097", "#7FA097", "#405584", "#8E7A45", "#96814C"],
+    color: "#C49F4F",
     category: "scp",
     hardness: 0.65,
     breakInto: ["glass_shard", "glass_shard", "snow", "metal_scrap", "metal_scrap", "glass_shard", "glass_shard", "snow", "metal_scrap", "metal_scrap", "dust"],
     tempHigh: 1750,
-    stateHigh: ["glass_shard", "glass_shard", "snow", "metal_scrap", "metal_scrap", "glass_shard", "glass_shard", "snow", "metal_scrap", "metal_scrap", "dust"],
+    stateHigh: ["glass_shard", "glass_shard", "metal_scrap", "dust"],
     conduct: 1,
     properties: {
         radius: 50,
@@ -6160,7 +6160,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || manmade.element == "body_035" || manmade.element == "head_035" || manmade.element == "body_049" || manmade.element == "head_049" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
+                    else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || manmade.element == "body_035" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
                         if (!manmade.repair) {
                             manmade.repair = 25
                         }
@@ -6184,7 +6184,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (elements[manmade.element].category == "weapons" || manmade.element == "odd_radio" || manmade.element == "waste_barrel" || manmade.element == "dwarf_wall" || manmade.element == "philosophers_stone" || manmade.element == "contaminated_liquid") {
+                    else if (elements[manmade.element].category == "weapons" || manmade.element == "odd_radio" || manmade.element == "waste_barrel" || manmade.element == "dwarf_wall" || manmade.element == "philosophers_stone") {
                         if (!manmade.repair) {
                             manmade.repair = 20
                         }
@@ -7246,7 +7246,6 @@ elements.head_1015 = {
 
 elements.penny_converter = {
     color: ["#F49858", "#DE882C", "#D9752C", "#B15D23", "#C16522", "#B75C24", "#B05B28", "#AF6720"],
-    name: "penny",
     tick: function (pixel) {
         for (var i = 0; i < adjacentCoords.length; i++) {
             var coords = adjacentCoords[i]
@@ -7329,7 +7328,10 @@ elements.scp_1424 = {
 }
 
 elements.bless.reactions.black_acid = { elem2: null }
+elements.bless.reactions.red_cloud = { elem2: "rain_cloud" }
 elements.bless.reactions.red_snow = { elem2: "snow" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
 elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
+elements.bless.reactions.scp_009_meat = { elem2: "meat" }
+elements.bless.reactions.scp_009_plant = { elem2: "plant" }

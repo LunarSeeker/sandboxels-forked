@@ -115,7 +115,7 @@ elements.dwarf = {
 
 elements.philosophers_stone = {
     behavior: behaviors.POWDER,
-    category: "magic",
+    category: "special",
     colorPattern: magic_textures.p_stone,
     colorKey: {
         t: "#ff8800",
@@ -135,7 +135,6 @@ elements.philosophers_stone = {
         "ash": { elem2: "diamond" },
         "cancer": { elem2: "skin" },
         "copper": { elem2: "bronze" },
-        "dirt": { elem2: "stable_aether" },
         "glitter": { elem2: "diamond" },
         "iron": { elem2: "steel" },
         "lead": { elem2: "gold" },
@@ -145,7 +144,6 @@ elements.philosophers_stone = {
         "rust": { elem2: "steel" },
         "static": { elem2: "rainbow" },
         "tin": { elem2: "brass" },
-        "unstable_aether": { elem2: "stable_aether" },
         "zinc": { elem2: "bronze" },
     }
 }
@@ -156,40 +154,14 @@ elements.magic_drill = {
         "XX|DL|XX",
         "CH:wall|M1 AND CH:magic_drill AND CR:magic_drill|CH:wall"
     ],
-    category: "magic",
+    category: "special",
     color: "#0000ff",
     state: "solid"
 }
 
-elements.stable_aether = {
-    behavior: behaviors.WALL,
-    category: "magic",
-    colorPattern: magic_textures.dark_ice,
-    colorKey: {
-        p: "#ff8800",
-        b: "#ffff00",
-        B: "#00ff00",
-        c: "#0000ff",
-    },
-    state: "solid",
-}
-
-elements.unstable_aether = {
-    behavior: behaviors.GAS,
-    category: "magic",
-    color: ["#8a2be2", "#da70d6", "#ba55d3"],
-    density: 0.5,
-    state: "gas",
-    tick: function (pixel) {
-        if (Math.random() < 0.05) {
-            changePixel(pixel, "gold")
-        }
-    }
-}
-
 elements.primordial_chaos = {
     behavior: behaviors.SUPERFLUID,
-    category: "magic",
+    category: "life",
     color: "#1b1b32",
     density: 0.1,
     excludeRandom: true,
@@ -218,7 +190,7 @@ elements.dark_ice = {
         "snow",
         "fallout"
     ],
-    category: "magic",
+    category: "solids",
     color: "#00003c",
     desc: "Cold substance.",
     excludeRandom: true,
@@ -235,7 +207,7 @@ elements.dark_ice = {
 
 elements.dark_water = {
     behavior: behaviors.SUPERFLUID,
-    category: "magic",
+    category: "liquids",
     color: "#00003c",
     density: 999,
     excludeRandom: true,
@@ -274,7 +246,7 @@ elements.dark_water = {
 }
 
 elements.dark_steam = {
-    category: "magic",
+    category: "gases",
     behavior: behaviors.GAS,
     color: "#00003c",
     density: 999,
@@ -289,7 +261,7 @@ elements.dark_steam = {
 
 elements.electric_gas = {
     behavior: behaviors.GAS,
-    category: "magic",
+    category: "gases",
     color: "#ffff00",
     conduct: 1,
     density: 20,
@@ -312,7 +284,7 @@ elements.electric_gas = {
 
 elements.liquid_shock = {
     behavior: behaviors.LIQUID,
-    category: "magic",
+    category: "liquids",
     color: "#ffff00",
     conduct: 1,
     density: 20,
@@ -337,7 +309,7 @@ elements.liquid_shock = {
 elements.odd_radio = {
     behavior: behaviors.WALL,
     breakInto: ["copper", "dna"],
-    category: "magic",
+    category: "special",
     color: "#6e2f04",
     desc: "Speeds up evolution.",
     excludeRandom: true,
@@ -403,6 +375,7 @@ elements.odd_radiowave = {
         }
     },
     reactions: {
+        "blood": { elem2: "human" },
         "cancer": { elem2: "wheat_seed" },
         "cell": { elem2: "ant" },
         "dwarf": { elem2: "human" },
@@ -419,7 +392,7 @@ elements.odd_radiowave = {
 
 elements.ichor = {
     behavior: behaviors.LIQUID,
-    category: "magic",
+    category: "special",
     color: "#ffff00",
     darkText: true,
     density: 100,

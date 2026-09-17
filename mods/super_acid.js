@@ -1,24 +1,21 @@
 acidBlacklist = [
-	"acid",
+	"battery",
 	"black_hole",
 	"bless",
 	"border",
-	"gold",
 	"gray_goo",
-	"hydrogen",
 	"ichor",
 	"image",
 	"pipe_wall",
 	"pipe",
 	"portal_in",
 	"portal_out",
-	"stable_aether",
 	"super_acid",
 	"time",
 	"void",
 	"wall",
 	"warp",
-	"water",
+	"wire",
 ]
 
 elements.super_acid = {
