@@ -1932,14 +1932,14 @@ elements.scp_009 = {
         "body": { elem2: "scp_009_meat", chance: 0.04 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "coffee": { elem2: "scp_009", chance: 0.25 },
-        "dead_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
+        "dead_plant": { elem2: "scp_009", chance: 0.025 },
         "dirty_ice": { elem2: "scp_009", chance: 0.25 },
         "dirty_water": { elem2: "scp_009", chance: 0.4 },
         "fish": { elem2: "scp_009_meat", chance: 0.15 },
         "frog": { elem2: "scp_009_meat", chance: 0.15 },
         "frozen_meat": { elem2: "scp_009_meat", chance: 0.15 },
-        "frozen_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
-        "grass": { elem2: "scp_009_plant", temp: -20 },
+        "frozen_plant": { elem2: "scp_009", chance: 0.025 },
+        "grass": { elem2: "scp_009" },
         "head": { elem2: "scp_009_meat", chance: 0.05 },
         "ice": { elem2: "scp_009", chance: 0.25 },
         "infection": { elem2: "scp_009", chance: 0.25 },
@@ -1948,7 +1948,7 @@ elements.scp_009 = {
         "meat": { elem2: "scp_009_meat", chance: 0.15 },
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
-        "plant": { elem2: "scp_009_plant", temp: -20 },
+        "plant": { elem2: "scp_009", chance: 0.5 },
         "pool_water": { elem2: "scp_009", chance: 0.5 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2020,28 +2020,9 @@ elements.scp_009_meat = {
     isFood: true
 }
 
-elements.scp_009_plant = {
-    name: "SCP-009 plant",
-    behavior: behaviors.WALL,
-    burn: 85,
-    burnTime: 45,
-    category: "scp",
-    color: "#735958",
-    density: 1050,
-    hazard: true,
-    hidden: true,
-    state: "solid",
-    stateHigh: "red_ice",
-    stateLow: "red_steam",
-    temp: -20,
-    tempHigh: 2,
-    tempLow: -100,
-}
-
 elements.packed_red_snow.reactions = elements.scp_009.reactions
 elements.red_snow.reactions = elements.scp_009.reactions
 elements.scp_009_meat.reactions = elements.scp_009.reactions
-elements.scp_009_plant.reactions = elements.scp_009.reactions
 
 elements.red_water = {
     color: "#880808",
@@ -2052,7 +2033,7 @@ elements.red_water = {
         "blood": { elem2: "scp_009" },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "coffee": { elem2: "scp_009" },
-        "dead_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
+        "dead_plant": { elem2: "scp_009", chance: 0.025 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2062,13 +2043,13 @@ elements.red_water = {
         "salt_water": { elem2: "scp_009" },
         "sugar_water": { elem2: "scp_009" },
         "dirty_water": { elem2: "scp_009" },
-        "frozen_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
-        "grass": { elem2: "scp_009_plant", temp: -20 },
+        "frozen_plant": { elem2: "scp_009", chance: 0.025 },
+        "grass": { elem2: "scp_009" },
         "infection": { elem2: "scp_009" },
         "juice": { elem2: "scp_009" },
         "milk": { elem2: "scp_009" },
         "neutral_acid": { elem2: "scp_009" },
-        "plant": { elem2: "scp_009_plant", temp: -20 },
+        "plant": { elem2: "scp_009" },
         "pool_water": { elem2: "scp_009" },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "seltzer": { elem2: "scp_009" },
@@ -2126,8 +2107,8 @@ elements.red_steam = {
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
-        "frozen_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
-        "dead_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
+        "frozen_plant": { elem2: "scp_009", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009", chance: 0.025 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2143,8 +2124,8 @@ elements.red_steam = {
         "pool_water": { elem2: "scp_009" },
         "slush": { elem2: "scp_009" },
         "seltzer": { elem2: "scp_009" },
-        "grass": { elem2: "scp_009_plant", temp: -20 },
-        "plant": { elem2: "scp_009_plant", temp: -20 },
+        "grass": { elem2: "scp_009" },
+        "plant": { elem2: "scp_009" },
         "juice": { elem2: "scp_009" },
         "soda": { elem2: "scp_009" },
         "milk": { elem2: "scp_009" },
@@ -2185,8 +2166,8 @@ elements.red_cloud = {
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
-        "frozen_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
-        "dead_plant": { elem2: "scp_009_plant", temp: -20, chance: 0.025 },
+        "frozen_plant": { elem2: "scp_009", chance: 0.025 },
+        "dead_plant": { elem2: "scp_009", chance: 0.025 },
         "water": { elem2: "scp_009" },
         "blood": { elem2: "scp_009" },
         "blood_ice": { elem2: "scp_009", chance: 0.25 },
@@ -6759,7 +6740,6 @@ elements.bless.reactions.red_steam = { elem2: "steam" }
 elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
-elements.bless.reactions.scp_009_plant = { elem2: "plant" }
 elements.bless.reactions.scp_1600 = { elem2: "cheese" }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
 elements.bless.reactions.scp_682 = { elem2: null }
