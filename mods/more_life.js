@@ -275,7 +275,7 @@ elements.zombie_head = {
     tempHigh: 150,
     tempLow: -30,
     reactions: {
-        "body": { elem2: "zombie", chance: 0.5, },
+        "body": { elem2: null, chance: 0.8, },
         "fallout": { elem1: ["ash", "rotten_meat"] },
         "head": { elem2: "zombie" },
         "neutron": { elem1: ["ash", "rotten_meat"], chance: 0.1 },

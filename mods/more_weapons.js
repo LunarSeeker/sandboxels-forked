@@ -71,7 +71,8 @@ elements.ultrahot_bomb = {
                 for (i = 0; i < currentPixels.length; i++) {
                     var newPixel = currentPixels[i]
                     if (newPixel.temp < 999) {
-                        newPixel.temp += 999
+                        newPixel.temp = Math.abs(newPixel.temp)
+                        newPixel.temp += 2000
                     }
                 }
                 explodeAt(pixel.x, pixel.y + 1, 20, "flash")
@@ -96,7 +97,7 @@ elements.color_bomb = {
                     var newPixel = currentPixels[i]
                     newPixel.color = randomChoice(colorstochoose)
                 }
-                explodeAt(pixel.x, pixel.y + 1, 20, "flash")
+                explodeAt(pixel.x, pixel.y + 1, 10, "flash")
             }
         }
         doDefaults(pixel)

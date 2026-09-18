@@ -543,9 +543,15 @@ elements.maintenance = {
         panic: 0
     },
     onPlace: function (pixel) {
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element === "head") {
+            deletePixel(pixel.x, pixel.y - 1)
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element === "body") {
+            deletePixel(pixel.x, pixel.y + 1)
+        }
+
         if (isEmpty(pixel.x, pixel.y + 1)) {
             createPixel("body", pixel.x, pixel.y + 1)
-            pixelMap[pixel.x][pixel.y + 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y + 1], elements.maintenance.buttonColor)
             pixelMap[pixel.x][pixel.y + 1].level = 1
             var color = pixel.color
             changePixel(pixel, "head")
@@ -555,7 +561,6 @@ elements.maintenance = {
             createPixel("head", pixel.x, pixel.y - 1)
             pixelMap[pixel.x][pixel.y - 1].color = pixel.color
             changePixel(pixel, "body")
-            pixel.color = pixelColorPick(pixel, elements.maintenance.buttonColor)
             pixel.level = 1
         }
         else {
@@ -598,9 +603,15 @@ elements.scientist = {
         panic: 0
     },
     onPlace: function (pixel) {
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element === "head") {
+            deletePixel(pixel.x, pixel.y - 1)
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element === "body") {
+            deletePixel(pixel.x, pixel.y + 1)
+        }
+
         if (isEmpty(pixel.x, pixel.y + 1)) {
             createPixel("body", pixel.x, pixel.y + 1)
-            pixelMap[pixel.x][pixel.y + 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y + 1], elements.scientist.buttonColor)
             pixelMap[pixel.x][pixel.y + 1].level = 2
             var color = pixel.color
             changePixel(pixel, "head")
@@ -610,7 +621,6 @@ elements.scientist = {
             createPixel("head", pixel.x, pixel.y - 1)
             pixelMap[pixel.x][pixel.y - 1].color = pixel.color
             changePixel(pixel, "body")
-            pixel.color = pixelColorPick(pixel, elements.scientist.buttonColor)
             pixel.level = 2
         }
         else {
@@ -1925,7 +1935,10 @@ elements.scp_009 = {
     stateLow: "red_water",
     tempLow: 0,
     reactions: {
+        "algae": { elem2: "scp_009", chance: 0.7 },
+        "ant": { elem2: "scp_009", chance: 0.7 },
         "antibody": { elem2: "scp_009", chance: 0.25 },
+        "bee": { elem2: "scp_009", chance: 0.5 },
         "bird": { elem2: "scp_009_meat", chance: 0.15 },
         "blood_ice": { elem2: "scp_009", chance: 0.25 },
         "blood": { elem2: "scp_009", chance: 0.25 },
@@ -1938,9 +1951,10 @@ elements.scp_009 = {
         "fish": { elem2: "scp_009_meat", chance: 0.15 },
         "frog": { elem2: "scp_009_meat", chance: 0.15 },
         "frozen_meat": { elem2: "scp_009_meat", chance: 0.15 },
-        "frozen_plant": { elem2: "scp_009", chance: 0.025 },
+        "frozen_plant": { elem2: "scp_009", chance: 0.05 },
         "grass": { elem2: "scp_009" },
         "head": { elem2: "scp_009_meat", chance: 0.05 },
+        "ice_nine": { elem2: "scp_009", chance: 0.8 },
         "ice": { elem2: "scp_009", chance: 0.25 },
         "infection": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -1960,7 +1974,7 @@ elements.scp_009 = {
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
         "snow": { elem2: "red_snow", chance: 0.4 },
         "soda": { elem2: "scp_009", chance: 0.25 },
-        "steam": { elem2: "red_steam", chance: 0.15 },
+        "steam": { elem2: "red_steam", chance: 0.5 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_water": { elem2: "scp_009", chance: 0.25 },
         "tadpole": { elem2: "scp_009_meat", chance: 0.15 },
@@ -2107,8 +2121,8 @@ elements.red_steam = {
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
-        "frozen_plant": { elem2: "scp_009", chance: 0.025 },
-        "dead_plant": { elem2: "scp_009", chance: 0.025 },
+        "frozen_plant": { elem2: "scp_009", chance: 0.05 },
+        "dead_plant": { elem2: "scp_009", chance: 0.05 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2136,11 +2150,11 @@ elements.red_steam = {
         "infection": { elem2: "scp_009" },
         "meat": { elem2: "scp_009_meat", chance: 0.015 },
         "skin": { elem2: "scp_009_meat", chance: 0.0075 },
-        "body": { elem2: "scp_009_meat", chance: 0.004 },
-        "head": { elem2: "scp_009_meat", chance: 0.005 },
-        "frozen_meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "fish": { elem2: "scp_009_meat", chance: 0.015 },
-        "bird": { elem2: "scp_009_meat", chance: 0.015 },
+        "body": { elem2: "scp_009_meat", chance: 0.04 },
+        "head": { elem2: "scp_009_meat", chance: 0.05 },
+        "frozen_meat": { elem2: "scp_009_meat", chance: 0.05 },
+        "fish": { elem2: "scp_009_meat", chance: 0.5 },
+        "bird": { elem2: "scp_009_meat", chance: 0.15 },
         "frog": { elem2: "scp_009_meat", chance: 0.015 },
         "tadpole": { elem2: "scp_009_meat", chance: 0.015 },
     },
@@ -4200,8 +4214,6 @@ elements.scp_173 = {
             deletePixel(pixel.x, pixel.y)
         }
     },
-    reactions: {
-    },
     related: ["body_173", "head_173"],
     cooldown: defaultCooldown,
     forceSaveColor: true,
@@ -5323,7 +5335,7 @@ elements.scp_409 = {
                 changePixel(pixel, "scp_409")
             }
             else if (Math.random() > 0.75) {
-                changePixel(pixel, "quartz_crystal")
+                changePixel(pixel, "scp_409")
                 if (Math.random() > 0.95) {
                     explodeAt(pixel.x, pixel.y, 10, ["scp_409", "quartz_crystal", "scp_409", "quartz_crystal", null, null, null, null])
                 }
@@ -6330,14 +6342,11 @@ elements.scp_1000 = {
             var color = pixel.color
             changePixel(pixel, "head_1000")
             pixel.color = color
-            pixelMap[pixel.x][pixel.y + 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y + 1], color)
         }
         else if (isEmpty(pixel.x, pixel.y - 1)) {
-            var color = pixel.color
             createPixel("head_1000", pixel.x, pixel.y - 1)
-            pixelMap[pixel.x][pixel.y - 1].color = color
+            pixelMap[pixel.x][pixel.y - 1].color = pixel.color
             changePixel(pixel, "body_1000")
-            pixel.color = pixelColorPick(pixel, color)
         }
         else {
             deletePixel(pixel.x, pixel.y)
@@ -6650,6 +6659,133 @@ elements.head_1000 = {
     }
 }
 
+elements.scp_1147 = {
+    color: "#a32d2d",
+    behavior: [
+        "ST:scp_1147_branch|ST:scp_1147_branch|ST:scp_1147_branch",
+        "ST:scp_1147_branch|XX|ST:scp_1147_branch",
+        "ST:scp_1147_branch AND M2|ST:scp_1147_branch AND M1|ST:scp_1147_branch AND M2",
+    ],
+    category: "scp",
+    tempHigh: 256,
+    state: "solid",
+    stateHigh: "scp_1147_1",
+    breakInto: "scp_1147_1",
+    density: 1050,
+}
+
+elements.scp_1147_1 = {
+    color: "#291d07",
+    burn: 50,
+    burnTime: 20,
+    category: "scp",
+    state: "solid",
+    density: 1400,
+    cooldown: defaultCooldown,
+    seed: true,
+    tick: function (pixel) {
+        if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
+            if (Math.random() < 0.02 && pixel.age > 50 && pixel.temp < 100 && isEmpty(pixel.x, pixel.y - 1)) {
+                changePixel(pixel, "scp_1147_branch")
+                createPixel("scp_1147_branch", pixel.x, pixel.y - 1)
+                if (isEmpty(pixel.x, pixel.y - 2)) {
+                    createPixel("scp_1147_branch", pixel.x, pixel.y - 2)
+                }
+            }
+            else if (pixel.age > 1000 && Math.random() < 0.05) {
+                changePixel(pixel, "scp_1147_branch")
+                pixel.color = pixelColorPick(pixel, pixel.wc)
+            }
+            pixel.age++
+        }
+        doDefaults(pixel)
+    },
+    properties: {
+        "age": 0
+    },
+}
+
+elements.scp_1147_branch = {
+    name: "scp_1147",
+    color: "#a0522d",
+    behavior: behaviors.WALL,
+    movable: false,
+    category: "scp",
+    hidden: true,
+    state: "solid",
+    density: 1500,
+    hardness: 0.15,
+    seed: "scp_1147_1",
+    forceSaveColor: true,
+    tick: function (pixel) {
+        if (!pixel.burning) {
+            if (!pixel.lc) { pixel.lc = "#00bf00" }
+            if (!pixel.wc) { pixel.wc = "#a0522d" }
+            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    if (Math.random() > 0.7) {
+                        createPixel("scp_1147_1", pixel.x - 1, pixel.y - 1)
+                    }
+                    else {
+                        createPixel("scp_1147_leaf", pixel.x - 1, pixel.y - 1)
+                        pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.lc)
+                    }
+                }
+                else {
+                    createPixel("scp_1147_branch", pixel.x - 1, pixel.y - 1)
+                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
+                }
+            }
+            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    if (Math.random() > 0.7) {
+                        createPixel("scp_1147_1", pixel.x + 1, pixel.y - 1)
+                    }
+                    else {
+                        createPixel("scp_1147_leaf", pixel.x + 1, pixel.y - 1)
+                        pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.lc)
+                    }
+                }
+                else {
+                    createPixel("scp_1147_branch", pixel.x + 1, pixel.y - 1)
+                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
+                }
+            }
+            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.75) {
+                    if (Math.random() > 0.8) {
+                        createPixel("scp_1147_1", pixel.x, pixel.y - 1)
+                    }
+                    else {
+                        createPixel("scp_1147_leaf", pixel.x, pixel.y - 1)
+                        pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.lc)
+                    }
+                }
+                else {
+                    createPixel("scp_1147_branch", pixel.x, pixel.y - 1)
+                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
+                }
+            }
+        }
+        doDefaults(pixel)
+    },
+}
+
+elements.scp_1147_leaf = {
+    color: "#00bf00",
+    behavior: behaviors.WALL,
+    category: "scp",
+    state: "solid",
+    density: 1050,
+    forceSaveColor: true
+}
+
 elements.scp_1424 = {
     properties: {
         dir: 1,
@@ -6659,7 +6795,6 @@ elements.scp_1424 = {
     conduct: .025,
     cooldown: defaultCooldown,
     density: 1580,
-    name: "SCP-1424",
     state: "solid",
     temp: -23,
     tick: function (pixel) {
@@ -6734,6 +6869,8 @@ elements.scp_1600 = {
 }
 
 elements.bless.reactions.black_acid = { elem2: null }
+elements.bless.reactions.body_096 = { elem2: "meat" }
+elements.bless.reactions.head_096 = { elem2: "meat" }
 elements.bless.reactions.red_cloud = { elem2: "rain_cloud" }
 elements.bless.reactions.red_snow = { elem2: "snow" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
@@ -6741,5 +6878,6 @@ elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
 elements.bless.reactions.scp_1600 = { elem2: "cheese" }
+elements.bless.reactions.scp_173 = { elem2: "concrete" }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
 elements.bless.reactions.scp_682 = { elem2: null }

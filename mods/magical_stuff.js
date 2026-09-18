@@ -1,4 +1,4 @@
-dwarfcrawlThru = ["dirt", "sand", "clay_soil", "gravel", "mulch", "color_sand", "grass", "granite", "clay", "ice", "snow", "plant"]
+dwarfcrawlThru = ["dirt", "sand", "clay_soil", "gravel", "mulch", "color_sand", "grass", "granite", "clay", "ice", "snow", "plant", "concrete"]
 
 removeElementsDark = [ //For elements not in the "life" category
     "ant_wall",

@@ -10,6 +10,8 @@ excludeBlackHole = [
     "pipe",
     "portal_in",
     "portal_out",
+    "scp_096",
+    "scp_682",
     "time",
     "void",
     "wall",
