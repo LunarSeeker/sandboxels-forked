@@ -204,7 +204,7 @@ elements.access_door = {
         if (!isEmpty(pixel.x - 1, pixel.y, true) && !outOfBounds(pixel.x - 1, pixel.y) && Math.random() > 0.9) {
             let neighbor = pixelMap[pixel.x - 1][pixel.y]
             if (pixel.levelReq && elements[neighbor.element].level < pixel.levelReq) { }
-            else if (neighbor.level >= pixel.levelReq && (neighbor.element == "body" || neighbor.element == "melted_body" || neighbor.element == "fused_organism" && Math.random() > 0.75 || neighbor.element == "body_1000" || neighbor.element == "body_008" || neighbor.element == "body_1015" || neighbor.element == "body_035" || neighbor.element == "body_012_1")) {
+            else if (neighbor.level >= pixel.levelReq && (neighbor.element == "body" || neighbor.element == "melted_body" || neighbor.element == "fused_organism" && Math.random() > 0.75 || neighbor.element == "body_1000" || neighbor.element == "body_008" || neighbor.element == "zombie_body" || neighbor.element == "body_035" || neighbor.element == "body_012_1")) {
                 if (neighbor.dir == 1 && !isEmpty(neighbor.x, neighbor.y - 1) && !outOfBounds(neighbor.x, neighbor.y - 1)) {
                     if (isEmpty(pixel.x + 1, pixel.y) && isEmpty(pixel.x + 1, pixel.y - 1)) {
                         if (tryMove(pixelMap[neighbor.x][neighbor.y - 1], pixel.x + 1, pixel.y - 1)) {
@@ -256,7 +256,7 @@ elements.access_door = {
         else if (!isEmpty(pixel.x + 1, pixel.y, true) && !outOfBounds(pixel.x + 1, pixel.y) && Math.random() > 0.9) {
             let neighbor = pixelMap[pixel.x + 1][pixel.y]
             if (pixel.levelReq && elements[neighbor.element].level < pixel.levelReq) { }
-            else if (neighbor.level >= pixel.levelReq && (neighbor.element == "body" || neighbor.element == "body_1000" || neighbor.element == "body_008" || neighbor.element == "body_1015" || neighbor.element == "body_035" || neighbor.element == "body_012_1")) {
+            else if (neighbor.level >= pixel.levelReq && (neighbor.element == "body" || neighbor.element == "body_1000" || neighbor.element == "body_008" || neighbor.element == "zombie_body" || neighbor.element == "body_035" || neighbor.element == "body_012_1")) {
                 if (neighbor.dir == -1 && !isEmpty(neighbor.x, neighbor.y - 1) && !outOfBounds(neighbor.x, neighbor.y - 1)) {
                     if (isEmpty(pixel.x - 1, pixel.y) && isEmpty(pixel.x - 1, pixel.y - 1)) {
                         if (tryMove(pixelMap[neighbor.x][neighbor.y - 1], pixel.x - 1, pixel.y - 1)) {
@@ -320,7 +320,7 @@ elements.alarm = {
             for (var i = 0; i < coords.length; i++) {
                 if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
                     var panic = pixelMap[coords[i].x][coords[i].y]
-                    if (panic.panic != undefined && (panic.element == "body" || panic.element == "body_1000" || panic.element == "body_1015")) {
+                    if (panic.panic != undefined && (panic.element == "body" || panic.element == "body_1000" || panic.element == "zombie_body")) {
                         panic.panic += 0.025
                     }
                 }
@@ -887,11 +887,11 @@ elements.scp_001_light = {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_animal"
         }
-        else if (pixel2.element == "head_008" || pixel2.element == "head_012_1" || pixel2.element == "head_035" || pixel2.element == "head_049" || pixel2.element == "head_096" || pixel2.element == "head_1000" || pixel2.element == "head_1015") {
+        else if (pixel2.element == "head_008" || pixel2.element == "head_012_1" || pixel2.element == "head_035" || pixel2.element == "head_049" || pixel2.element == "head_096" || pixel2.element == "head_1000" || pixel2.element == "zombie_head") {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_head"
         }
-        else if (pixel2.element == "body_008" || pixel2.element == "body_012_1" || pixel2.element == "body_035" || pixel2.element == "body_049" || pixel2.element == "body_096" || pixel2.element == "body_1000" || pixel2.element == "body_1015") {
+        else if (pixel2.element == "body_008" || pixel2.element == "body_012_1" || pixel2.element == "body_035" || pixel2.element == "body_049" || pixel2.element == "body_096" || pixel2.element == "body_1000" || pixel2.element == "zombie_body") {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_body"
         }
@@ -1047,7 +1047,7 @@ elements.melted_body = {
                 delete head.panic
             }
         }
-        else if (!isEmpty(pixel.x, pixel.y - 1, true) && (pixelMap[pixel.x][pixel.y - 1].element == "head" || pixelMap[pixel.x][pixel.y - 1].element == "head_008" || pixelMap[pixel.x][pixel.y - 1].element == "head_012_1" || pixelMap[pixel.x][pixel.y - 1].element == "head_035" || pixelMap[pixel.x][pixel.y - 1].element == "head_049" || pixelMap[pixel.x][pixel.y - 1].element == "head_1000" || pixelMap[pixel.x][pixel.y - 1].element == "head_1015")) {
+        else if (!isEmpty(pixel.x, pixel.y - 1, true) && (pixelMap[pixel.x][pixel.y - 1].element == "head" || pixelMap[pixel.x][pixel.y - 1].element == "head_008" || pixelMap[pixel.x][pixel.y - 1].element == "head_012_1" || pixelMap[pixel.x][pixel.y - 1].element == "head_035" || pixelMap[pixel.x][pixel.y - 1].element == "head_049" || pixelMap[pixel.x][pixel.y - 1].element == "head_1000" || pixelMap[pixel.x][pixel.y - 1].element == "zombie_head")) {
             var head = pixelMap[pixel.x][pixel.y - 1]
             if (pixel.color != head.color) {
                 pixel.color = head.color
@@ -1169,7 +1169,7 @@ elements.melted_head = {
                 pixel.dead = body.dead
             }
         }
-        else if (!isEmpty(pixel.x, pixel.y + 1, true) && (pixelMap[pixel.x][pixel.y + 1].element == "body" || pixelMap[pixel.x][pixel.y + 1].element == "body_008" || pixelMap[pixel.x][pixel.y + 1].element == "body_012_1" || pixelMap[pixel.x][pixel.y + 1].element == "body_035" || pixelMap[pixel.x][pixel.y + 1].element == "body_049" || pixelMap[pixel.x][pixel.y + 1].element == "body_1000" || pixelMap[pixel.x][pixel.y + 1].element == "body_1015")) {
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && (pixelMap[pixel.x][pixel.y + 1].element == "body" || pixelMap[pixel.x][pixel.y + 1].element == "body_008" || pixelMap[pixel.x][pixel.y + 1].element == "body_012_1" || pixelMap[pixel.x][pixel.y + 1].element == "body_035" || pixelMap[pixel.x][pixel.y + 1].element == "body_049" || pixelMap[pixel.x][pixel.y + 1].element == "body_1000" || pixelMap[pixel.x][pixel.y + 1].element == "zombie_body")) {
             var body = pixelMap[pixel.x][pixel.y + 1]
             body.element = "melted_body"
         }
@@ -1397,11 +1397,11 @@ elements.fused_organism = {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_plant"
         }
-        if (pixel2.element == "head_008" || pixel2.element == "head_012_1" || pixel2.element == "head_035" || pixel2.element == "head_1000" || pixel2.element == "head_1015") {
+        if (pixel2.element == "head_008" || pixel2.element == "head_012_1" || pixel2.element == "head_035" || pixel2.element == "head_1000" || pixel2.element == "zombie_head") {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_head"
         }
-        else if (pixel2.element == "body_008" || pixel2.element == "body_012_1" || pixel2.element == "body_035" || pixel2.element == "body_1000" || pixel2.element == "body_1015") {
+        else if (pixel2.element == "body_008" || pixel2.element == "body_012_1" || pixel2.element == "body_035" || pixel2.element == "body_1000" || pixel2.element == "zombie_body") {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_body"
         }
@@ -5022,7 +5022,7 @@ elements.scp_261 = {
             var y = pixel.y + coord[1]
             if (!isEmpty(x, y, true)) {
                 let newPixel = pixelMap[x][y]
-                if ((newPixel.element == "gold_coin" || newPixel.element == "penny" || newPixel.element == "bronze_coin" || newPixel.element == "money") && Math.random() > 0.15) {
+                if ((newPixel.element == "gold_coin" || newPixel.element == "bronze_coin" || newPixel.element == "money") && Math.random() > 0.15) {
                     pixel.strange++
                     deletePixel(newPixel.x, newPixel.y)
                     if (pixel.strange > 25 && (Math.random() > (pixel.db * 0.1))) {
@@ -5430,25 +5430,45 @@ elements.scp_409 = {
         if (Math.random() < (elements[pixel.element].hardness || 0.25)) { return }
         if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas" && Math.random() > 0.1) {
             if (elements[pixel.element].category !== "life" && elements[pixel.element].category !== "food" && pixel.element !== "wood" && pixel.element !== "bamboo" && pixel.element !== "skin" && Math.random() > 0.75) {
-                if (Math.random() < 0.85) {
-                    changePixel(pixel, "quartz_crystal")
-                }
-                else if (Math.random() < 0.5 && elements[pixel.element].movable == false) {
-                    changePixel(pixel, "quartz")
-                }
-                else {
-                    changePixel(pixel, "scp_409")
-                }
+                changePixel(pixel, "scp_409")
             }
             else if (Math.random() > 0.75) {
-                changePixel(pixel, "scp_409")
+                changePixel(pixel, "quartz_crystal")
                 if (Math.random() > 0.95) {
-                    explodeAt(pixel.x, pixel.y, 10, ["scp_409", "quartz_crystal", "quartz_crystal", "quartz_crystal", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+                    explodeAt(pixel.x, pixel.y, 10, ["scp_409", "quartz_crystal", "scp_409", "quartz_crystal", null, null, null, null])
                 }
             }
         }
     },
-    ignore: ["granite", "quartz", "quartz_crystal", "wall", "waste_barrel", "hazmat_body", "hazmat_head", "magma", "molten_glass", "molten_quartz", "molten_granite"],
+    ignore: [
+        "granite",
+        "quartz",
+        "quartz_crystal",
+        "wall",
+        "waste_barrel",
+        "battery",
+        "black_hole",
+        "bless",
+        "border",
+        "gray_goo",
+        "hazmat_body",
+        "hazmat_head",
+        "ichor",
+        "image",
+        "magma",
+        "molten_glass",
+        "molten_granite",
+        "molten_quartz",
+        "pipe_wall",
+        "pipe",
+        "portal_in",
+        "portal_out",
+        "super_acid",
+        "time",
+        "void",
+        "warp",
+        "wire",
+    ],
     canPlace: true,
     category: "scp",
     density: 2650,
@@ -5825,26 +5845,6 @@ elements.head_457 = {
 elements.scp_682 = {
     name: "SCP-682",
     color: ["#424242", "#75816B", "#4D6B53"],
-    onChange: function (_pixel) {
-        var x = Math.floor(Math.random() * (width)) + 1
-        var y = Math.floor(Math.random() * (height)) + 1
-        if (isEmpty(x, y)) {
-            createPixel("scp_682", x, y)
-        }
-        else if (!isEmpty(x, y) && !outOfBounds(x, y) && pixelMap[x][y].element != "scp_682") {
-            changePixel(pixelMap[x][y], "scp_682")
-        }
-    },
-    onDelete: function (_pixel) {
-        var x = Math.floor(Math.random() * (width)) + 1
-        var y = Math.floor(Math.random() * (height)) + 1
-        if (isEmpty(x, y)) {
-            createPixel("scp_682", x, y)
-        }
-        else if (!isEmpty(x, y) && !outOfBounds(x, y)) {
-            changePixel(pixelMap[x][y], "scp_682")
-        }
-    },
     properties: {
         h: 1,
         dir: 1,
@@ -6097,15 +6097,12 @@ elements.scp_682 = {
         "body": { attr1: { h: 3 }, elem2: ["blood", "meat", "bone"], },
         "neutral_acid": { attr1: { h: 2 }, elem2: null, chance: 0.5 },
         "acid": { attr1: { h: 2 }, elem2: [null, "acid", "acid", "acid", "acid", "acid", "acid", "acid", "acid", "acid", "acid", "acid", "acid", "acid", "neutral_acid", "neutral_acid"], chance: 0.5 },
-        "grass": { elem2: "dead_plant", chance: 0.2 },
-        "plant": { elem2: "dead_plant", chance: 0.2 },
-        "dead_plant": { elem2: null, chance: 0.2 },
-        "dna": { elem2: null, chance: 0.2 },
-        "meat": { elem2: null, chance: 0.2 },
-        "ground_meat": { elem2: null, chance: 0.2 },
-        "cooked_meat": { elem2: null, chance: 0.3 },
-        "rotten_meat": { elem2: null, chance: 0.1 },
-        "ground_rotten_meat": { elem2: null, chance: 0.15 },
+        "grass": { elem2: "dead_plant" },
+        "plant": { elem2: "dead_plant" },
+        "dna": { elem2: null },
+        "meat": { elem2: null },
+        "cooked_meat": { elem2: null },
+        "rotten_meat": { elem2: null },
         "blood": { attr1: { h: 3 }, elem2: null },
         "infection": { elem2: null },
         "bone": { elem2: ["blood", null, null], chance: 0.1 },
@@ -6431,6 +6428,13 @@ elements.scp_1000 = {
         panic: 0
     },
     onPlace: function (pixel) {
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element === "head_1000") {
+            deletePixel(pixel.x, pixel.y - 1)
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element === "body_1000") {
+            deletePixel(pixel.x, pixel.y + 1)
+        }
+
         if (isEmpty(pixel.x, pixel.y + 1)) {
             createPixel("body_1000", pixel.x, pixel.y + 1)
             var color = pixel.color
@@ -6756,531 +6760,6 @@ elements.head_1000 = {
     }
 }
 
-elements.penny = {
-    color: ["#F49858", "#DE882C", "#D9752C", "#B15D23", "#C16522", "#B75C24", "#B05B28", "#AF6720"],
-    behavior: behaviors.POWDER,
-    category: "powders",
-    tempHigh: 1085,
-    stateHigh: "molten_copper",
-    state: "solid",
-    density: 8960,
-    conduct: 0.85,
-    hardness: 0.3,
-}
-
-elements.scp_1015 = {
-    behavior: behaviors.POWDER,
-    category: "scp",
-    color: ["#F49858", "#DE882C", "#D9752C", "#B15D23", "#C16522", "#B75C24", "#B05B28", "#AF6720"],
-    conduct: 0.85,
-    density: 8960,
-    hardness: 1,
-    insulate: true,
-    name: "SCP-1015",
-    state: "solid",
-    stateHigh: "molten_copper",
-    temp: 20,
-    tempHigh: 10850,
-    tick: function (pixel) {
-        for (var i = 0; i < destroyCoords.length; i++) {
-            var coords = destroyCoords[i]
-            var x = pixel.x + coords[0]
-            var y = pixel.y + coords[1]
-            if (!isEmpty(x, y) && !outOfBounds(x, y) && Math.random() < 0.05) {
-                var pixel2 = pixelMap[x][y]
-                if (elements[pixel2.element].id == elements.body.id) {
-                    pixel2.element = "body_1015"
-                    deletePixel(pixel.x, pixel.y)
-                    break
-                }
-                else if (elements[pixel2.element].id == elements.head.id) {
-                    pixel2.element = "head_1015"
-                    pixelMap[pixel2.x][pixel2.y + 1].element = "body_1015"
-                    deletePixel(pixel.x, pixel.y)
-                    break
-                }
-            }
-        }
-    },
-}
-
-elements.body_1015 = {
-    breakInto: ["blood", "meat", "bone"],
-    burn: 10,
-    burnInto: "cooked_meat",
-    burnTime: 250,
-    category: "scp",
-    color: ["#069469", "#047e99", "#7f5fb0"],
-    conduct: .05,
-    density: 1500,
-    forceSaveColor: true,
-    hidden: true,
-    name: "SCP-1015-1",
-    pickElement: "human",
-    state: "solid",
-    stateHigh: "cooked_meat",
-    stateLow: "frozen_meat",
-    temp: 37,
-    tempHigh: 150,
-    tempLow: -30,
-    reactions: {
-        "cancer": { elem1: "cancer", chance: 0.005 },
-        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
-        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
-        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
-        "plague": { elem1: "plague", chance: 0.05 },
-        "egg": { elem2: "yolk", chance: 0.5, oneway: true },
-        "grape": { elem2: "juice", chance: 0.5, color2: "#291824", oneway: true },
-        "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
-        "spider": { elem2: "dead_bug", oneway: true },
-        "fly": { elem2: "dead_bug", oneway: true },
-        "firefly": { elem2: "dead_bug", oneway: true },
-        "bee": { elem2: "dead_bug", oneway: true },
-        "flea": { elem2: "dead_bug", oneway: true },
-        "termite": { elem2: "dead_bug", oneway: true },
-        "worm": { elem2: "slime", chance: 0.05, oneway: true },
-        "stink_bug": { elem2: "stench", oneway: true },
-        "grass_seed": { elem2: null, chance: 0.05 },
-        "gold_coin": { elem2: null, chance: 0.05 },
-        "diamond": { elem2: null, chance: 0.05 },
-        "sun": { elem1: "cooked_meat" },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "anesthesia": { attr1: { "panic": 0 } },
-        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
-    },
-    properties: {
-        dead: false,
-        dir: 1,
-        panic: 0,
-        pennySize: 1,
-    },
-    tick: function (pixel) {
-        if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
-            if (!isEmpty(pixel.x, pixel.y - 2, true)) { // Drag head down
-                var headpixel = pixelMap[pixel.x][pixel.y - 2]
-                if (headpixel.element === "head_1015") {
-                    if (isEmpty(pixel.x, pixel.y - 1)) {
-                        movePixel(pixelMap[pixel.x][pixel.y - 2], pixel.x, pixel.y - 1)
-                    }
-                    else {
-                        swapPixels(pixelMap[pixel.x][pixel.y - 2], pixelMap[pixel.x][pixel.y - 1])
-                    }
-                }
-            }
-        }
-        doHeat(pixel)
-        doBurning(pixel)
-        doElectricity(pixel)
-        if (pixel.dead) {
-            // Turn into rotten_meat if pixelTicks-dead > 500
-            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
-                changePixel(pixel, "rotten_meat")
-            }
-            return
-        }
-
-        if (Math.random() < 0.25 && !isEmpty(pixel.x - 1, pixel.y + 1) && !isEmpty(pixel.x + 1, pixel.y + 1) && !isEmpty(pixel.x - 1, pixel.y - 1) && !isEmpty(pixel.x + 1, pixel.y - 1) && !isEmpty(pixel.x, pixel.y - 1) && !isEmpty(pixel.x, pixel.y + 1) && !isEmpty(pixel.x - 1, pixel.y) && !isEmpty(pixel.x + 1, pixel.y) && Math.random() > 0.5) {
-            changePixel(pixel, "scp_1015")
-            releaseElement(pixel, "blood", 4, true)
-        }
-        // Find the head
-        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element == "head_1015") {
-            var head = pixelMap[pixel.x][pixel.y - 1]
-            if (head.dead) { // If head is dead, kill body
-                pixel.dead = head.dead
-            }
-            else if (head.panic > 0) {
-                pixel.panic = head.panic
-                delete head.panic
-            }
-        }
-        else if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element == "head") {
-            var head = pixelMap[pixel.x][pixel.y - 1]
-            head.element = "head_1015"
-        }
-        else { var head = null }
-        if (head && Math.random() < 0.25) {
-            let y = Math.random() < 0.5 ? 0 : -1
-            for (let x = 1; x < 10; x++) {
-                let x2 = pixel.x + (x * pixel.dir)
-                let y2 = pixel.y + y
-                if (!isEmpty(x2, y2, true)) {
-                    let seenPixel = pixelMap[x2][y2]
-                    if (elements.human.reactions[seenPixel.element] && elements.human.reactions[seenPixel.element].attr1 && elements.human.reactions[seenPixel.element].attr1.panic) {
-                        pixel.panic += elements.human.reactions[seenPixel.element].attr1.panic
-                        pixel.dir *= -1
-                        break
-                    }
-                    else if (seenPixel.dead || seenPixel.temp > 200) {
-                        pixel.panic += 5
-                        pixel.dir *= -1
-                        if (seenPixel.panic) delete seenPixel.panic
-                        break
-                    }
-                }
-            }
-        }
-        if (pixel.burning) {
-            pixel.panic += 0.1
-            if (head && pixelTicks - pixel.burnStart > 240) {
-                pixel.color = head.color
-            }
-        }
-        if (pixel.charge) {
-            pixel.panic += 1
-        }
-        else if (pixel.panic > 0) {
-            pixel.panic -= 0.1
-            if (pixel.panic < 0) { pixel.panic = 0 }
-            else if (pixel.panic > 50) { pixel.panic = 50 }
-        }
-
-        if (isEmpty(pixel.x, pixel.y - 1)) {
-            // create blood if decapitated 10% chance
-            if (Math.random() < 0.1 && !pixel.charge) {
-                createPixel("blood", pixel.x, pixel.y - 1)
-                // set dead to true 15% chance
-                if (Math.random() < 0.15) {
-                    pixel.dead = pixelTicks
-                }
-            }
-        }
-        else if (head === null) { return }
-        else if (Math.random() < 0.1 * (isEmpty(pixel.x, pixel.y + 1) ? 1 : pixel.panic + 1)) { // Move 10% chance
-            var movesToTry = [
-                [1 * pixel.dir, 0],
-                [1 * pixel.dir, -1],
-            ]
-            let moved = false
-            // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
-            while (movesToTry.length > 0) {
-                var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
-                if (isEmpty(pixel.x + move[0], pixel.y + move[1] - 1)) {
-                    var origx = pixel.x + move[0]
-                    var origy = pixel.y + move[1]
-                    if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
-                        movePixel(head, head.x + move[0], head.y + move[1])
-                        moved = true
-                        break
-                    }
-                }
-                else if (!isEmpty(pixel.x + move[0], pixel.y + move[1], true)) {
-                    var hitPixel = pixelMap[pixel.x + move[0]][pixel.y + move[1]]
-                    if ((hitPixel.element === "body" || hitPixel.element === "head") && pixel.pennySize > 10) {
-                        if (Math.random() < 0.0005) {
-                            changePixel(hitPixel, "scp_1015")
-                        }
-                        else {
-                            changePixel(hitPixel, "penny")
-                        }
-                        releaseElement(pixel, "blood")
-                    }
-                    else if ((hitPixel.element === "body" || hitPixel.element === "head") && hitPixel.panic < pixel.panic) {
-                        // interact with other human
-                        hitPixel.panic = pixel.panic
-                    }
-                    else if (elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 5 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                        pixel.elemP = hitPixel.element
-                        hitPixel.element = "penny_converter"
-                        hitPixel.origElem = pixel.elemP
-                        hitPixel.pennySize = pixel.pennySize
-                        delete pixel.elemP
-                    }
-                    else if (elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 3 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                        if (Math.random() < 0.0005) {
-                            changePixel(hitPixel, "scp_1015")
-                        }
-                        else {
-                            changePixel(hitPixel, "penny")
-                        }
-                    }
-                    else if (elements[hitPixel.element].movable == true && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 1 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                        if (Math.random() < 0.0005) {
-                            changePixel(hitPixel, "scp_1015")
-                        }
-                        else {
-                            changePixel(hitPixel, "penny")
-                        }
-                    }
-                    else if (Math.random() > 0.9 && elements[hitPixel.element].movable == true && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 0 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                        if (Math.random() < 0.0005) {
-                            changePixel(hitPixel, "scp_1015")
-                        }
-                        else {
-                            changePixel(hitPixel, "penny")
-                        }
-                    }
-                }
-            }
-            if (!isEmpty(pixel.x, pixel.y + 1) && !outOfBounds(pixel.x, pixel.y + 1) && Math.random() < 0.25) {
-                var hitPixel = pixelMap[pixel.x][pixel.y + 1]
-                if ((hitPixel.element === "body" || hitPixel.element === "head") && pixel.pennySize > 10) {
-                    if (!isEmpty(hitPixel.x, hitPixel.y - 1) && !outOfBounds(hitPixel.x, hitPixel.y - 1) && Math.random() > 0.5 && hitPixel.element == "body") {
-                        if (Math.random() < 0.0005) {
-                            changePixel(pixelMap[hitPixel.x][hitPixel.y - 1], "scp_1015")
-                        }
-                        else {
-                            changePixel(pixelMap[hitPixel.x][hitPixel.y - 1], "penny")
-                        }
-                    }
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                    releaseElement(pixel, "blood", 2)
-                }
-                else if (elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 5 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    pixel.elemP = hitPixel.element
-                    hitPixel.element = "penny_converter"
-                    hitPixel.origElem = pixel.elemP
-                    hitPixel.pennySize = pixel.pennySize
-                    delete pixel.elemP
-                }
-                else if (elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 3 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                }
-                else if (elements[hitPixel.element].movable == true && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 1 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                }
-                else if (Math.random() > 0.9 && elements[hitPixel.element].movable == true && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 0 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                }
-            }
-            if (!isEmpty(pixel.x, pixel.y - 2) && !outOfBounds(pixel.x, pixel.y - 2) && Math.random() < 0.5) {
-                var hitPixel = pixelMap[pixel.x][pixel.y + 1]
-                if ((hitPixel.element === "body" || hitPixel.element === "head") && pixel.pennySize > 10) {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                    releaseElement(pixel, "blood")
-                }
-                else if (elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 5 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    pixel.elemP = hitPixel.element
-                    hitPixel.element = "penny_converter"
-                    hitPixel.origElem = pixel.elemP
-                    hitPixel.pennySize = pixel.pennySize
-                    delete pixel.elemP
-                }
-                else if (Math.random() > 0.5 && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 3 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                }
-                else if (elements[hitPixel.element].movable == true && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 1 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                }
-                else if (Math.random() > 0.5 && elements[hitPixel.element].movable == true && elements[hitPixel.element].state != "gas" && elements[hitPixel.element].state != "liquid" && pixel.pennySize > 0 && hitPixel.element != "head_1015" && hitPixel.element != "body" && hitPixel.element != "body" && hitPixel.element != "head" && hitPixel.element != "penny" && hitPixel.element != "scp_1015" && hitPixel.element != "penny_converter") {
-                    if (Math.random() < 0.0005) {
-                        changePixel(hitPixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(hitPixel, "penny")
-                    }
-                }
-            }
-            // 15% chance to change direction
-            if (Math.random() < 0.15 || !moved) {
-                pixel.dir *= -1
-            }
-            // homeostasis
-            if (pixel.temp > 37) { pixel.temp -= 1 }
-            else if (pixel.temp < 37) { pixel.temp += 1 }
-            if (pixel.elemP) {
-                delete pixel.elemP
-            }
-            if (Math.random() < 0.05) {
-                if (!pixel.pennySize) {
-                    pixel.pennySize = 0.5
-                }
-                else {
-                    pixel.pennySize *= 1.1
-                }
-            }
-        }
-    },
-    onChange: function (pixel) {
-        releaseElement(pixel, "scp_1015", 1, true)
-    },
-    onDelete: function (pixel) {
-        releaseElement(pixel, "scp_1015", 1, true)
-    },
-}
-
-elements.head_1015 = {
-    breakInto: ["blood", "meat", "bone"],
-    burn: 10,
-    burnInto: "cooked_meat",
-    burnTime: 250,
-    category: "scp",
-    color: ["#f3e7db", "#f7ead0", "#eadaba", "#d7bd96", "#a07e56", "#825c43", "#604134", "#3a312a"],
-    conduct: .05,
-    density: 1080,
-    forceSaveColor: true,
-    hidden: true,
-    name: "SCP-1015-1",
-    pickElement: "human",
-    state: "solid",
-    stateHigh: "cooked_meat",
-    stateLow: "frozen_meat",
-    temp: 37,
-    tempHigh: 150,
-    tempLow: -30,
-    reactions: {
-        "cancer": { elem1: "cancer", chance: 0.005 },
-        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
-        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
-        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
-        "plague": { elem1: "plague", chance: 0.05 },
-        "oxygen": { elem2: "carbon_dioxide", chance: 0.5 },
-        "beans": { elem2: [null, null, null, null, null, null, null, null, "stench"], chance: 0.2 },
-        "sun": { elem1: "cooked_meat" },
-        "light": { stain1: "#825043" },
-        "bee": { stain1: "#cc564b", chance: 0.2 },
-        "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
-        "salt_water": { elem2: "bubble", attr2: { "clone": "salt_water" }, chance: 0.001 },
-        "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "anesthesia": { attr1: { "panic": 0 } },
-        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
-    },
-    properties: {
-        dead: false
-    },
-    tick: function (pixel) {
-        doHeat(pixel)
-        doBurning(pixel)
-        doElectricity(pixel)
-        if (pixel.dead) {
-            // Turn into rotten_meat if pixelTicks-dead > 500
-            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
-                changePixel(pixel, "rotten_meat")
-                return
-            }
-        }
-
-        // Find the body
-        if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_1015") {
-            var body = pixelMap[pixel.x][pixel.y + 1]
-            if (body.dead) { // If body is dead, kill head
-                pixel.dead = body.dead
-            }
-        }
-        else { var body = null }
-
-        // check for eating food
-        if (body && !pixel.dead && Math.random() < 0.0025) {
-            shuffleArray(interactCoordsShuffle)
-            for (var i = 0; i < interactCoordsShuffle.length; i++) {
-                var x = pixel.x + interactCoordsShuffle[i][0]
-                var y = pixel.y + interactCoordsShuffle[i][1]
-                if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].isFood && pixelMap[x][y].panic === undefined) {
-                    deletePixel(x, y)
-                    break
-                }
-            }
-        }
-
-        if (tryMove(pixel, pixel.x, pixel.y + 1)) {
-            // create blood if severed 10% chance
-            if (isEmpty(pixel.x, pixel.y + 1) && !pixel.dead && Math.random() < 0.1 && !pixel.charge) {
-                createPixel("blood", pixel.x, pixel.y + 1)
-                // set dead to true 15% chance
-                if (Math.random() < 0.15) {
-                    pixel.dead = pixelTicks
-                }
-            }
-        }
-        // homeostasis
-        if (pixel.temp > 37) { pixel.temp -= 1 }
-        else if (pixel.temp < 37) { pixel.temp += 1 }
-    },
-    onChange: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coord = adjacentCoords[i]
-            var x = pixel.x + coord[0]
-            var y = pixel.y + coord[1]
-            if (!isEmpty(x, y, true) && pixelMap[x][y].panic !== undefined) {
-                pixelMap[x][y].panic += 20
-            }
-        }
-    },
-    onDelete: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coord = adjacentCoords[i]
-            var x = pixel.x + coord[0]
-            var y = pixel.y + coord[1]
-            if (!isEmpty(x, y, true) && pixelMap[x][y].panic !== undefined) {
-                pixelMap[x][y].panic += 20
-            }
-        }
-    }
-}
-
-elements.penny_converter = {
-    color: ["#F49858", "#DE882C", "#D9752C", "#B15D23", "#C16522", "#B75C24", "#B05B28", "#AF6720"],
-    tick: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coords = adjacentCoords[i]
-            var x = pixel.x + coords[0]
-            var y = pixel.y + coords[1]
-            if (!isEmpty(x, y, true)) {
-                var newPixel = pixelMap[x][y]
-                if (elements[newPixel.element].id !== elements.penny.id && elements[newPixel.element].id !== elements.scp_1015.id && newPixel.element == pixel.origElem && pixel.pennySize > 1) {
-                    changePixel(newPixel, "penny_converter")
-                    newPixel.origElem = pixel.origElem
-                    newPixel.pennySize = (pixel.pennySize - 1)
-                    if (Math.random() < 0.0005) {
-                        changePixel(pixel, "scp_1015")
-                    }
-                    else {
-                        changePixel(pixel, "penny")
-                    }
-                }
-            }
-        }
-        if (!pixel.pennySize || !pixel.origElem || pixel.pennySize < 2 || (pixel.start + 20) < pixelTicks) {
-            if (Math.random() < 0.0005) {
-                changePixel(pixel, "scp_1015")
-            }
-            else {
-                changePixel(pixel, "penny")
-            }
-        }
-    },
-    category: "special",
-    state: "solid",
-    density: 600,
-    excludeRandom: true
-}
-
 elements.scp_1424 = {
     properties: {
         dir: 1,
@@ -7327,6 +6806,43 @@ elements.scp_1424 = {
     },
 }
 
+elements.scp_1600 = {
+    behavior: behaviors.SUPERFLUID,
+    category: "scp",
+    color: "#D6CE02",
+    density: 466,
+    excludeRandom: true,
+    hazard: true,
+    ignore: ["wall", "bless", "waste_barrel", "hazmat_body", "hazmat_head", "super_acid", "scp_261", "cheese", "redacted", "scp_1600", "gallium", "brass", "zinc", "sulfur", "scp_999", "scp_063", "scp_055"],
+    state: "liquid",
+    viscosity: 5,
+    reactions: {
+        "blood": { elem2: "cheese", color2: "#D36324" },
+        "cured_meat": { elem2: "cheese", color2: "#D9A256" },
+        "gold_coin": { elem2: "cheese", color2: "#FEDF5E" },
+        "gold": { elem2: "cheese", color2: "#FEDF5E" },
+        "infection": { elem2: "cheese", color2: "#CE4B4A" },
+        "meat": { elem2: "cheese", color2: "#D5975F" },
+        "mercury": { elem2: "cheese", color2: "#393430" },
+        "molten_gold": { elem2: "cheese", color2: "#FEDF5E" },
+        "rotten_cheese": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#BBA950", "#BBA950", "#CE9F4B"] },
+        "rotten_meat": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#C2995D", "#C2995D", "#CB7C8E"] },
+        "scp_682": { stain2: "#CA8E2F", chance: 0.05, },
+        "skin": { elem2: "cheese", color2: "#D5975F" },
+        "solid_mercury": { elem2: "cheese", color2: "#393430" },
+    },
+    onCollide: function (_pixelOG, pixel) {
+        if (elements[pixel.element].id === elements.scp_1600.id) { return }
+        if (elements.scp_1600.reactions[pixel.element]) { return }
+        if (elements.scp_1600.ignore.indexOf(pixel.element) !== -1) return
+        if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
+            var old_color = pixel.color
+            changePixel(pixel, "cheese")
+            pixel.color = old_color
+        }
+    },
+}
+
 elements.bless.reactions.black_acid = { elem2: null }
 elements.bless.reactions.red_cloud = { elem2: "rain_cloud" }
 elements.bless.reactions.red_snow = { elem2: "snow" }
@@ -7335,3 +6851,5 @@ elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
 elements.bless.reactions.scp_009_plant = { elem2: "plant" }
+elements.bless.reactions.scp_1600 = { elem2: "cheese" }
+elements.bless.reactions.scp_682 = { elem2: null }
