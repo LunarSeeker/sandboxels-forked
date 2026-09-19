@@ -6949,12 +6949,7 @@ elements.scp_1147_machine = {
             }
             if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
-                    if (Math.random() > 0.7) {
-                        createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
-                    }
-                    else {
-                        createPixel("wire", pixel.x + 1, pixel.y - 1)
-                    }
+                    createPixel("wire", pixel.x + 1, pixel.y - 1)
                 }
                 else {
                     createPixel("scp_1147_machine", pixel.x + 1, pixel.y - 1)
@@ -6984,12 +6979,7 @@ elements.scp_1147_glass = {
         if (!pixel.burning) {
             if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
-                    if (Math.random() > 0.7) {
-                        createPixel("scp_1147", pixel.x - 1, pixel.y - 1)
-                    }
-                    else {
-                        createPixel("quartz_crystal", pixel.x - 1, pixel.y - 1)
-                    }
+                    createPixel("glass", pixel.x - 1, pixel.y - 1)
                 }
                 else {
                     createPixel("scp_1147_glass", pixel.x - 1, pixel.y - 1)
@@ -6997,18 +6987,13 @@ elements.scp_1147_glass = {
             }
             if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
-                    if (Math.random() > 0.7) {
-                        createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
-                    }
-                    else {
-                        createPixel("quartz_crystal", pixel.x + 1, pixel.y - 1)
-                    }
+                    createPixel("glass", pixel.x + 1, pixel.y - 1)
                 }
                 else {
                     createPixel("scp_1147_glass", pixel.x + 1, pixel.y - 1)
                 }
             }
-            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
+            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.015) {
                 if (Math.random() < 0.75) {
                     createPixel("glass", pixel.x, pixel.y - 1)
                 }
@@ -7041,6 +7026,7 @@ elements.scp_1147_glass = {
 }
 
 elements.scp_1147_flesh.reactions = elements.skin.reactions
+elements.scp_1147_glass.reactions = elements.glass.reactions
 elements.scp_1147_metal.reactions = elements.steel.reactions
 
 elements.scp_1600 = {
@@ -7067,6 +7053,7 @@ elements.scp_1600 = {
         "scp_682": { stain2: "#CA8E2F", chance: 0.05, },
         "skin": { elem2: "cheese", color2: "#D5975F" },
         "solid_mercury": { elem2: "cheese", color2: "#393430" },
+        "water": { elem2: "scp_1600" },
     },
     onCollide: function (_pixelOG, pixel) {
         if (elements[pixel.element].id === elements.scp_1600.id) { return }
