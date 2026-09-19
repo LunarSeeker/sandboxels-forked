@@ -6660,36 +6660,32 @@ elements.head_1000 = {
 }
 
 elements.scp_1147 = {
-    color: "#a32d2d",
-    behavior: [
-        "ST:scp_1147_branch|ST:scp_1147_branch|ST:scp_1147_branch",
-        "ST:scp_1147_branch|XX|ST:scp_1147_branch",
-        "ST:scp_1147_branch AND M2|ST:scp_1147_branch AND M1|ST:scp_1147_branch AND M2",
-    ],
-    category: "scp",
-    tempHigh: 256,
-    state: "solid",
-    stateHigh: "scp_1147_1",
-    breakInto: "scp_1147_1",
-    density: 1050,
-}
-
-elements.scp_1147_1 = {
-    color: "#291d07",
     burn: 50,
     burnTime: 20,
     category: "scp",
-    state: "solid",
+    color: "#291d07",
     density: 1400,
+    state: "solid",
     cooldown: defaultCooldown,
     seed: true,
     tick: function (pixel) {
         if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
             if (Math.random() < 0.02 && pixel.age > 50 && pixel.temp < 100 && isEmpty(pixel.x, pixel.y - 1)) {
-                changePixel(pixel, "scp_1147_branch")
-                createPixel("scp_1147_branch", pixel.x, pixel.y - 1)
+                var chosenType = "scp_1147_branch"
+                if (!outOfBounds(pixel.x, pixel.y + 1)) {
+                    var dirtPixel = pixelMap[pixel.x][pixel.y + 1]
+                    if (dirtPixel) {
+                        if (eLists.SOIL.indexOf(dirtPixel.element) !== -1 || dirtPixel.element === "grass") {
+                            changePixel(dirtPixel, "root")
+                        } else if (dirtPixel.element === "steel" || dirtPixel.element === "iron") {
+                            chosenType = "scp_1147_metal"
+                        }
+                    }
+                }
+                changePixel(pixel, chosenType)
+                createPixel(chosenType, pixel.x, pixel.y - 1)
                 if (isEmpty(pixel.x, pixel.y - 2)) {
-                    createPixel("scp_1147_branch", pixel.x, pixel.y - 2)
+                    createPixel(chosenType, pixel.x, pixel.y - 2)
                 }
             }
             else if (pixel.age > 1000 && Math.random() < 0.05) {
@@ -6706,16 +6702,15 @@ elements.scp_1147_1 = {
 }
 
 elements.scp_1147_branch = {
-    name: "scp_1147",
     color: "#a0522d",
     behavior: behaviors.WALL,
     movable: false,
-    category: "scp",
+    category: "life",
     hidden: true,
     state: "solid",
     density: 1500,
     hardness: 0.15,
-    seed: "scp_1147_1",
+    seed: "scp_1147",
     forceSaveColor: true,
     tick: function (pixel) {
         if (!pixel.burning) {
@@ -6724,7 +6719,7 @@ elements.scp_1147_branch = {
             if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
                     if (Math.random() > 0.7) {
-                        createPixel("scp_1147_1", pixel.x - 1, pixel.y - 1)
+                        createPixel("scp_1147", pixel.x - 1, pixel.y - 1)
                     }
                     else {
                         createPixel("scp_1147_leaf", pixel.x - 1, pixel.y - 1)
@@ -6741,7 +6736,7 @@ elements.scp_1147_branch = {
             if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
                     if (Math.random() > 0.7) {
-                        createPixel("scp_1147_1", pixel.x + 1, pixel.y - 1)
+                        createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
                     }
                     else {
                         createPixel("scp_1147_leaf", pixel.x + 1, pixel.y - 1)
@@ -6758,7 +6753,7 @@ elements.scp_1147_branch = {
             if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.75) {
                     if (Math.random() > 0.8) {
-                        createPixel("scp_1147_1", pixel.x, pixel.y - 1)
+                        createPixel("scp_1147", pixel.x, pixel.y - 1)
                     }
                     else {
                         createPixel("scp_1147_leaf", pixel.x, pixel.y - 1)
@@ -6780,11 +6775,73 @@ elements.scp_1147_branch = {
 elements.scp_1147_leaf = {
     color: "#00bf00",
     behavior: behaviors.WALL,
-    category: "scp",
+    category: "life",
     state: "solid",
+    hidden: true,
     density: 1050,
     forceSaveColor: true
 }
+
+elements.scp_1147_metal = {
+    color: "#71797e",
+    behavior: behaviors.WALL,
+    movable: false,
+    category: "life",
+    conduct: 0.42,
+    hidden: true,
+    tempHigh: 1455,
+    stateHigh: "molten_steel",
+    state: "solid",
+    density: 7850,
+    hardness: 0.8,
+    seed: "scp_1147",
+    forceSaveColor: true,
+    tick: function (pixel) {
+        if (!pixel.burning) {
+            if (!pixel.lc) { pixel.lc = "#888f94" }
+            if (!pixel.wc) { pixel.wc = "#71797e" }
+            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    createPixel("steel", pixel.x - 1, pixel.y - 1)
+                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.lc)
+                }
+                else {
+                    createPixel("scp_1147_metal", pixel.x - 1, pixel.y - 1)
+                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
+                }
+            }
+            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    createPixel("steel", pixel.x + 1, pixel.y - 1)
+                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.lc)
+                }
+                else {
+                    createPixel("scp_1147_metal", pixel.x + 1, pixel.y - 1)
+                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
+                }
+            }
+            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.75) {
+                    createPixel("steel", pixel.x, pixel.y - 1)
+                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.lc)
+                }
+                else {
+                    createPixel("scp_1147_metal", pixel.x, pixel.y - 1)
+                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
+                }
+            }
+        }
+        doDefaults(pixel)
+    },
+}
+
+elements.scp_1147_metal.reactions = elements.steel.reactions
 
 elements.scp_1424 = {
     properties: {
