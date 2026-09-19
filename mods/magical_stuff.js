@@ -27,12 +27,17 @@ let magic_textures = {
         "c",
         "C"
     ],
-    dark_ice: [
-        "p",
-        "b",
-        "B",
-        "c",
-        "p"
+    magic_steel: [
+        "WWRRRWWRRR",
+        "WWRRWWWRRW",
+        "WRRRWWRRRW",
+        "WRRWWWRRWW",
+        "RRRWWRRRWW",
+        "RRWWWRRWWW",
+        "RRWWRRRWWR",
+        "RWWWRRWWWR",
+        "RWWRRRWWRR",
+        "WWWRRWWWRR",
     ]
 }
 
@@ -400,6 +405,20 @@ elements.ichor = {
     stain: -1,
     state: "liquid",
     viscosity: 1
+}
+
+elements.magic_steel = {
+    colorKey: {
+        "R": "#888f94",
+        "W": "#71797e"
+    },
+    colorPattern: magic_textures.magic_steel,
+    behavior: behaviors.WALL,
+    category: "solids",
+    conduct: 0.2,
+    density: 7850,
+    hardness: 0.9,
+    tempHigh: 10000
 }
 
 elements.bless.reactions.dark_ice = { elem2: null }
