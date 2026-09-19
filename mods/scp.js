@@ -6679,7 +6679,7 @@ elements.scp_1147 = {
                             changePixel(dirtPixel, "root")
                         } else if (dirtPixel.element === "steel" || dirtPixel.element === "iron" || dirtPixel.element === "galvanized_steel") {
                             chosenType = "scp_1147_metal"
-                        } else if (dirtPixel.element === "skin" || dirtPixel.element === "meat" || elements[dirtPixel.element].category === "life") {
+                        } else if (dirtPixel.element === "skin" || dirtPixel.element === "meat" || elements[dirtPixel.element].element === "bone") {
                             chosenType = "scp_1147_flesh"
                         } else if (dirtPixel.element === "copper" || dirtPixel.element === "scp_229" || elements[dirtPixel.element].category === "machines") {
                             chosenType = "scp_1147_machine"
@@ -6921,7 +6921,7 @@ elements.scp_1147_machine = {
         if (!pixel.burning) {
             if (!pixel.lc) { pixel.lc = "#4d0a03" }
             if (!pixel.wc) { pixel.wc = "#9c6c25" }
-            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.015) {
+            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
                     createPixel("wire", pixel.x - 1, pixel.y - 1)
                 }
@@ -6933,10 +6933,23 @@ elements.scp_1147_machine = {
                 }
             }
             if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
-                createPixel("wire", pixel.x + 1, pixel.y - 1)
+                if (Math.random() < 0.5) {
+                    if (Math.random() > 0.7) {
+                        createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
+                    }
+                    else {
+                        createPixel("wire", pixel.x + 1, pixel.y - 1)
+                    }
+                }
+                else {
+                    createPixel("scp_1147_machine", pixel.x + 1, pixel.y - 1)
+                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
+                }
             }
             if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.75) {
+                if (Math.random() < 0.7) {
                     createPixel("wire", pixel.x, pixel.y - 1)
                 }
                 else {
