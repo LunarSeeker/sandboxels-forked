@@ -6099,7 +6099,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (manmade.element == "unknown" || manmade.element == "site_nuke" || manmade.element == "scp_035" || manmade.element == "access_door" || manmade.element == "keycard_terminal" || manmade.element == "scp_229" || elements[manmade.element].category == "machines" || elements[manmade.element].category == "logic" || manmade.element == "metal_scrap" || manmade.element == "solid_mercury" || manmade.element == "molten_gallium" || manmade.element == "steel" || manmade.element == "galvanized_steel" || manmade.element == "brass" || manmade.element == "bronze" || manmade.element == "invar" || manmade.element == "sterling" || manmade.element == "rose_gold" || manmade.element == "purple_gold" || manmade.element == "blue_gold" || manmade.element == "electrum" || manmade.element == "solder" || manmade.element == "particleboard") {
+                    else if (manmade.element == "unknown" || manmade.element == "site_nuke" || manmade.element == "scp_035" || manmade.element == "access_door" || manmade.element == "scp_1147_metal" || manmade.element == "keycard_terminal" || manmade.element == "scp_229" || elements[manmade.element].category == "machines" || elements[manmade.element].category == "logic" || manmade.element == "metal_scrap" || manmade.element == "solid_mercury" || manmade.element == "molten_gallium" || manmade.element == "steel" || manmade.element == "galvanized_steel" || manmade.element == "brass" || manmade.element == "bronze" || manmade.element == "invar" || manmade.element == "sterling" || manmade.element == "rose_gold" || manmade.element == "purple_gold" || manmade.element == "blue_gold" || manmade.element == "electrum" || manmade.element == "solder" || manmade.element == "particleboard") {
                         if (!manmade.repair) {
                             manmade.repair = 15
                         }
@@ -6679,6 +6679,8 @@ elements.scp_1147 = {
                             changePixel(dirtPixel, "root")
                         } else if (dirtPixel.element === "steel" || dirtPixel.element === "iron") {
                             chosenType = "scp_1147_metal"
+                        } else if (dirtPixel.element === "skin" || dirtPixel.element === "meat" || dirtPixel.element === "bone") {
+                            chosenType = "scp_1147_flesh"
                         }
                     }
                 }
@@ -6786,7 +6788,7 @@ elements.scp_1147_metal = {
     color: "#71797e",
     behavior: behaviors.WALL,
     movable: false,
-    category: "life",
+    category: "scp",
     conduct: 0.42,
     hidden: true,
     tempHigh: 1455,
@@ -6841,6 +6843,67 @@ elements.scp_1147_metal = {
     },
 }
 
+elements.scp_1147_flesh = {
+    color: "#3a312a",
+    behavior: behaviors.WALL,
+    movable: false,
+    category: "life",
+    conduct: 0.05,
+    hidden: true,
+    tempHigh: 200,
+    stateHigh: "cooked_meat",
+    state: "solid",
+    density: 1019,
+    tempLow: -18,
+    stateLow: "frozen_meat",
+    seed: "scp_1147",
+    forceSaveColor: true,
+    tick: function (pixel) {
+        if (!pixel.burning) {
+            if (!pixel.lc) { pixel.lc = "#f7ead0" }
+            if (!pixel.wc) { pixel.wc = "#3a312a" }
+            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    createPixel("skin", pixel.x - 1, pixel.y - 1)
+                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.lc)
+                }
+                else {
+                    createPixel("scp_1147_flesh", pixel.x - 1, pixel.y - 1)
+                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
+                }
+            }
+            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    createPixel("bone", pixel.x + 1, pixel.y - 1)
+                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.lc)
+                }
+                else {
+                    createPixel("scp_1147_flesh", pixel.x + 1, pixel.y - 1)
+                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
+                }
+            }
+            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.75) {
+                    createPixel("skin", pixel.x, pixel.y - 1)
+                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.lc)
+                }
+                else {
+                    createPixel("scp_1147_flesh", pixel.x, pixel.y - 1)
+                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
+                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
+                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
+                }
+            }
+        }
+        doDefaults(pixel)
+    },
+}
+
+elements.scp_1147_flesh.reactions = elements.skin.reactions
 elements.scp_1147_metal.reactions = elements.steel.reactions
 
 elements.scp_1424 = {
