@@ -1,4 +1,5 @@
-/* by nekonico */
+/* Original scp.js by nekonico */
+/* Some modifications have been made. */
 
 window.addEventListener("load", () => {
     vendingNormD = Object.keys(elements).filter(function (e) {
@@ -844,8 +845,7 @@ elements.scp_001_light = {
         }
         // move and invert direction if hit
         if (pixel.bx && !tryMove(pixel, pixel.x + pixel.bx, pixel.y)) {
-            var newX = pixel.x + pixel.bx
-            if (!isEmpty(newX, pixel.y, true)) {
+            if (!isEmpty((pixel.x + pixel.bx), pixel.y, true)) {
                 var newPixel = pixelMap[pixel.x + pixel.bx][pixel.y]
                 if (!elements[newPixel.element].insulate) {
                     newPixel.temp += 1
@@ -858,8 +858,7 @@ elements.scp_001_light = {
             pixel.bx = -pixel.bx
         }
         if (pixel.by && !tryMove(pixel, pixel.x, pixel.y + pixel.by)) {
-            var newY = pixel.y + pixel.by
-            if (!isEmpty(pixel.x, newY, true)) {
+            if (!isEmpty(pixel.x, (pixel.y + pixel.by), true)) {
                 var newPixel = pixelMap[pixel.x][pixel.y + pixel.by]
                 if (!elements[newPixel.element].insulate && newPixel.temp < 200) {
                     newPixel.temp += 0.1
@@ -903,9 +902,9 @@ elements.scp_001_light = {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_body"
         }
-        else if (pixel2.element == "scp_236" || pixel2.element == "scp_391" || pixel2.element == "scp_1424") {
+        else if (pixel2.element == "scp_236" || pixel2.element == "scp_391") {
             pixel2.origElem = pixel2.element
-            pixel2.element = "melted_animal"
+            pixel2.element = "metal_scrap"
         }
         else if (pixel2.element == "skin" || pixel2.element == "meat" || pixel2.element == "cured_meat" || pixel2.element == "rotten_meat" || pixel2.element == "cooked_meat") {
             pixel2.origElem = pixel2.element
@@ -1413,7 +1412,7 @@ elements.fused_organism = {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_body"
         }
-        else if (pixel2.element == "scp_236" || pixel2.element == "scp_391" || pixel2.element == "scp_1424") {
+        else if (pixel2.element == "scp_236" || pixel2.element == "scp_391") {
             pixel2.origElem = pixel2.element
             pixel2.element = "melted_animal"
         }
@@ -6683,6 +6682,8 @@ elements.scp_1147 = {
                             chosenType = "scp_1147_flesh"
                         } else if (dirtPixel.element === "copper" || dirtPixel.element === "scp_229" || elements[dirtPixel.element].category === "machines") {
                             chosenType = "scp_1147_machine"
+                        } else if (dirtPixel.element === "glass" || dirtPixel.element === "stained_glass" || dirtPixel.element === "rad_glass" || dirtPixel.element === "glass_shard" || dirtPixel.element === "quartz_crystal" || dirtPixel.element === "quartz") {
+                            chosenType = "scp_1147_glass"
                         }
                     }
                 }
@@ -6716,6 +6717,13 @@ elements.scp_1147_branch = {
     hardness: 0.15,
     seed: "scp_1147",
     forceSaveColor: true,
+    burn: 2,
+    burnInto: ["sap", "ember", "charcoal", "smoke"],
+    burnTime: 300,
+    stateHigh: "wood",
+    stateLow: "wood",
+    tempHigh: 100,
+    tempLow: -30,
     tick: function (pixel) {
         if (!pixel.burning) {
             if (!pixel.lc) { pixel.lc = "#00bf00" }
@@ -6783,7 +6791,14 @@ elements.scp_1147_leaf = {
     state: "solid",
     hidden: true,
     density: 1050,
-    forceSaveColor: true
+    forceSaveColor: true,
+    burn: 2,
+    burnInto: ["sap", "ember", "charcoal", "smoke"],
+    burnTime: 300,
+    stateHigh: "dead_plant",
+    stateLow: "frozen_plant",
+    tempHigh: 100,
+    tempLow: -30,
 }
 
 elements.scp_1147_metal = {
@@ -6964,53 +6979,69 @@ elements.scp_1147_machine = {
     },
 }
 
-elements.scp_1147_flesh.reactions = elements.skin.reactions
-elements.scp_1147_metal.reactions = elements.steel.reactions
-
-elements.scp_1424 = {
-    properties: {
-        dir: 1,
-    },
-    category: "scp",
-    color: ["#E7E7E5", "#DCD9D4", "#ACACAC"],
-    conduct: .025,
-    cooldown: defaultCooldown,
-    density: 1580,
-    state: "solid",
-    temp: -23,
+elements.scp_1147_glass = {
     tick: function (pixel) {
-        if (tryMove(pixel, pixel.x, pixel.y + 1)) { } // Fall
-        doDefaults(pixel)
-        if (Math.random() < 0.05) { // Move 5% chance
-            var movesToTry = [
-                [1 * pixel.dir, 0],
-                [1 * pixel.dir, -1],
-            ]
-            let moved = false
-            // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
-            while (movesToTry.length > 0) {
-                var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
-                if (isEmpty(pixel.x + move[0], pixel.y + move[1])) {
-                    var origx = pixel.x + move[0]
-                    var origy = pixel.y + move[1]
-                    if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
-                        moved = true
-                        break
+        if (!pixel.burning) {
+            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    if (Math.random() > 0.7) {
+                        createPixel("scp_1147", pixel.x - 1, pixel.y - 1)
+                    }
+                    else {
+                        createPixel("quartz_crystal", pixel.x - 1, pixel.y - 1)
                     }
                 }
+                else {
+                    createPixel("scp_1147_glass", pixel.x - 1, pixel.y - 1)
+                }
             }
-            // 10% chance to change direction
-            if (Math.random() < 0.1 || !moved) {
-                pixel.dir *= -1
+            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.5) {
+                    if (Math.random() > 0.7) {
+                        createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
+                    }
+                    else {
+                        createPixel("quartz_crystal", pixel.x + 1, pixel.y - 1)
+                    }
+                }
+                else {
+                    createPixel("scp_1147_glass", pixel.x + 1, pixel.y - 1)
+                }
+            }
+            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
+                if (Math.random() < 0.75) {
+                    createPixel("glass", pixel.x, pixel.y - 1)
+                }
+                else {
+                    createPixel("scp_1147_glass", pixel.x, pixel.y - 1)
+                }
             }
         }
-        if (Math.random() > 0.9 && Math.random() > 0.9) {
-            releaseElement(pixel, "ammonia", 1, true)
-        }
-        if (pixel.temp > -17) { pixel.temp -= 1 }
-        else if (pixel.temp < -22) { pixel.temp += 1 }
+        doDefaults(pixel)
     },
+    colorPattern: textures.GLASS,
+    colorKey: {
+        "g": "#5e807d",
+        "s": "#638f8b",
+        "S": "#679e99"
+    },
+    breakInto: "glass_shard",
+    category: "scp",
+    density: 2500,
+    grain: 0,
+    hidden: true,
+    movable: false,
+    noMix: true,
+    renderer: renderPresets.BORDER,
+    seed: "scp_1147",
+    state: "solid",
+    stateHigh: "molten_glass",
+    tempHigh: 100,
+    forceSaveColor: true
 }
+
+elements.scp_1147_flesh.reactions = elements.skin.reactions
+elements.scp_1147_metal.reactions = elements.steel.reactions
 
 elements.scp_1600 = {
     behavior: behaviors.SUPERFLUID,
@@ -7058,7 +7089,9 @@ elements.bless.reactions.red_steam = { elem2: "steam" }
 elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
-elements.bless.reactions.scp_1600 = { elem2: "cheese" }
+elements.bless.reactions.scp_063 = { elem2: "plastic" }
 elements.bless.reactions.scp_173 = { elem2: "concrete" }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
 elements.bless.reactions.scp_682 = { elem2: null }
+elements.bless.reactions.scp_804 = { elem2: null }
+elements.bless.reactions.scp_1600 = { elem2: "cheese" }
