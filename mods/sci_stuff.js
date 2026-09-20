@@ -27,6 +27,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
     const excludedElements = new Set([
         "black_hole",
         "bless",
+        "body_096",
         "border",
         "concrete",
         "deuterium",
@@ -35,6 +36,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "hazmat_body",
         "hazmat_head",
         "hazmat",
+        "head_096",
         "ichor",
         "image",
         "lead",
@@ -43,7 +45,6 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "pipe",
         "portal_in",
         "portal_out",
-        "scp_096",
         "scp_447",
         "scp_682",
         "sun",
