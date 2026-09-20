@@ -10,6 +10,8 @@ acidBlacklist = [
 	"pipe",
 	"portal_in",
 	"portal_out",
+	"scp_447",
+	"scp_682",
 	"super_acid",
 	"time",
 	"void",
