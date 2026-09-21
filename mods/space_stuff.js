@@ -62,6 +62,7 @@ elements.black_hole = { //Taken from  black_hole.js and then modified to destroy
     category: "special",
     color: "#000000",
     density: 99999,
+    excludeRandom: true,
     hardness: 1,
     state: "solid",
     tick: function (pixel) {

@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
     })
 
     vendingWeirdF = Object.keys(elements).filter(function (e) {
-        return elements[e].state != "gas" && elements[e].movable == true && (elements[e].id != elements.armageddon.id && elements[e].id != elements.blaster.id && elements[e].id != elements.false_vacuum_decay_bomb.id && elements[e].id != elements.earthquake.id && elements[e].id != elements.tsunami.id && elements[e].id != elements.volcano.id && elements[e].id != elements.sinkhole.id) && (elements[e].category == "food" || elements[e].category == "life" || elements[e].category == "land" || elements[e].category == "weapons" || elements[e].category == "energy" || elements[e].isFood) && !elements[e].tool
+        return elements[e].state != "gas" && elements[e].movable == true && (!elements[e].excludeRandom) && (elements[e].category == "food" || elements[e].category == "life" || elements[e].category == "land" || elements[e].category == "weapons" || elements[e].category == "energy" || elements[e].isFood) && !elements[e].tool
     })
 })
 
@@ -2116,7 +2116,7 @@ elements.red_steam = {
         "red_steam": { elem1: "red_cloud", elem2: "red_cloud", chance: 0.05, "y": [0, 15], "setting": "clouds" },
         "red_rain": { elem1: "red_rain", chance: 0.4, "y": [0, 12], "setting": "clouds" },
         "red_cloud": { elem1: "red_cloud", chance: 0.4, "y": [0, 12], "setting": "clouds" },
-        "red_snow_cloud": { elem1: "red_rain_cloud", chance: 0.4, "y": [0, 12], "setting": "clouds" },
+        "red_snow_cloud": { elem1: "red_cloud", chance: 0.4, "y": [0, 12], "setting": "clouds" },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
@@ -3662,9 +3662,43 @@ elements.scp_063 = {
     category: "scp",
     color: ["#CAE8E9", "#CCEAED", "#A2CFD4", "#A6D6D8", "#8CCBD7"],
     darkText: true,
-    dead_stuff: ["dead_bug", "meat", "cooked_meat", "rotten_meat", "cancer", "cured_meat", "dead_plant", "frozen_plant", "zombie_body", "zombie_head"],
     density: 1052,
-    ignore: ["wall", "black_hole", "gray_goo", "midas_touch", "blood", "skin", "hair", "strange_matter", "sun", "light", "smoke", "fire", "tree_branch", "wood"],
+    ignore: [
+        "black_hole",
+        "bless",
+        "blood",
+        "fire",
+        "gray_goo",
+        "hair",
+        "ichor",
+        "light",
+        "midas_touch",
+        "salt_sugar",
+        "skin",
+        "smoke",
+        "strange_matter",
+        "sun",
+        "wall",
+        "water",
+        "wood",
+    ],
+    nonliving: [
+        "cancer",
+        "cooked_meat",
+        "cured_meat",
+        "dead_bug",
+        "dead_plant",
+        "frozen_plant",
+        "meat",
+        "rotten_meat",
+        "scp_1147_glass",
+        "scp_1147_machine",
+        "scp_1147_metal",
+        "scp_229_seed",
+        "scp_229",
+        "zombie_body",
+        "zombie_head",
+    ],
     state: "solid",
     stateHigh: ["molten_plastic", "dioxin"],
     tempHigh: 190,
@@ -3676,7 +3710,7 @@ elements.scp_063 = {
             if (!isEmpty(checkPosX, checkPosY, true)) {
                 var newElement = pixelMap[checkPosX][checkPosY].element
                 if (elements.scp_063.ignore.indexOf(newElement) === -1) {
-                    if ((elements[newElement].category !== "life" && elements[newElement].category !== "scp") || elements.scp_063.dead_stuff.indexOf(newElement) !== -1) {
+                    if ((elements[newElement].category !== "life" && elements[newElement].category !== "scp" && elements[newElement].category !== "food") || elements.scp_063.nonliving.indexOf(newElement) !== -1) {
                         if (typeof (pixel[newElement]) === "undefined") {
                             pixel[newElement] = 0
                         };
@@ -4618,7 +4652,7 @@ elements.scp_229 = {
         "SH%5|XX|SH%5",
         "XX|SH%5|XX",
     ],
-    category: "special",
+    category: "scp",
     hardness: 0.25,
     breakInto: "metal_scrap",
     tempHigh: 1250,
@@ -5097,10 +5131,10 @@ elements.scp_261 = {
     grain: 0.5,
     behavior: behaviors.WALL,
     tempHigh: 1200,
-    stateHigh: ["molten_galvanized_steel", "molten_galvanized_steel", "molten_galvanized_steel", "molten_galvanized_steel", "armageddon"],
+    stateHigh: ["molten_galvanized_steel", "molten_galvanized_steel", "molten_galvanized_steel", "molten_galvanized_steel"],
     stateHighColorMultiplier: 0.86,
     hardness: 0.99,
-    breakInto: ["galvanized_steel", "galvanized_steel", "galvanized_steel", "galvanized_steel", "armageddon"],
+    breakInto: ["galvanized_steel", "galvanized_steel", "galvanized_steel", "galvanized_steel"],
     breakIntoColorMultiplier: [1.1, 1, 0.86],
     category: "scp",
     state: "solid",

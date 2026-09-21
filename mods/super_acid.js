@@ -26,6 +26,7 @@ elements.super_acid = {
 	category: "liquids",
 	color: "#77b300",
 	density: 300,
+	excludeRandom: true,
 	state: "liquid",
 	tick: function (pixel) {
 		for (i = 0; i < adjacentCoords.length; i++) {
