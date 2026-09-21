@@ -656,7 +656,81 @@ elements.solar_panel = {
     }
 }
 
+elements.technetium = {
+    category: "powders",
+    color: "#D3D3D3",
+    density: 11359,
+    radioactive: true,
+    state: "solid",
+    stateHigh: "molten_technetium",
+    temp: 20,
+    tempHigh: 2157,
+    behavior: [
+        "XX|CR:radiation%3 AND CR:fallout%0.2|XX",
+        "CR:radiation%3 AND CR:fallout%0.2|XX|CR:radiation%3 AND CR:fallout%0.2",
+        "M1|CR:radiation%3 AND M2 AND CR:fallout%0.2|M1",
+    ],
+    reactions: {
+        "water": { elem1: null, elem2: "dirty_water" },
+        "glass": { elem1: null, elem2: "rad_glass" },
+        "glass_shard": { elem1: null, elem2: "rad_shard" }
+    },
+}
+
+elements.molten_technetium = {
+    behavior: behaviors.RADMOLTEN,
+    category: "states",
+    color: ["#F2F2E5", "#E0C29F", "#D0CFC7", "#BDB7B0", "#A0958C", "#FFB300", "#F0E68C", "#BD10E0", "#FFF0F5"],
+    density: 11359,
+    hidden: true,
+    radioactive: true,
+    state: "liquid",
+    stateLow: "technetium",
+    tempLow: 2157,
+    reactions: {
+        "glass": { elem1: null, elem2: "rad_glass" },
+        "glass_shard": { elem1: null, elem2: "rad_shard" }
+    },
+}
+
+elements.radium = {
+    category: "powders",
+    color: ["#F0F0F0", "#C0C0C0", "#A9A9A9", "#707070", "#303030"],
+    density: 5500,
+    radioactive: true,
+    state: "solid",
+    stateHigh: "molten_radium",
+    tempHigh: 700,
+    behavior: [
+        "XX|CR:radiation%3|XX",
+        "CR:radiation%3|XX|CR:radiation%3",
+        "M2|M1 AND CR:radiation%3|M2",
+    ],
+    reactions: {
+        "water": { elem1: null, elem2: "dirty_water" },
+        "glass": { elem1: null, elem2: "rad_glass" },
+        "glass_shard": { elem1: null, elem2: "rad_shard" }
+    },
+}
+
+elements.molten_radium = {
+    behavior: behaviors.RADMOLTEN,
+    category: "states",
+    color: ["#F0E0D6", "#D3B29E", "#B78473", "#A0534A", "#FFB300", "#F05945"],
+    density: 5500,
+    hidden: true,
+    radioactive: true,
+    stateLow: "radium",
+    tempLow: 700,
+    reactions: {
+        "glass": { elem1: null, elem2: "rad_glass" },
+        "glass_shard": { elem1: null, elem2: "rad_shard" }
+    },
+}
+
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.irradiated_matter = { elem2: "gold" }
 elements.bless.reactions.plutonium = { elem2: "gold" }
+elements.bless.reactions.radium = { elem2: "gold" }
+elements.bless.reactions.technetium = { elem2: "gold" }

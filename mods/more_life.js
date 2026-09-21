@@ -389,5 +389,96 @@ elements.odd_fish = {
     },
 }
 
+//Taken from souls.js
+elements.soul = {
+    category: "life",
+    color: "#87fff9",
+    density: 1000,
+    flippableX: true,
+    glow: true,
+    hardness: 100,
+    ignoreAir: true,
+    insulate: true,
+    state: "gas",
+    temp: -10,
+    emit: 3,
+    reactions: {
+        "body": { attr2: { "panic": 20 } },
+        "led": { charged: true },
+        "light_bulb": { charged: true, elem2: "explosion" },
+        "proton": { elem1: null },
+        "wire": { charge2: 1, chance: 0.05 },
+    },
+    tick: function (pixel) {
+        if (pixel.y <= 1) { deletePixel(pixel.x, pixel.y); return }
+        if (Math.random() < 0.05) {
+            if (!tryMove(pixel, pixel.x, pixel.y - 1)) {
+                if (!isEmpty(pixel.x, pixel.y - 1, true)) {
+                    var hitPixel = pixelMap[pixel.x][pixel.y - 1]
+                    if (elements[hitPixel.element].movable) {
+                        swapPixels(pixel, hitPixel)
+                    }
+                }
+            }
+        }
+        var dir = pixel.flipX ? -1 : 1
+        if (!pixel.stage) {
+            if (Math.random() < 0.25) {
+                if (!tryMove(pixel, pixel.x + dir, pixel.y - (Math.random() < 0.33 ? 1 : 0))) {
+                    pixel.flipX = !pixel.flipX
+                }
+                if (Math.random() < 0.1) {
+                    pixel.stage = 1
+                    pixel.flipX = Math.random() < 0.5
+                }
+            }
+        }
+        else if (pixel.stage === 1) {
+            if (!tryMove(pixel, pixel.x + dir, pixel.y + 1)) { pixel.flipX = !pixel.flipX }
+            if (Math.random() < 0.25) {
+                pixel.stage = 2
+                pixel.flipX = Math.random() < 0.5
+            }
+        }
+        else if (pixel.stage === 2) {
+            if (Math.random() < 0.25) {
+                var dirX = Math.floor(Math.random() * (2 - -1) + -1)
+                var dirY = Math.floor(Math.random() * (2 - -1) + -1)
+                tryMove(pixel, pixel.x + dirX, pixel.y + dirY)
+            }
+            if (Math.random() < 0.01) {
+                pixel.stage = 0
+                pixel.flipX = Math.random() < 0.5
+            }
+        }
+        if (!pixel.glow) {
+            if (Math.random() < 0.25) { pixel.glow = true }
+        }
+        else if (Math.random() < 0.01) {
+            pixel.glow = false
+            delete pixel.glow
+        }
+        if (Math.random() < 0.001) {
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coords = adjacentCoords[i]
+                var x = pixel.x + coords[0]
+                var y = pixel.y + coords[1]
+                if (isEmpty(x, y)) {
+                    createPixel("flash", x, y)
+                    pixelMap[x][y].temp = -10
+                }
+            }
+        }
+        doDefaults(pixel)
+    },
+}
+//
+
+elements.head.breakInto = ["blood", "soul", "meat", "bone"]
+elements.head.burnInto = ["soul", "cooked_meat"]
+elements.head.stateHigh = ["soul", "cooked_meat"]
+elements.head.stateLow = ["soul", "frozen_meat"]
+
+elements.bless.reactions.soul = { elem2: "human" }
 elements.bless.reactions.zombie_body = { elem2: null }
 elements.bless.reactions.zombie_head = { elem2: null }
