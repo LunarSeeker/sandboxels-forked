@@ -4,14 +4,8 @@ colorstochoose = [
     "#00ff00",
     "#00ffff",
     "#0f0f0f",
-    "#53574b",
-    "#65686a",
-    "#88ff77",
-    "#a51002",
-    "#bd1102",
     "#ff0000",
     "#ff00ff",
-    "#ff0f0f",
     "#ff8800",
     "#ffff00",
     "#ffffff"
@@ -130,4 +124,31 @@ elements.dirt_bomb = {
     excludeRandom: true,
     state: "solid",
     cooldown: defaultCooldown
+}
+
+elements.terraformer = {
+    category: "weapons",
+    color: "#568115",
+    cooldown: defaultCooldown,
+    density: 1500,
+    excludeRandom: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.start === pixelTicks) { return }
+        if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
+            if (outOfBounds(pixel.x, pixel.y + 1) || (pixelMap[pixel.x][pixel.y + 1].element !== "terraformer")) {
+                for (i = 0; i < currentPixels.length; i++) {
+                    var newPixel = currentPixels[i]
+                    if (newPixel.temp < 0 || newPixel.temp > 90) {
+                        newPixel.temp = 20
+                    }
+                    if (elements[newPixel.element].category === "land" && (newPixel.element !== "dirt" && newPixel.element !== "mud" && newPixel.element !== "rock")) {
+                        changePixel(newPixel, "dirt")
+                    }
+                }
+                explodeAt(pixel.x, pixel.y + 1, 10, "flash")
+            }
+        }
+        doDefaults(pixel)
+    }
 }
