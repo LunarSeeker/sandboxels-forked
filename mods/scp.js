@@ -1964,6 +1964,7 @@ elements.scp_009 = {
         "plant": { elem2: "scp_009", chance: 0.5 },
         "pool_water": { elem2: "scp_009", chance: 0.5 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
+        "rime": { elem2: "scp_009" },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "salt_water": { elem2: "scp_009", chance: 0.25 },
         "seltzer": { elem2: "scp_009", chance: 0.25 },
@@ -2063,6 +2064,7 @@ elements.red_water = {
         "milk": { elem2: "scp_009" },
         "neutral_acid": { elem2: "scp_009" },
         "plant": { elem2: "scp_009" },
+        "rime": { elem2: "scp_009" },
         "pool_water": { elem2: "scp_009" },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "seltzer": { elem2: "scp_009" },
@@ -2090,8 +2092,8 @@ elements.red_water = {
         "iron": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0125 },
         "tin": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.01 },
         "brass": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.001 },
-        "bronze": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.001 },
-        "copper": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0075 },
+        "bronze": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.002 },
+        "copper": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.035 },
         "silver": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0075 },
         "gold": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0075 }
     },
@@ -2120,6 +2122,11 @@ elements.red_steam = {
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "snow_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
+        "hail_cloud": { elem2: "red_snow_cloud", chance: 0.4 },
+        "thunder_cloud": { elem2: "red_rain", chance: 0.4 },
+        "pyrocumulus": { elem2: "red_rain", chance: 0.4 },
+        "anesthesia": { elem1: "acid_cloud", elem2: null, chance: 0.05, "y": [0, 12], "setting": "clouds" },
+        "fire_cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "frozen_plant": { elem2: "scp_009", chance: 0.05 },
         "dead_plant": { elem2: "scp_009", chance: 0.05 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2134,6 +2141,7 @@ elements.red_steam = {
         "salt_water": { elem2: "scp_009" },
         "sugar_water": { elem2: "scp_009" },
         "dirty_water": { elem2: "scp_009" },
+        "rime": { elem2: "scp_009" },
         "pool_water": { elem2: "scp_009" },
         "slush": { elem2: "scp_009" },
         "seltzer": { elem2: "scp_009" },
@@ -2156,6 +2164,12 @@ elements.red_steam = {
         "bird": { elem2: "scp_009_meat", chance: 0.15 },
         "frog": { elem2: "scp_009_meat", chance: 0.015 },
         "tadpole": { elem2: "scp_009_meat", chance: 0.015 },
+        "copper": { elem1: ["hydrogen", "hydrogen"], elem2: "oxidized_copper", chance: 0.1 },
+        "bronze": { elem1: ["hydrogen", "hydrogen"], elem2: "oxidized_copper", chance: 0.05 },
+        "iron": { elem1: ["hydrogen", "hydrogen"], elem2: "rust", chance: 0.005 },
+        "steel": { elem1: ["hydrogen", "hydrogen"], elem2: "rust", chance: 0.004 },
+        "tornado": { elem1: "red_cloud" },
+        "melted_wax": { elem1: "explosion" },
     },
     temp: -150,
     tempHigh: -100,
@@ -2267,11 +2281,7 @@ elements.scp_012 = {
     name: "SCP-012",
     color: ["#b0996f", "#a89163", "#b0996f", "#a89163", "#9e804f", "#7d5e2e", "#81633b"],
     buttonColor: ["#b0996f", "#a89163", "#874B2B", "#b0996f", "#a89163", "#ad6236", "#9e804f", "#7a1d05", "#7d5e2e", "#81633b"],
-    behavior: [
-        "XX|XX|XX",
-        "XX|FX%0.25|XX",
-        "M2%25|M1%25|M1%25",
-    ],
+    behavior: behaviors.WALL,
     tick: function (pixel) {
         if (Math.random() < 0.95) {
             for (let x = 1; x < 20; x++) {
@@ -2324,35 +2334,8 @@ elements.scp_012 = {
 elements.complete_012 = {
     color: ["#b0996f", "#874B2B", "#874B2B", "#a89163", "#ad6236", "#ad6236", "#9e804f", "#7a1d05", "#7a1d05", "#81633b"],
     buttonColor: ["#b0996f", "#a89163", "#874B2B", "#b0996f", "#a89163", "#ad6236", "#9e804f", "#7a1d05", "#7d5e2e", "#81633b"],
-    name: "SCP-012",
-    behavior: [
-        "XX|XX|XX",
-        "XX|FX%0.25|XX",
-        "M2%25|M1%25|M1%25",
-    ],
-    tick: function (pixel) {
-        if (Math.random() < 0.95) {
-            for (let x = 1; x < 20; x++) {
-                let x2 = pixel.x + (x * (Math.random() < 0.5 ? 1 : -1))
-                let y2 = pixel.y
-                if (!isEmpty(x2, y2, true)) {
-                    let seenPixel = pixelMap[x2][y2]
-                    if (elements[seenPixel.element].id == elements.body.id) {
-                        seenPixel.element = "body_012_1"
-                        break
-                    }
-                    else if (elements[seenPixel.element].id == elements.head.id) {
-                        seenPixel.element = "head_012_1"
-                        pixelMap[seenPixel.x][seenPixel.y + 1].element = "body_012_1"
-                        break
-                    }
-                }
-            }
-        }
-    },
-    properties: {
-        lines: 585
-    },
+    name: "Completed Page",
+    behavior: behaviors.POWDER,
     category: "scp",
     tempHigh: 278,
     stateHigh: ["ash", "ash", "ash", "smoke", "smoke", "fire"],
@@ -2383,31 +2366,6 @@ elements.body_012_1 = {
     breakInto: ["blood", "meat", "bone"],
     forceSaveColor: true,
     pickElement: "human",
-    reactions: {
-        "cancer": { elem1: "cancer", chance: 0.005 },
-        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
-        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
-        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
-        "plague": { elem1: "plague", chance: 0.05 },
-        "egg": { elem2: "yolk", chance: 0.5, oneway: true },
-        "grape": { elem2: "juice", chance: 0.5, color2: "#291824", oneway: true },
-        "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
-        "spider": { elem2: "dead_bug", oneway: true },
-        "fly": { elem2: "dead_bug", oneway: true },
-        "firefly": { elem2: "dead_bug", oneway: true },
-        "bee": { elem2: "dead_bug", oneway: true },
-        "flea": { elem2: "dead_bug", oneway: true },
-        "termite": { elem2: "dead_bug", oneway: true },
-        "worm": { elem2: "slime", chance: 0.05, oneway: true },
-        "stink_bug": { elem2: "stench", oneway: true },
-        "grass_seed": { elem2: null, chance: 0.05 },
-        "gold_coin": { elem2: null, chance: 0.05 },
-        "diamond": { elem2: null, chance: 0.05 },
-        "sun": { elem1: "cooked_meat" },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "anesthesia": { attr1: { "panic": 0 } },
-        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
-    },
     properties: {
         dead: false,
         dir: 1,
@@ -2496,11 +2454,11 @@ elements.body_012_1 = {
         }
 
         if (isEmpty(pixel.x, pixel.y - 1)) {
-            // create blood if decapitated 10% chance
-            if (Math.random() < 0.1 && !pixel.charge) {
+            // create blood if decapitated
+            if (!pixel.charge) {
                 createPixel("blood", pixel.x, pixel.y - 1)
-                // set dead to true 15% chance
-                if (Math.random() < 0.15) {
+                // set dead to true 10% chance
+                if (Math.random() < 0.1) {
                     pixel.dead = pixelTicks
                 }
             }
@@ -2530,7 +2488,7 @@ elements.body_012_1 = {
                 pixel.dir *= -1
             }
             // homeostasis
-            if (pixel.temp > 37) { pixel.temp -= 1 }
+            if (pixel.temp > 37) { pixel.temp -= 5 }
             else if (pixel.temp < 37) { pixel.temp += 1 }
         }
 
@@ -2578,24 +2536,6 @@ elements.head_012_1 = {
     breakInto: ["blood", "meat", "bone"],
     forceSaveColor: true,
     pickElement: "human",
-    reactions: {
-        "cancer": { elem1: "cancer", chance: 0.005 },
-        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
-        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
-        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
-        "plague": { elem1: "plague", chance: 0.05 },
-        "oxygen": { elem2: "carbon_dioxide", chance: 0.5 },
-        "beans": { elem2: [null, null, null, null, null, null, null, null, "stench"], chance: 0.2 },
-        "sun": { elem1: "cooked_meat" },
-        "light": { stain1: "#825043" },
-        "bee": { stain1: "#cc564b", chance: 0.2 },
-        "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
-        "salt_water": { elem2: "bubble", attr2: { "clone": "salt_water" }, chance: 0.001 },
-        "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "anesthesia": { attr1: { "panic": 0 } },
-        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
-    },
     properties: {
         dead: false
     },
@@ -2634,17 +2574,17 @@ elements.head_012_1 = {
         }
 
         if (tryMove(pixel, pixel.x, pixel.y + 1)) {
-            // create blood if severed 10% chance
-            if (isEmpty(pixel.x, pixel.y + 1) && !pixel.dead && Math.random() < 0.1 && !pixel.charge) {
+            // create blood if severed
+            if (isEmpty(pixel.x, pixel.y + 1) && !pixel.dead && !pixel.charge) {
                 createPixel("blood", pixel.x, pixel.y + 1)
-                // set dead to true 15% chance
-                if (Math.random() < 0.15) {
+                // set dead to true 10% chance
+                if (Math.random() < 0.1) {
                     pixel.dead = pixelTicks
                 }
             }
         }
         // homeostasis
-        if (pixel.temp > 37) { pixel.temp -= 1 }
+        if (pixel.temp > 37) { pixel.temp -= 5 }
         else if (pixel.temp < 37) { pixel.temp += 1 }
     },
     onChange: function (pixel) {
@@ -2668,6 +2608,9 @@ elements.head_012_1 = {
         }
     }
 }
+
+elements.body_012_1.reactions = elements.body.reactions
+elements.head_012_1.reactions = elements.head.reactions
 
 elements.scp_035 = {
     color: ["#f7ead0", "#faf9f6", "#e9e6db"],
