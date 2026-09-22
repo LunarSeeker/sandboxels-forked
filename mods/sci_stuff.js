@@ -32,6 +32,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "concrete",
         "deuterium",
         "fallout",
+        "filter",
         "gray_goo",
         "hazmat_body",
         "hazmat_head",

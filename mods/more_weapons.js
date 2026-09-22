@@ -42,6 +42,7 @@ elements.subzero_bomb = {
                     var newPixel = currentPixels[i]
                     if (newPixel.temp > -273) {
                         newPixel.temp = -273
+                        pixelTempCheck(newPixel)
                     }
                 }
                 explodeAt(pixel.x, pixel.y + 1, 20, "flash")
@@ -67,6 +68,7 @@ elements.ultrahot_bomb = {
                     if (newPixel.temp < 999) {
                         newPixel.temp = Math.abs(newPixel.temp)
                         newPixel.temp += 2000
+                        pixelTempCheck(newPixel)
                     }
                 }
                 explodeAt(pixel.x, pixel.y + 1, 20, "flash")
@@ -145,6 +147,7 @@ elements.terraformer = {
                     if (elements[newPixel.element].category === "land" && (newPixel.element !== "dirt" && newPixel.element !== "mud" && newPixel.element !== "rock")) {
                         changePixel(newPixel, "dirt")
                     }
+                    pixelTempCheck(newPixel)
                 }
                 explodeAt(pixel.x, pixel.y + 1, 10, "flash")
             }

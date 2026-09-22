@@ -2865,7 +2865,7 @@ elements.head_035 = {
         if (Math.random() < 0.0125) {
             releaseElement(pixel, "black_acid", 4, true)
         }
-        if (pixel.dead || (pixel.start + 1000), pixelTicks && Math.random() > 0.95) {
+        if (pixel.dead) {
             // Turn into rotten_meat if pixelTicks-dead > 500
             if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
                 changePixel(pixel, "rotten_meat")
@@ -2874,21 +2874,14 @@ elements.head_035 = {
         }
 
         // Find the body
-        if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_035") {
+        var elementofbody = pixelMap[pixel.x][pixel.y + 1].element
+        if (!isEmpty(pixel.x, pixel.y + 1, true) && elementofbody == "body_035") {
             var body = pixelMap[pixel.x][pixel.y + 1]
             if (body.dead) { // If body is dead, kill head
                 pixel.dead = body.dead
             }
         }
-        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body") {
-            var body = pixelMap[pixel.x][pixel.y + 1]
-            body.element = "body_035"
-        }
-        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_1000") {
-            var body = pixelMap[pixel.x][pixel.y + 1]
-            body.element = "body_035"
-        }
-        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_008") {
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && (elementofbody == "body" || elementofbody == "body_1000" || elementofbody == "body_008")) {
             var body = pixelMap[pixel.x][pixel.y + 1]
             body.element = "body_035"
         }
@@ -7051,7 +7044,7 @@ elements.scp_1147_glass.reactions = elements.glass.reactions
 elements.scp_1147_metal.reactions = elements.steel.reactions
 
 elements.scp_1600 = {
-    behavior: behaviors.SUPERFLUID,
+    behavior: behaviors.LIQUID,
     category: "scp",
     color: "#D6CE02",
     density: 466,
@@ -7088,7 +7081,7 @@ elements.scp_1600 = {
 }
 
 elements.green_1600 = {
-    behavior: behaviors.SUPERFLUID,
+    behavior: behaviors.LIQUID,
     category: "scp",
     color: "#D6FF00",
     density: 900,
@@ -7118,7 +7111,9 @@ elements.green_1600 = {
 
 elements.bless.reactions.black_acid = { elem2: null }
 elements.bless.reactions.body_096 = { elem2: "meat" }
+elements.bless.reactions.body_173 = { elem2: "concrete" }
 elements.bless.reactions.head_096 = { elem2: "meat" }
+elements.bless.reactions.head_173 = { elem2: "concrete" }
 elements.bless.reactions.red_cloud = { elem2: "rain_cloud" }
 elements.bless.reactions.red_snow = { elem2: "snow" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
@@ -7126,8 +7121,10 @@ elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
 elements.bless.reactions.scp_063 = { elem2: "plastic" }
-elements.bless.reactions.scp_173 = { elem2: "concrete" }
+elements.bless.reactions.scp_229 = { elem2: null }
+elements.bless.reactions.scp_236 = { elem2: null }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
 elements.bless.reactions.scp_682 = { elem2: null }
 elements.bless.reactions.scp_804 = { elem2: null }
 elements.bless.reactions.scp_1600 = { elem2: "cheese" }
+elements.bless.reactions.green_1600 = { elem2: "cheese" }
