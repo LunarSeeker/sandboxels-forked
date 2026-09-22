@@ -1958,6 +1958,7 @@ elements.scp_009 = {
         "infection": { elem2: "scp_009", chance: 0.25 },
         "juice_ice": { elem2: "scp_009", chance: 0.25 },
         "juice": { elem2: "scp_009", chance: 0.25 },
+        "kelp": { elem2: "scp_009", chance: 0.7 },
         "meat": { elem2: "scp_009_meat", chance: 0.15 },
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
@@ -5095,7 +5096,7 @@ elements.packet = {
     burn: 10,
     burnTime: 200,
     burnInto: ["metal_scrap", "metal_scrap", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "sawdust", "dust", "glass_shard", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "sawdust", "dust", "glass_shard"],
-    breakInto: ["metal_scrap", "metal_scrap", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "sawdust", "dust", "glass_shard", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "confetti", "glitter", "sawdust", "dust", "glass_shard"],
+    breakInto: ["metal_scrap", "metal_scrap", "confetti", "glitter", "sawdust", "dust", "glass_shard", "glass_shard"],
     properties: {
         has: "dust",
     },
@@ -5361,7 +5362,7 @@ elements.scp_447 = {
     color: "#00ff00",
     density: 500,
     extinguish: true,
-    stain: 0.5,
+    stain: 0.25,
     state: "liquid",
     temp: 38,
     viscosity: 1,
@@ -5372,14 +5373,18 @@ elements.scp_447 = {
         "body_049_1": { elem2: "ash", func: function (_pixel1, pixel2) { explodeAt(pixel2.x, pixel2.y, 100, ["radiation", "fire", "plasma", "poison_gas", "acid_gas"]) } },
         "cancer": { elem2: null, chance: 0.25 },
         "dead_bug": { elem2: "ash", func: function (_pixel1, pixel2) { explodeAt(pixel2.x, pixel2.y, 100, ["radiation", "fire", "plasma", "poison_gas", "acid_gas"]) } },
+        "dirty_water": { elem2: "water" },
         "dust": { elem2: null },
         "fallout": { elem2: "rock", chance: 0.5 },
+        "glass_shard": { elem2: "glass" },
+        "grape": { elem2: "juice", color2: "#7dff25" },
         "gunpowder": { elem2: "greek_fire", chance: 0.1 },
         "head_008": { elem2: "ash", func: function (_pixel1, pixel2) { explodeAt(pixel2.x, pixel2.y, 100, ["radiation", "fire", "plasma", "poison_gas", "acid_gas"]) } },
         "head_049_1": { elem2: "ash", func: function (_pixel1, pixel2) { explodeAt(pixel2.x, pixel2.y, 100, ["radiation", "fire", "plasma", "poison_gas", "acid_gas"]) } },
-        "infection": { elem2: null },
+        "infection": { elem2: null, chance: 0.25 },
         "iron": { elem2: "steel" },
         "plague": { elem2: null },
+        "pool_water": { elem2: "water" },
         "rad_glass": { elem2: "glass", chance: 0.5 },
         "rad_shard": { elem2: "glass", chance: 0.1 },
         "rotten_cheese": { elem2: "cheese" },
@@ -5387,6 +5392,10 @@ elements.scp_447 = {
         "ruins": { elem2: "rock", chance: 0.05 },
         "rust": { elem2: "steel" },
         "salt_water": { elem2: "water" },
+        "scp_804": { attr2: { radius: 200 } },
+        "scp_1600": { elem2: "green_1600" },
+        "sugar_water": { elem2: "soda", color2: "#42ff16" },
+        "tomato": { elem2: "sauce", color2: "#bfff00" },
     },
 }
 
@@ -7048,7 +7057,7 @@ elements.scp_1600 = {
     density: 466,
     excludeRandom: true,
     hazard: true,
-    ignore: ["wall", "bless", "waste_barrel", "hazmat_body", "hazmat_head", "super_acid", "scp_261", "cheese", "redacted", "scp_1600", "gallium", "brass", "zinc", "sulfur", "scp_999", "scp_063", "scp_055"],
+    ignore: ["green_1600", "scp_447", "wall", "bless", "waste_barrel", "hazmat_body", "hazmat_head", "super_acid", "scp_261", "cheese", "redacted", "scp_1600", "gallium", "brass", "zinc", "sulfur", "scp_999", "scp_063", "scp_055"],
     state: "liquid",
     viscosity: 5,
     reactions: {
@@ -7065,7 +7074,6 @@ elements.scp_1600 = {
         "scp_682": { stain2: "#CA8E2F", chance: 0.05, },
         "skin": { elem2: "cheese", color2: "#D5975F" },
         "solid_mercury": { elem2: "cheese", color2: "#393430" },
-        "water": { elem2: "scp_1600" },
     },
     onCollide: function (_pixelOG, pixel) {
         if (elements[pixel.element].id === elements.scp_1600.id) { return }
@@ -7075,6 +7083,35 @@ elements.scp_1600 = {
             var old_color = pixel.color
             changePixel(pixel, "cheese")
             pixel.color = old_color
+        }
+    },
+}
+
+elements.green_1600 = {
+    behavior: behaviors.SUPERFLUID,
+    category: "scp",
+    color: "#D6FF00",
+    density: 900,
+    excludeRandom: true,
+    hazard: true,
+    hidden: true,
+    ignore: ["green_1600", "scp_447", "wall", "bless", "waste_barrel", "hazmat_body", "hazmat_head", "super_acid", "scp_261", "cheese", "redacted", "scp_1600", "scp_999", "scp_063", "scp_055"],
+    state: "liquid",
+    viscosity: 10,
+    reactions: {
+        "molten_gold": { elem2: "green_1600", color2: "#FEDF5E" },
+        "rotten_cheese": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#BBA950", "#BBA950", "#CE9F4B"] },
+        "rotten_meat": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#C2995D", "#C2995D", "#CB7C8E"] },
+        "scp_682": { stain2: "#CA8E2F", chance: 0.05, },
+    },
+    onCollide: function (_pixelOG, pixel) {
+        if (elements[pixel.element].id === elements.green_1600.id) { return }
+        if (elements.green_1600.reactions[pixel.element]) { return }
+        if (elements.green_1600.ignore.indexOf(pixel.element) !== -1) return
+        if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
+            changePixel(pixel, "cheese")
+        } else if (elements[pixel.element].state === "liquid") {
+            changePixel(pixel, "green_1600")
         }
     },
 }
