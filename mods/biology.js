@@ -10,12 +10,14 @@ viewInfo[4] = { // Nutrition View
     pixel: function (pixel, ctx) {
         if (elements[pixel.element].isBio === true) {
             var nutrition = pixel.nutrition
-            if (nutrition < 0) { nutrition = 0 }
+            if (nutrition < 2) { nutrition = 2 }
             if (nutrition > 6000) { nutrition = 6000 }
             var hue = Math.round(225 - (Math.log(nutrition) / Math.log(6000)) * 225)
             if (hue < 0) { hue = 0 }
             if (hue > 225) { hue = 225 }
             drawSquare(ctx, "hsl(" + hue + ",100%,50%)", pixel.x, pixel.y)
+        } else if (!elements[pixel.element].colorOn) {
+            drawSquare(ctx, "rgb(255,255,255)", pixel.x, pixel.y, undefined, 0.5)
         }
     }
 }
@@ -24,8 +26,9 @@ viewInfo[5] = { // Oxygen View
     name: "oxy",
     pixel: function (pixel, ctx) {
         if (elements[pixel.element].isBio === true) {
-            var oxygen = pixel.oxygen
-            if (oxygen < 0) { oxygen = 0 }
+            var oxygen = pixel.oxygen || 10
+            oxygen = Math.round(oxygen)
+            if (oxygen < 2) { oxygen = 2 }
             if (oxygen > 6000) { oxygen = 6000 }
             var hue = Math.round(225 - (Math.log(oxygen) / Math.log(6000)) * 225)
             if (hue < 0) { hue = 0 }
@@ -42,7 +45,7 @@ viewInfo[6] = { // Speed View
             var speed = pixel.speed
             if (speed < -50) { speed = -50 }
             if (speed > 150) { speed = 150 }
-            var hue = Math.round(225 - (Math.log(speed + 50) / Math.log(100 + 50)) * 225)
+            var hue = Math.round(225 - (Math.log(speed + 50) / Math.log(150)) * 225)
             if (hue < 0) { hue = 0 }
             if (hue > 225) { hue = 225 }
             drawSquare(ctx, "hsl(" + hue + ",100%,50%)", pixel.x, pixel.y)
@@ -85,13 +88,13 @@ renderPresets.FLESHBURN = function (pixel, ctx) {
 renderPresets.NERVE = function (pixel, ctx) {
     drawDefault(ctx, pixel)
     if (pixel.darkcharge === true) {
-        drawSquare(ctx, "rgb(0,0,0)", pixel.x, pixel.y, 1, 0.55)
+        drawSquare(ctx, "rgb(0,0,0)", pixel.x, pixel.y, 1, 0.6)
     }
     if (pixel.darkchargeCD === true) {
         drawSquare(ctx, "rgb(0,0,0)", pixel.x, pixel.y, 1, 0.5)
     }
     if (pixel.lightcharge === true) {
-        drawSquare(ctx, "rgb(255,255,255)", pixel.x, pixel.y, 1, 0.55)
+        drawSquare(ctx, "rgb(255,255,255)", pixel.x, pixel.y, 1, 0.6)
     }
     if (pixel.lightchargeCD === true) {
         drawSquare(ctx, "rgb(255,255,255)", pixel.x, pixel.y, 1, 0.5)
@@ -8327,6 +8330,7 @@ elements.revive = {
     },
     canPlace: false,
     category: "tools",
+    hidden: true,
     desc: "Secret tool. Give your allies life!"
 }
 
@@ -8351,6 +8355,7 @@ elements.drain_health = {
     },
     canPlace: false,
     category: "tools",
+    hidden: true,
     desc: "Secret tool. Steal your enemies life!"
 }
 
@@ -8421,11 +8426,11 @@ elements.toilet = {
     state: "solid",
     density: 2403,
     hardness: 0.4,
-    breakInto: ["porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "urine", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "excrement"],
+    breakInto: ["porcelain_shard", "porcelain_shard", "water", "urine", "excrement"],
     noMix: true,
     movable: false,
     tempHigh: 900,
-    stateHigh: ["porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "urine", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "water", "porcelain_shard", "porcelain_shard", "porcelain_shard", "excrement"],
+    stateHigh: ["porcelain_shard", "water", "urine", "excrement"],
     tick: function (pixel) {
         var coords = rectCoords(pixel.x - 1, pixel.y - 1, pixel.x + 1, pixel.y + 3)
         for (var i = 0; i < coords.length; i++) { // Burn adjacent pixels
@@ -8659,66 +8664,11 @@ elements.stench.reactions.stomach_valve = { elem1: [null, null, null, null, null
 elements.bless.reactions.excrement = { elem2: null }
 elements.bless.reactions.infected_vessel = { elem2: ["blood_vessel", "blood_vessel", "blood_vessel", "blood_vessel", "blood_vessel", "blood_vessel", "white_blood_cell"] }
 elements.bless.reactions.urine = { elem2: "water" }
-elements.bless.tool = function (pixel) {
-    if (elements.bless.ignore.indexOf(pixel.element) !== -1) { return }
-    if (pixel.burning && !elements[pixel.element].burning) { // stop burning
-        delete pixel.burning
-        delete pixel.burnStart
-    }
-    if (!elements[pixel.element].insulate) {
-        if (pixel.temp > 100) {
-            pixel.temp = (pixel.temp + 100) / 2
-            pixelTempCheck(pixel)
-            if (pixel.del) { return }
-        }
-        if (pixel.temp < -200) {
-            pixel.temp = (pixel.temp - 200) / 2
-            pixelTempCheck(pixel)
-            if (pixel.del) { return }
-        }
-    }
-    if (pixel.origColor) {
-        pixel.color = "rgb(" + pixel.origColor.join(",") + ")"
-        delete pixel.origColor
-    }
-    if (pixel.charge) {
-        delete pixel.charge
-        pixel.chargeCD = 16
-    }
-    if (elements.bless.reactions[pixel.element] && Math.random() < 0.25) {
-        var r = elements.bless.reactions[pixel.element]
-        var elem2 = r.elem2
-        if (elem2 !== undefined) {
-            if (Array.isArray(elem2)) { elem2 = elem2[Math.floor(Math.random() * elem2.length)] }
-            if (elem2 === null) { deletePixel(pixel.x, pixel.y) }
-            else { changePixel(pixel, elem2) }
-        }
-        if (r.func) { r.func(pixel, pixel) }
-        if (r.color2) { pixel.color = pixelColorPick(pixel, r.color2) }
-    }
-    if (elements[pixel.element].isBio == true) {
-        if (pixel.nutrition < 2000 || pixel.oxygen < 2000) {
-            if (pixel.nutrition < 2000) {
-                pixel.nutrition += 100
-            }
-            if (pixel.oxygen < 2000) {
-                pixel.oxygen += 100
-            }
-            if (pixel.speed < 0) {
-                pixel.oxygen += 10
-            }
-        }
-        if (pixel.burning) {
-            pixel.burning = false
-        }
-    }
-}
 
 elements.dna.reactions.juice = { elem1: null, elem2: "elixir", chance: 0.01 }
 
 elements.dirty_water.isWaste = true
 elements.salt_water.isWaste = true
-elements.dirty_water.isWaste = true
 
 elements.acid.isAcid = true
 
@@ -8759,8 +8709,6 @@ elements.metal_scrap.reactions.blood_vessel = { elem2: ["meat", "infected_vessel
 
 elements.vaccine.reactions.infected_vessel = { elem1: null, elem2: "blood_vessel", attr2: { "immune": true }, chance: 0.02 }
 elements.antidote.reactions.infected_vessel = { elem1: null, elem2: "blood_vessel", attr2: { "immune": true }, chance: 0.02 }
-
-elements.salt_water.stateHigh = ["steam", "steam", "salt"]
 
 elements.vaccine.category = "medicine"
 elements.antidote.category = "medicine"

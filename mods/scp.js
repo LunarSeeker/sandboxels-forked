@@ -6206,6 +6206,58 @@ elements.scp_804 = {
     cooldown: defaultCooldown,
 }
 
+elements.scp_882 = {
+    breakInto: "metal_scrap",
+    category: "scp",
+    color: "#C49F4F",
+    conduct: 1,
+    excludeRandom: true,
+    hardness: 0.65,
+    state: "solid",
+    stateHigh: ["molten_steel"],
+    tempHigh: 1750,
+    metals: ["scp_804", "rust", "steel", "iron", "silver", "galvanized_steel", "scp_229", "scp_1147_machine", "scp_1147_metal"],
+    reactions: {
+        "body_008": { elem2: "ash" },
+        "body_049_1": { elem2: "ash" },
+        "body_1000": { elem2: "rotten_meat" },
+        "body": { elem2: "rotten_meat" },
+        "cancer": { elem2: "infection" },
+        "cell": { elem2: "dna" },
+        "head_008": { elem2: "rotten_meat" },
+        "head_049_1": { elem2: "rotten_meat" },
+        "head_1000": { elem2: "rotten_meat" },
+        "head": { elem2: "rotten_meat" },
+        "pool_water": { elem2: "scp_882_rust" },
+        "salt_water": { elem2: "scp_882_rust" },
+    },
+    tick: function (pixel) {
+        if (elements.scp_882.reactions[pixel.element]) { return }
+        if (elements.scp_882.metals.indexOf(pixel.element) !== -1 || elements[pixel.element].category === "machines") {
+            var old_color = pixel.color
+            changePixel(pixel, "scp_882")
+            pixel.color = old_color
+        }
+    },
+}
+
+elements.scp_882_rust = {
+    behavior: behaviors.SUPPORT,
+    breakInto: "rust",
+    category: "scp",
+    color: ["#ae551c", "#bc6e39", "#925f49"],
+    conduct: 0.37,
+    density: 5250,
+    excludeRandom: true,
+    hardness: 0.5,
+    state: "solid",
+    stateHigh: "molten_iron",
+    tempHigh: 1538
+}
+
+elements.scp_882_rust.reactions = elements.rust.reactions
+elements.scp_882_rust.reactions.scp_447 = { elem1: "scp_882" }
+
 elements.scp_999 = {
     name: "SCP-999",
     color: "#FFA500",
