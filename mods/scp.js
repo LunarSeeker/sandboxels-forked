@@ -1962,6 +1962,7 @@ elements.scp_009 = {
         "meat": { elem2: "scp_009_meat", chance: 0.15 },
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
+        "pee_ice": { elem2: "scp_009" },
         "plant": { elem2: "scp_009", chance: 0.5 },
         "pool_water": { elem2: "scp_009", chance: 0.5 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
@@ -1981,6 +1982,7 @@ elements.scp_009 = {
         "tadpole": { elem2: "scp_009_meat", chance: 0.15 },
         "tea": { elem2: "scp_009", chance: 0.25 },
         "tomato": { elem2: "scp_009", chance: 0.25 },
+        "urine": { elem2: "scp_009" },
         "water": { elem2: "scp_009" },
         "yolk": { elem2: "scp_009" },
     },
@@ -2048,6 +2050,8 @@ elements.red_water = {
         "blood": { elem2: "scp_009" },
         "cloud": { elem2: "red_cloud", chance: 0.4, chance: 0.4 },
         "coffee": { elem2: "scp_009" },
+        "pee_ice": { elem2: "scp_009" },
+        "urine": { elem2: "scp_009" },
         "dead_plant": { elem2: "scp_009", chance: 0.025 },
         "salt_ice": { elem2: "scp_009", chance: 0.25 },
         "sugar_ice": { elem2: "scp_009", chance: 0.25 },
@@ -2171,6 +2175,8 @@ elements.red_steam = {
         "steel": { elem1: ["hydrogen", "hydrogen"], elem2: "rust", chance: 0.004 },
         "tornado": { elem1: "red_cloud" },
         "melted_wax": { elem1: "explosion" },
+        "urine": { elem2: "scp_009" },
+        "pee_ice": { elem2: "scp_009" },
     },
     temp: -150,
     tempHigh: -100,
@@ -6692,7 +6698,7 @@ elements.scp_1147 = {
                             changePixel(dirtPixel, "root")
                         } else if (dirtPixel.element === "steel" || dirtPixel.element === "iron" || dirtPixel.element === "galvanized_steel") {
                             chosenType = "scp_1147_metal"
-                        } else if (dirtPixel.element === "skin" || dirtPixel.element === "meat" || elements[dirtPixel.element].element === "bone") {
+                        } else if (dirtPixel.element === "skin" || dirtPixel.element === "meat" || elements[dirtPixel.element].element === "bone" || elements[dirtPixel.element].category === "structural" || elements[dirtPixel.element].category === "circulation") {
                             chosenType = "scp_1147_flesh"
                         } else if (dirtPixel.element === "copper" || dirtPixel.element === "scp_229" || elements[dirtPixel.element].category === "machines") {
                             chosenType = "scp_1147_machine"
