@@ -6207,16 +6207,50 @@ elements.scp_804 = {
 }
 
 elements.scp_882 = {
+    behavior: behaviors.POWDER,
     breakInto: "metal_scrap",
     category: "scp",
-    color: "#C49F4F",
+    hazard: true,
+    colorPattern: [
+        "BBLB",
+        "BLBL",
+        "LBBB"
+    ],
+    colorKey: {
+        "B": "#BD2D2D",
+        "L": "#0C1D24",
+    },
     conduct: 1,
     excludeRandom: true,
     hardness: 0.65,
     state: "solid",
     stateHigh: ["molten_steel"],
     tempHigh: 1750,
-    metals: ["scp_804", "rust", "steel", "iron", "silver", "galvanized_steel", "scp_229", "scp_1147_machine", "scp_1147_metal"],
+    metals: [
+        "access_door",
+        "alarm",
+        "brass",
+        "bronze",
+        "copper",
+        "galvanized_steel",
+        "gold_coin",
+        "gold",
+        "invar",
+        "iron",
+        "keycard_terminal",
+        "metal_scrap",
+        "nickel",
+        "rust",
+        "scp_1147_machine",
+        "scp_1147_metal",
+        "scp_229",
+        "scp_804",
+        "silver",
+        "site_nuke",
+        "steel",
+        "sterling",
+        "tin",
+    ],
     reactions: {
         "body_008": { elem2: "ash" },
         "body_049_1": { elem2: "ash" },
@@ -7184,5 +7218,7 @@ elements.bless.reactions.scp_236 = { elem2: null }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
 elements.bless.reactions.scp_682 = { elem2: null }
 elements.bless.reactions.scp_804 = { elem2: null }
+elements.bless.reactions.scp_882 = { elem2: "steel" }
+elements.bless.reactions.scp_882_rust = { elem2: "steel" }
 elements.bless.reactions.scp_1600 = { elem2: "cheese" }
 elements.bless.reactions.green_1600 = { elem2: "cheese" }
