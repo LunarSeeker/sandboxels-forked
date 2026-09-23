@@ -3585,6 +3585,7 @@ elements.scp_055 = {
     color: "#000000",
     excludeRandom: true,
     hardness: 0.9,
+    hidden: true,
     state: "solid",
 }
 
@@ -4163,6 +4164,395 @@ elements.body_096 = {
         "ground_meat": { elem2: null, chance: 5 },
     },
 }
+
+elements.scp_140 = {
+    behavior: behaviors.POWDER,
+    breakInto: "confetti",
+    breakIntoColor: ["#ffffff", "#e6e6e6", "#dbdbdb"],
+    burn: 70,
+    burnInto: ["fire", "fire", "fire", "fire", "fire", "ash"],
+    burnTime: 300,
+    category: "solids",
+    color: "#471515",
+    density: 1201,
+    state: "solid",
+    stateHigh: ["fire", "fire", "fire", "fire", "fire", "ash"],
+    tempHigh: 248,
+    tick: function (pixel) {
+        if (pixel.lines < 1 && isEmpty(pixel.x, pixel.y - 1)) {
+            releaseElement(pixel, "daevite", 1, true)
+            pixel.lines = 25
+        }
+        if (Math.random() < 0.5) {
+            shuffleArray(squareCoordsShuffle)
+            for (var i = 0; i < squareCoordsShuffle.length; i++) {
+                var x = pixel.x + squareCoordsShuffle[i][0]
+                var y = pixel.y + squareCoordsShuffle[i][1]
+                if (!isEmpty(x, y, true) && (pixelMap[x][y].element === "urine" || pixelMap[x][y].element == "blood")) {
+                    deletePixel(x, y)
+                    pixel.lines -= 1
+                    break
+                }
+            }
+        }
+    },
+    properties: {
+        lines: 25,
+    },
+}
+
+elements.daevite = {
+    color: ["#ee0d0d", "#f13608", "#c44949"],
+    category: "scp",
+    properties: {
+        dead: false,
+        dir: 1,
+        panic: 0
+    },
+    onPlace: function (pixel) {
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element === "head_daevite") {
+            deletePixel(pixel.x, pixel.y - 1)
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element === "body_daevite") {
+            deletePixel(pixel.x, pixel.y + 1)
+        }
+
+        if (isEmpty(pixel.x, pixel.y + 1)) {
+            createPixel("body_daevite", pixel.x, pixel.y + 1)
+            var color = pixel.color
+            changePixel(pixel, "head_daevite")
+            pixel.color = color
+        }
+        else if (isEmpty(pixel.x, pixel.y - 1)) {
+            createPixel("head_daevite", pixel.x, pixel.y - 1)
+            pixelMap[pixel.x][pixel.y - 1].color = pixel.color
+            changePixel(pixel, "body_daevite")
+        }
+        else {
+            deletePixel(pixel.x, pixel.y)
+        }
+    },
+    reactions: {
+        "fire": { attr1: { panic: 5 } },
+        "plasma": { attr1: { panic: 5 } },
+        "cold_fire": { attr1: { panic: 5 } },
+        "electric": { attr1: { panic: 5 } },
+        "blood": { attr1: { panic: 1 } },
+        "infection": { attr1: { panic: 2 } },
+        "cancer": { attr1: { panic: 3 } },
+        "plague": { attr1: { panic: 5 } },
+        "radiation": { attr1: { panic: 5 } },
+        "tnt": { attr1: { panic: 5 } },
+        "dynamite": { attr1: { panic: 5 } },
+        "c4": { attr1: { panic: 5 } },
+        "grenade": { attr1: { panic: 5 } },
+        "gunpowder": { attr1: { panic: 5 } },
+        "acid": { attr1: { panic: 5 } },
+        "acid_gas": { attr1: { panic: 5 } },
+        "stench": { attr1: { panic: 2 } }
+    },
+    related: ["body_daevite", "head_daevite"],
+    cooldown: defaultCooldown,
+    forceSaveColor: true
+}
+
+elements.body_daevite = {
+    color: ["#789406", "#999904", "#a8b05f"],
+    category: "scp",
+    hidden: true,
+    density: 1500,
+    state: "solid",
+    conduct: .03,
+    temp: 40,
+    tempHigh: 200,
+    stateHigh: "cooked_meat",
+    tempLow: -50,
+    stateLow: "frozen_meat",
+    burn: 10,
+    burnTime: 250,
+    burnInto: "cooked_meat",
+    breakInto: ["blood", "meat", "bone"],
+    forceSaveColor: true,
+    pickElement: "daevite",
+    reactions: {
+        "cancer": { elem1: "cancer", chance: 0.005 },
+        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
+        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
+        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.01 },
+        "plague": { elem1: "plague", chance: 0.05 },
+        "egg": { elem2: "yolk", chance: 0.5, oneway: true },
+        "grape": { elem2: "juice", chance: 0.5, color2: "#291824", oneway: true },
+        "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
+        "spider": { elem2: "dead_bug", oneway: true },
+        "fly": { elem2: "dead_bug", oneway: true },
+        "firefly": { elem2: "dead_bug", oneway: true },
+        "bee": { elem2: "dead_bug", oneway: true },
+        "flea": { elem2: "dead_bug", oneway: true },
+        "termite": { elem2: "dead_bug", oneway: true },
+        "worm": { elem2: "slime", chance: 0.05, oneway: true },
+        "stink_bug": { elem2: "stench", oneway: true },
+        "grass_seed": { elem2: null },
+        "sun": { elem1: "cooked_meat" },
+        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
+        "anesthesia": { attr1: { "panic": 0 } },
+        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
+    },
+    properties: {
+        dead: false,
+        dir: 1,
+        panic: 0
+    },
+    tick: function (pixel) {
+        if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
+            if (!isEmpty(pixel.x, pixel.y - 2, true)) { // Drag head down
+                if (pixelMap[pixel.x][pixel.y - 2].element === "head_daevite") {
+                    if (isEmpty(pixel.x, pixel.y - 1)) {
+                        movePixel(pixelMap[pixel.x][pixel.y - 2], pixel.x, pixel.y - 1)
+                    }
+                    else {
+                        swapPixels(pixelMap[pixel.x][pixel.y - 2], pixelMap[pixel.x][pixel.y - 1])
+                    }
+                }
+            }
+        }
+        doHeat(pixel)
+        doBurning(pixel)
+        doElectricity(pixel)
+        if (pixel.dead) {
+            // Turn into rotten_meat if pixelTicks-dead > 500
+            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
+                changePixel(pixel, "rotten_meat")
+            }
+            return
+        }
+
+        // Find the head
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element == "head_daevite") {
+            var head = pixelMap[pixel.x][pixel.y - 1]
+            if (head.dead) { // If head is dead, kill body
+                pixel.dead = head.dead
+            }
+            else if (head.panic > 0) {
+                pixel.panic = head.panic
+                delete head.panic
+            }
+        }
+        else { var head = null }
+        if (head && Math.random() < 0.25) {
+            let y = Math.random() < 0.5 ? 0 : -1
+            for (let x = 1; x < 10; x++) {
+                let x2 = pixel.x + (x * pixel.dir)
+                let y2 = pixel.y + y
+                if (!isEmpty(x2, y2, true)) {
+                    let seenPixel = pixelMap[x2][y2]
+                    if (elements.daevite.reactions[seenPixel.element] && elements.daevite.reactions[seenPixel.element].attr1 && elements.daevite.reactions[seenPixel.element].attr1.panic) {
+                        pixel.panic += elements.daevite.reactions[seenPixel.element].attr1.panic
+                        pixel.dir *= -1
+                        break
+                    }
+                    else if (seenPixel.dead || seenPixel.temp > 200) {
+                        pixel.panic += 5
+                        pixel.dir *= -1
+                        if (seenPixel.panic) delete seenPixel.panic
+                        break
+                    } else if (elements[seenPixel.element].category == "life") {
+                        if (pixel.dir != 1 && pixelMap[x2][y2].x > pixel.x) {
+                            pixel.dir = 1
+                        }
+                        else if (pixel.dir != -1 && pixelMap[x2][y2].x < pixel.x) {
+                            pixel.dir = -1
+                        }
+                    }
+                }
+            }
+        }
+        if (pixel.burning) {
+            pixel.panic += 0.1
+            if (head && pixelTicks - pixel.burnStart > 240) {
+                pixel.color = head.color
+            }
+        }
+        if (pixel.charge) {
+            pixel.panic += 1
+        }
+        else if (pixel.panic > 0) {
+            pixel.panic -= 0.1
+            if (pixel.panic < 0) { pixel.panic = 0 }
+            else if (pixel.panic > 50) { pixel.panic = 50 }
+        }
+
+        if (isEmpty(pixel.x, pixel.y - 1)) {
+            // create blood if decapitated 10% chance
+            if (Math.random() < 0.1 && !pixel.charge) {
+                createPixel("blood", pixel.x, pixel.y - 1)
+                // set dead to true 15% chance
+                if (Math.random() < 0.15) {
+                    pixel.dead = pixelTicks
+                }
+            }
+        }
+        else if (head === null) { return }
+        else if (Math.random() < 0.1 * (isEmpty(pixel.x, pixel.y + 1) ? 1 : pixel.panic + 1)) { // Move 10% chance
+            var movesToTry = [
+                [1 * pixel.dir, 0],
+                [1 * pixel.dir, -1],
+            ]
+            let moved = false
+            // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
+            while (movesToTry.length > 0) {
+                var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
+                if (isEmpty(pixel.x + move[0], pixel.y + move[1] - 1)) {
+                    var origx = pixel.x + move[0]
+                    var origy = pixel.y + move[1]
+                    if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
+                        movePixel(head, head.x + move[0], head.y + move[1])
+                        moved = true
+                        break
+                    }
+                }
+                else if (!isEmpty(pixel.x + move[0], pixel.y + move[1], true)) {
+                    var hitPixel = pixelMap[pixel.x + move[0]][pixel.y + move[1]]
+                    if (hitPixel.element === "body_daevite" || hitPixel.element === "head_daevite" && hitPixel.panic < pixel.panic) {
+                        // interact with other daevite
+                        hitPixel.panic = pixel.panic
+                    }
+                }
+            }
+            // 15% chance to change direction
+            if (Math.random() < 0.15 || !moved) {
+                pixel.dir *= -1
+            }
+            // homeostasis
+            if (pixel.temp > 40) { pixel.temp -= 2 }
+            else if (pixel.temp < 40) { pixel.temp += 1 }
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coords = squareCoords[i]
+                var x = pixel.x + coords[0]
+                var y = pixel.y + coords[1]
+                if (!isEmpty(x, y) && !outOfBounds(x, y)) {
+                    var pixel2 = pixelMap[x][y]
+                    if (isBreakable(pixel2) && pixel2.target) {
+                        if (Math.random() < Math.min(1, elements[pixel.element].hardness || 0)) {
+                            breakPixel(pixel2)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+elements.head_daevite = {
+    color: ["#ee0d0d", "#f13608", "#c44949"],
+    category: "scp",
+    hidden: true,
+    density: 1080,
+    state: "solid",
+    conduct: .03,
+    temp: 40,
+    tempHigh: 200,
+    stateHigh: "cooked_meat",
+    tempLow: -50,
+    stateLow: "frozen_meat",
+    burn: 10,
+    burnTime: 250,
+    burnInto: "cooked_meat",
+    breakInto: ["blood", "meat", "bone"],
+    forceSaveColor: true,
+    pickElement: "daevite",
+    reactions: {
+        "cancer": { elem1: "cancer", chance: 0.005 },
+        "radiation": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.4 },
+        "neutron": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
+        "fallout": { elem1: ["ash", "meat", "rotten_meat", "cooked_meat"], chance: 0.03 },
+        "plague": { elem1: "plague", chance: 0.05 },
+        "oxygen": { elem2: "carbon_dioxide", chance: 0.6 },
+        "beans": { elem2: [null, null, null, null, null, null, null, null, "stench"], chance: 0.2 },
+        "sun": { elem1: "cooked_meat" },
+        "light": { stain1: "#825043" },
+        "bee": { stain1: "#cc564b", chance: 0.2 },
+        "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
+        "salt_water": { elem2: "bubble", attr2: { "clone": "salt_water" }, chance: 0.001 },
+        "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 },
+        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
+        "anesthesia": { attr1: { "panic": 0 } },
+        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
+    },
+    properties: {
+        dead: false
+    },
+    tick: function (pixel) {
+        doHeat(pixel)
+        doBurning(pixel)
+        doElectricity(pixel)
+        if (pixel.dead) {
+            // Turn into rotten_meat if pixelTicks-dead > 500
+            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
+                changePixel(pixel, "rotten_meat")
+                return
+            }
+        }
+
+        // Find the body
+        if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_daevite") {
+            var body = pixelMap[pixel.x][pixel.y + 1]
+            if (body.dead) { // If body is dead, kill head
+                pixel.dead = body.dead
+            }
+        }
+        else { var body = null }
+
+        // check for eating food
+        if (body && !pixel.dead && Math.random() < 0.1) {
+            shuffleArray(interactCoordsShuffle)
+            for (var i = 0; i < interactCoordsShuffle.length; i++) {
+                var x = pixel.x + interactCoordsShuffle[i][0]
+                var y = pixel.y + interactCoordsShuffle[i][1]
+                if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].isFood && pixelMap[x][y].panic === undefined) {
+                    deletePixel(x, y)
+                    break
+                }
+            }
+        }
+
+        if (tryMove(pixel, pixel.x, pixel.y + 1)) {
+            // create blood if severed 10% chance
+            if (isEmpty(pixel.x, pixel.y + 1) && !pixel.dead && Math.random() < 0.1 && !pixel.charge) {
+                createPixel("blood", pixel.x, pixel.y + 1)
+                // set dead to true 15% chance
+                if (Math.random() < 0.15) {
+                    pixel.dead = pixelTicks
+                }
+            }
+        }
+        // homeostasis
+        if (pixel.temp > 40) { pixel.temp -= 1 }
+        else if (pixel.temp < 40) { pixel.temp += 1 }
+    },
+    onChange: function (pixel) {
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coord = adjacentCoords[i]
+            var x = pixel.x + coord[0]
+            var y = pixel.y + coord[1]
+            if (!isEmpty(x, y, true) && pixelMap[x][y].panic !== undefined) {
+                pixelMap[x][y].panic += 20
+            }
+        }
+    },
+    onDelete: function (pixel) {
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coord = adjacentCoords[i]
+            var x = pixel.x + coord[0]
+            var y = pixel.y + coord[1]
+            if (!isEmpty(x, y, true) && pixelMap[x][y].panic !== undefined) {
+                pixelMap[x][y].panic += 20
+            }
+        }
+    }
+}
+
+elements.body_daevite.reactions = elements.body.reactions
+elements.head_daevite.reactions = elements.head.reactions
 
 elements.scp_173 = {
     name: "SCP-173",
@@ -6212,15 +6602,48 @@ elements.scp_882 = {
     category: "scp",
     hazard: true,
     colorPattern: [
-        "BBLB",
-        "BLBL",
-        "LBBB"
+        "BBBBBBBBBBBBBBBBAAAAAAAABBBBBBBBBBBBBBBB",
+        "BBBBBBBBBBBBBBBBAAAAAAAABBBBBBBBBBBBBBBB",
+        "BBBBBBBBBBBBBBBBAAABBAAABBBBBBBBBBBBBBBB",
+        "BBBBBBBBBBBBBBBAAABBBBAAABBBBBBBBBBBBBBB",
+        "BBBBBBBBAABBBBBAABBBBBBAABBBBBAABBBBBBBB",
+        "BBBBBBAAAAAAAAAAABBBBBBAAAAAAAAAAABBBBBB",
+        "BBBBBAAAABAAAAAAABBBBBBAAAAAAABAAAABBBBB",
+        "BBBBBAAABBBBAABBBBBBBBBBBBAAABBBAAABBBBB",
+        "BBBBAAABBBBBBBBBBBBBBBBBBBBABBBBBAAABBBB",
+        "BBBBAAABBBBBBBBBBBBBBBBBBBBBBBBBBAAABBBB",
+        "BBBBBAABBBBBBBBBBBBBBBBBBBBBBBBBBAABBBBB",
+        "BBBBBAAABBBBBBBBBBAAAABBBBBBBBBBAAABBBBB",
+        "BBBBBAAAABBBBBBBBAAAAAABBBBBBBBAAAABBBBB",
+        "BBBBBAAABBBBBBBAAAAAAAAAABBBBBBBAAABBBBB",
+        "BBBBBAABBBBBBBAAAAAAAAAAAABBBBBBBAABBBBB",
+        "BBBAAAABBBBBBAAABBBBBBBBAAABBBBBBAAAABBB",
+        "AAAAAABBBBBBBAABBBBBBBBBBAABBBBBBBAAAAAA",
+        "AAAABBBBBBBBAAABBBBBBBBBBAAABBBBBBBBBAAA",
+        "AAABBBBBBBBAAAABBBBBBBBBBAAAABBBBBBBBBAA",
+        "AABBBBBBBBBAAAABBBBBBBBBBAAAABBBBBBBBBAA",
+        "AAABBBBBBBBAAAABBBBBBBBBBAAAABBBBBBBBAAA",
+        "AAAABBBBBBBBAAABBBBBBBBBBAAABBBBBBBBAAAA",
+        "AAAAAAABBBBBBAABBBBBBBBBBAABBBBBBAAAAAAA",
+        "BBBBBAAAABBBBBBBBAAAAAABBBBBBBBBAAABBBBB",
+        "BBBBBAAABBBBBBBBBBAAAABBBBBBBBBBBAABBBBB",
+        "BBBBAABBBBBBBBBBBBBBBBBBBBBBBBBBBBAABBBB",
+        "BBBBAAABBBBBABBBBBBBBBBBBBBABBBBBAAABBBB",
+        "BBBBBAAABBBAAABBBBBBBBBBBBAAABBBAAABBBBB",
+        "BBBBBAAAAAAAAAAAABBBBBBAAAAAAAAAAAABBBBB",
+        "BBBBBBAAAAAAAAAAABBBBBBAAAAAAAAAAABBBBBB",
+        "BBBBBBBBAABBBBBAABBBBBBAABBBBBAABBBBBBBB",
+        "BBBBBBBBBBBBBBBAAABBBBAAABBBBBBBBBBBBBBB",
+        "BBBBBBBBBBBBBBBBAAABBAAABBBBBBBBBBBBBBBB",
+        "BBBBBBBBBBBBBBBBAAAAAAAABBBBBBBBBBBBBBBB",
+        "BBBBBBBBBBBBBBBBAAAAAAAABBBBBBBBBBBBBBBB",
     ],
     colorKey: {
-        "B": "#BD2D2D",
-        "L": "#0C1D24",
+        "A": "#CBCDCD",
+        "B": "#B0AFB4",
     },
     conduct: 1,
+    density: 19300,
     excludeRandom: true,
     hardness: 0.65,
     state: "solid",
@@ -6285,13 +6708,15 @@ elements.scp_882_rust = {
     category: "scp",
     color: ["#ae551c", "#bc6e39", "#925f49"],
     conduct: 0.37,
-    density: 5250,
+    density: 19200,
     excludeRandom: true,
     hardness: 0.5,
+    hidden: true,
     state: "solid",
     stateHigh: "molten_iron",
     tempHigh: 1538,
     reactions: {
+        "oil": { elem2: "scp_882" },
         "scp_447": { elem1: "scp_882" },
     },
 }
@@ -7217,6 +7642,7 @@ elements.bless.reactions.red_water = { elem2: "water" }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
 elements.bless.reactions.scp_063 = { elem2: "plastic" }
+elements.bless.reactions.scp_140 = { elem2: "paper" }
 elements.bless.reactions.scp_229 = { elem2: null }
 elements.bless.reactions.scp_236 = { elem2: null }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
