@@ -6290,11 +6290,11 @@ elements.scp_882_rust = {
     hardness: 0.5,
     state: "solid",
     stateHigh: "molten_iron",
-    tempHigh: 1538
+    tempHigh: 1538,
+    reactions: {
+        "scp_447": { elem1: "scp_882" },
+    },
 }
-
-elements.scp_882_rust.reactions = elements.rust.reactions
-elements.scp_882_rust.reactions.scp_447 = { elem1: "scp_882" }
 
 elements.scp_999 = {
     name: "SCP-999",
