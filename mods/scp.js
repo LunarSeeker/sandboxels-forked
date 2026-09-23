@@ -6229,9 +6229,11 @@ elements.scp_882 = {
     metals: [
         "access_door",
         "alarm",
+        "blue_gold",
         "brass",
         "bronze",
         "copper",
+        "electrum",
         "galvanized_steel",
         "gold_coin",
         "gold",
@@ -6240,6 +6242,8 @@ elements.scp_882 = {
         "keycard_terminal",
         "metal_scrap",
         "nickel",
+        "purple_gold",
+        "rose_gold",
         "rust",
         "scp_1147_machine",
         "scp_1147_metal",
@@ -6265,7 +6269,7 @@ elements.scp_882 = {
         "pool_water": { elem2: "scp_882_rust" },
         "salt_water": { elem2: "scp_882_rust" },
     },
-    tick: function (pixel) {
+    onCollide: function (_pixelOG, pixel) {
         if (elements.scp_882.reactions[pixel.element]) { return }
         if (elements.scp_882.metals.indexOf(pixel.element) !== -1 || elements[pixel.element].category === "machines") {
             var old_color = pixel.color
