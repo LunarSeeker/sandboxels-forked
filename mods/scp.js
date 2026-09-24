@@ -4172,7 +4172,7 @@ elements.scp_140 = {
     burn: 70,
     burnInto: ["fire", "fire", "fire", "fire", "fire", "ash"],
     burnTime: 300,
-    category: "solids",
+    category: "scp",
     color: "#471515",
     density: 1201,
     state: "solid",
@@ -4292,6 +4292,8 @@ elements.body_daevite = {
         "worm": { elem2: "slime", chance: 0.05, oneway: true },
         "stink_bug": { elem2: "stench", oneway: true },
         "grass_seed": { elem2: null },
+        "body": { elem2: null },
+        "head": { elem2: null },
         "sun": { elem1: "cooked_meat" },
         "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
         "anesthesia": { attr1: { "panic": 0 } },
@@ -4340,22 +4342,12 @@ elements.body_daevite = {
         else { var head = null }
         if (head && Math.random() < 0.25) {
             let y = Math.random() < 0.5 ? 0 : -1
-            for (let x = 1; x < 10; x++) {
-                let x2 = pixel.x + (x * pixel.dir)
+            for (let x = 1; x < 20; x++) {
+                let x2 = pixel.x + (x * (Math.random() < 0.5 ? 1 : -1))
                 let y2 = pixel.y + y
                 if (!isEmpty(x2, y2, true)) {
                     let seenPixel = pixelMap[x2][y2]
-                    if (elements.daevite.reactions[seenPixel.element] && elements.daevite.reactions[seenPixel.element].attr1 && elements.daevite.reactions[seenPixel.element].attr1.panic) {
-                        pixel.panic += elements.daevite.reactions[seenPixel.element].attr1.panic
-                        pixel.dir *= -1
-                        break
-                    }
-                    else if (seenPixel.dead || seenPixel.temp > 200) {
-                        pixel.panic += 5
-                        pixel.dir *= -1
-                        if (seenPixel.panic) delete seenPixel.panic
-                        break
-                    } else if (elements[seenPixel.element].category == "life") {
+                    if (elements[seenPixel.element].id == elements.head.id) {
                         if (pixel.dir != 1 && pixelMap[x2][y2].x > pixel.x) {
                             pixel.dir = 1
                         }
@@ -4363,9 +4355,13 @@ elements.body_daevite = {
                             pixel.dir = -1
                         }
                     }
+                    if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
+                        break
+                    }
                 }
             }
         }
+
         if (pixel.burning) {
             pixel.panic += 0.1
             if (head && pixelTicks - pixel.burnStart > 240) {
@@ -4410,13 +4406,6 @@ elements.body_daevite = {
                         break
                     }
                 }
-                else if (!isEmpty(pixel.x + move[0], pixel.y + move[1], true)) {
-                    var hitPixel = pixelMap[pixel.x + move[0]][pixel.y + move[1]]
-                    if (hitPixel.element === "body_daevite" || hitPixel.element === "head_daevite" && hitPixel.panic < pixel.panic) {
-                        // interact with other daevite
-                        hitPixel.panic = pixel.panic
-                    }
-                }
             }
             // 15% chance to change direction
             if (Math.random() < 0.15 || !moved) {
@@ -4425,20 +4414,8 @@ elements.body_daevite = {
             // homeostasis
             if (pixel.temp > 40) { pixel.temp -= 2 }
             else if (pixel.temp < 40) { pixel.temp += 1 }
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coords = squareCoords[i]
-                var x = pixel.x + coords[0]
-                var y = pixel.y + coords[1]
-                if (!isEmpty(x, y) && !outOfBounds(x, y)) {
-                    var pixel2 = pixelMap[x][y]
-                    if (isBreakable(pixel2) && pixel2.target) {
-                        if (Math.random() < Math.min(1, elements[pixel.element].hardness || 0)) {
-                            breakPixel(pixel2)
-                        }
-                    }
-                }
-            }
         }
+
     }
 }
 
@@ -4914,6 +4891,305 @@ elements.head_173 = {
             }
             if (Math.random() < 0.05) {
                 pixel.dead = pixelTicks
+            }
+        }
+    },
+}
+
+elements.scp_217 = {
+    behavior: [
+        "M2|M1|M2",
+        "M1|DL%1|M1",
+        "M2|M1|M2",
+    ],
+    category: "scp",
+    color: "#11111f",
+    density: 600,
+    state: "gas",
+    stateHigh: null,
+    stateLow: null,
+    tempHigh: 750,
+    tempLow: -100,
+    reactions: {
+        "ant": { elem2: ["scp_217", "iron", "iron"] },
+        "bee": { elem2: ["scp_217", "iron", "iron"] },
+        "bird": { elem2: ["scp_217", "iron", "iron"] },
+        "blood": { elem1: null, elem2: "scp_217", chance: 0.6 },
+        "chlorine": { elem1: null, chance: 0.001 },
+        "firefly": { elem2: "scp_217" },
+        "fish": { elem2: ["scp_217", "iron"] },
+        "fly": { elem2: ["scp_217", "iron", "iron"] },
+        "frog": { elem2: ["scp_217", "steel", "iron"] },
+        "frozen_meat": { elem2: "iron" },
+        "head": { elem1: null, elem2: "head_217" },
+        "liquid_chlorine": { elem1: null, chance: 0.001 },
+        "meat": { elem2: "iron" },
+        "rat": { elem2: ["scp_217", "iron", "rust"] },
+        "rotten_meat": { elem2: "rust" },
+        "skin": { elem2: "iron" },
+        "spider": { elem2: ["scp_217", "iron", "iron"] },
+        "worm": { elem2: ["scp_217", "iron", "slime"] },
+    },
+}
+
+elements.body_217 = {
+    name: "SCP-217-1",
+    color: ["#71797e"],
+    category: "scp",
+    hidden: true,
+    density: 1500,
+    state: "solid",
+    conduct: .1,
+    temp: 37,
+    tempHigh: 1538,
+    stateHigh: "molten_iron",
+    breakInto: ["scp_217", "iron", "bone"],
+    forceSaveColor: true,
+    pickElement: "human",
+    reactions: {
+        "cancer": { elem2: "scp_217" },
+        "cell": { elem2: "scp_217" },
+        "ant": { elem2: "iron" },
+        "spider": { elem2: "iron" },
+        "fly": { elem2: "iron" },
+        "firefly": { elem2: "iron" },
+        "bee": { elem2: "iron" },
+        "flea": { elem2: "iron" },
+        "termite": { elem2: "iron" },
+        "worm": { elem2: "iron" },
+        "stink_bug": { elem2: "iron" },
+        "sun": { elem1: "iron" },
+    },
+    properties: {
+        dead: false,
+        dir: 1,
+        panic: 0,
+    },
+    tick: function (pixel) {
+        if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
+            if (!isEmpty(pixel.x, pixel.y - 2, true)) { // Drag head down
+                var headpixel = pixelMap[pixel.x][pixel.y - 2]
+                if (headpixel.element === "head_217") {
+                    if (isEmpty(pixel.x, pixel.y - 1)) {
+                        movePixel(pixelMap[pixel.x][pixel.y - 2], pixel.x, pixel.y - 1)
+                    }
+                    else {
+                        swapPixels(pixelMap[pixel.x][pixel.y - 2], pixelMap[pixel.x][pixel.y - 1])
+                    }
+                }
+            }
+        }
+        doHeat(pixel)
+        doBurning(pixel)
+        doElectricity(pixel)
+        if (pixel.dead) {
+            // Turn into rotten_meat if pixelTicks-dead > 500
+            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
+                changePixel(pixel, "rust")
+            }
+            return
+        }
+
+        if (!pixel.zStart) {
+            pixel.zStart = pixelTicks
+        }
+        if ((pixel.zStart + 1000) < pixelTicks) {
+            pixel.dead = pixelTicks
+        }
+
+        // Find the head
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element == "head_217") {
+            var head = pixelMap[pixel.x][pixel.y - 1]
+            if (head.dead) { // If head is dead, kill body
+                pixel.dead = head.dead
+            }
+            else if (head.panic > 0) {
+                delete head.panic
+            }
+        }
+        else if (!isEmpty(pixel.x, pixel.y - 1, true) && (pixelMap[pixel.x][pixel.y - 1].element == "head" || pixelMap[pixel.x][pixel.y - 1].element == "head_1000")) {
+            var head = pixelMap[pixel.x][pixel.y - 1]
+            changePixel(head, "head_217")
+        }
+        else { var head = null }
+        if (head && Math.random() < 0.5) {
+            let y = Math.random() < 0.5 ? 0 : -1
+            for (let x = 1; x < 20; x++) {
+                let x2 = pixel.x + (x * (Math.random() < 0.5 ? 1 : -1))
+                let y2 = pixel.y + y
+                if (!isEmpty(x2, y2, true)) {
+                    let seenPixel = pixelMap[x2][y2]
+                    if (elements[seenPixel.element].id == elements.head.id) {
+                        if (pixel.dir != 1 && pixelMap[x2][y2].x > pixel.x) {
+                            pixel.dir = 1
+                        }
+                        else if (pixel.dir != -1 && pixelMap[x2][y2].x < pixel.x) {
+                            pixel.dir = -1
+                        }
+                    }
+                    if (elements[seenPixel.element].id != elements.glass.id && elements[seenPixel.element].id != elements.stained_glass.id && elements[seenPixel.element].id != elements.glass_shard.id) {
+                        break
+                    }
+                }
+            }
+        }
+
+        if (pixel.panic > 0) {
+            pixel.panic -= 0.1
+            if (pixel.panic < 0) { pixel.panic = 0 }
+            else if (pixel.panic > 50) { pixel.panic = 50 }
+        }
+
+        if (isEmpty(pixel.x, pixel.y - 1)) {
+            // create blood if decapitated 10% chance
+            if (Math.random() < 0.1 && !pixel.charge) {
+                createPixel("scp_217", pixel.x, pixel.y - 1)
+                // set dead to true 15% chance
+                if (Math.random() < 0.15) {
+                    pixel.dead = pixelTicks
+                }
+            }
+        }
+        else if (Math.random() < 0.2) { // Move 20% chance
+            var movesToTry = [
+                [1 * pixel.dir, 0],
+                [1 * pixel.dir, -1],
+            ]
+            let moved = false
+            // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
+            while (movesToTry.length > 0) {
+                var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
+                if (isEmpty(pixel.x + move[0], pixel.y + move[1] - 1)) {
+                    var origx = pixel.x + move[0]
+                    var origy = pixel.y + move[1]
+                    if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
+                        movePixel(head, head.x + move[0], head.y + move[1])
+                        moved = true
+                        break
+                    }
+                }
+                else if (!isEmpty(pixel.x + move[0], pixel.y + move[1], true)) {
+                    var hitPixel = pixelMap[pixel.x + move[0]][pixel.y + move[1]]
+                    if (hitPixel.element === "body" || hitPixel.element === "head") {
+                        // interact with other human
+                        hitPixel.panic += 1
+                    }
+                }
+            }
+            // 10% chance to change direction
+            if (Math.random() < 0.1 || !moved) {
+                pixel.dir *= -1
+            }
+        }
+
+    }
+}
+
+elements.head_217 = {
+    color: ["#71797e", "#888f94", "#cbcdcd", "#bdbdbd", "#a95232", "#be4322", "#c76035"],
+    name: "SCP-217-1",
+    category: "scp",
+    hidden: true,
+    density: 1080,
+    state: "solid",
+    conduct: .1,
+    temp: 37,
+    tempHigh: 1538,
+    stateHigh: "molten_iron",
+    breakInto: ["scp_217", "rust", "bone"],
+    forceSaveColor: true,
+    pickElement: "human",
+    reactions: {
+        "ant": { elem2: "iron" },
+        "bee": { elem2: "iron" },
+        "cancer": { elem2: "scp_217" },
+        "cell": { elem2: "scp_217" },
+        "firefly": { elem2: "iron" },
+        "flea": { elem2: "iron" },
+        "fly": { elem2: "iron" },
+        "spider": { elem2: "iron" },
+        "stink_bug": { elem2: "iron" },
+        "sun": { elem1: "iron" },
+        "termite": { elem2: "iron" },
+        "worm": { elem2: "iron" },
+        "salt_water": { elem2: "rust", chance: 0.001 },
+    },
+    properties: {
+        dead: false,
+    },
+    tick: function (pixel) {
+        doHeat(pixel)
+        doBurning(pixel)
+        doElectricity(pixel)
+        if (pixel.dead) {
+            // Turn into rotten_meat if pixelTicks-dead > 500
+            if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
+                changePixel(pixel, "rust")
+                return
+            }
+        }
+
+        // Find the body
+        if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_217") {
+            var body = pixelMap[pixel.x][pixel.y + 1]
+            if (body.dead) { // If body is dead, kill head
+                pixel.dead = body.dead
+            }
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body") {
+            var body = pixelMap[pixel.x][pixel.y + 1]
+            body.element = "body_217"
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element == "body_1000") {
+            var body = pixelMap[pixel.x][pixel.y + 1]
+            body.element = "body_217"
+            body.color == pixelColorPick(body, elements.head_217.color)
+        }
+        else { var body = null }
+
+        // check for eating food
+        if (body && !pixel.dead && Math.random() < 0.1) {
+            shuffleArray(interactCoordsShuffle)
+            for (var i = 0; i < interactCoordsShuffle.length; i++) {
+                var x = pixel.x + interactCoordsShuffle[i][0]
+                var y = pixel.y + interactCoordsShuffle[i][1]
+                if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].isFood) {
+                    deletePixel(x, y)
+                    break
+                }
+                else if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].id == elements.head.id) {
+                    pixelMap[x][y + 1].element = "body_217"
+                    changePixel(pixelMap[x][y], "head_217")
+                    break
+                }
+                else if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].id == elements.body.id) {
+                    pixelMap[x][y].element = "body_217"
+                    changePixel(pixelMap[x][y - 1], "head_217")
+                    break
+                }
+                else if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].id == elements.head_1000.id) {
+                    pixelMap[x][y + 1].element = "body_217"
+                    pixelMap[x][y + 1].color == pixelColorPick(pixelMap[x][y + 1], elements.head_217.color)
+                    changePixel(pixelMap[x][y], "head_217")
+                    break
+                }
+                else if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].id == elements.body_1000.id) {
+                    pixelMap[x][y].element = "body_217"
+                    pixelMap[x][y].color == pixelColorPick(pixelMap[x][y], elements.head_217.color)
+                    changePixel(pixelMap[x][y - 1], "head_217")
+                    break
+                }
+            }
+        }
+
+        if (tryMove(pixel, pixel.x, pixel.y + 1)) {
+            // create blood if severed 10% chance
+            if (isEmpty(pixel.x, pixel.y + 1) && !pixel.dead && Math.random() < 0.1 && !pixel.charge) {
+                createPixel("scp_217", pixel.x, pixel.y + 1)
+                // set dead to true 15% chance
+                if (Math.random() < 0.15) {
+                    pixel.dead = pixelTicks
+                }
             }
         }
     },
@@ -6468,7 +6744,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || manmade.element == "body_035" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
+                    else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || manmade.category === "structural" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
                         if (!manmade.repair) {
                             manmade.repair = 25
                         }
@@ -6666,6 +6942,7 @@ elements.scp_882 = {
         "metal_scrap",
         "nickel",
         "purple_gold",
+        "pyrite",
         "rose_gold",
         "rust",
         "scp_1147_machine",
