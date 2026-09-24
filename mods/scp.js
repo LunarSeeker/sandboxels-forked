@@ -4207,7 +4207,6 @@ elements.daevite = {
     properties: {
         dead: false,
         dir: 1,
-        panic: 0
     },
     onPlace: function (pixel) {
         if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element === "head_daevite") {
@@ -4232,27 +4231,9 @@ elements.daevite = {
             deletePixel(pixel.x, pixel.y)
         }
     },
-    reactions: {
-        "fire": { attr1: { panic: 5 } },
-        "plasma": { attr1: { panic: 5 } },
-        "cold_fire": { attr1: { panic: 5 } },
-        "electric": { attr1: { panic: 5 } },
-        "blood": { attr1: { panic: 1 } },
-        "infection": { attr1: { panic: 2 } },
-        "cancer": { attr1: { panic: 3 } },
-        "plague": { attr1: { panic: 5 } },
-        "radiation": { attr1: { panic: 5 } },
-        "tnt": { attr1: { panic: 5 } },
-        "dynamite": { attr1: { panic: 5 } },
-        "c4": { attr1: { panic: 5 } },
-        "grenade": { attr1: { panic: 5 } },
-        "gunpowder": { attr1: { panic: 5 } },
-        "acid": { attr1: { panic: 5 } },
-        "acid_gas": { attr1: { panic: 5 } },
-        "stench": { attr1: { panic: 2 } }
-    },
     related: ["body_daevite", "head_daevite"],
     cooldown: defaultCooldown,
+    hidden: true,
     forceSaveColor: true
 }
 
@@ -4291,18 +4272,12 @@ elements.body_daevite = {
         "termite": { elem2: "dead_bug", oneway: true },
         "worm": { elem2: "slime", chance: 0.05, oneway: true },
         "stink_bug": { elem2: "stench", oneway: true },
-        "grass_seed": { elem2: null },
-        "body": { elem2: null },
-        "head": { elem2: null },
+        "grass_seed": { elem2: null, chance: 0.05 },
         "sun": { elem1: "cooked_meat" },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "anesthesia": { attr1: { "panic": 0 } },
-        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
     },
     properties: {
         dead: false,
         dir: 1,
-        panic: 0
     },
     tick: function (pixel) {
         if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
@@ -4334,10 +4309,10 @@ elements.body_daevite = {
             if (head.dead) { // If head is dead, kill body
                 pixel.dead = head.dead
             }
-            else if (head.panic > 0) {
-                pixel.panic = head.panic
-                delete head.panic
-            }
+        }
+        else if (!isEmpty(pixel.x, pixel.y - 1, true) && (pixelMap[pixel.x][pixel.y - 1].element == "head" || pixelMap[pixel.x][pixel.y - 1].element == "head_008")) {
+            var head = pixelMap[pixel.x][pixel.y - 1]
+            changePixel(head, "head_daevite")
         }
         else { var head = null }
         if (head && Math.random() < 0.25) {
@@ -4362,21 +4337,6 @@ elements.body_daevite = {
             }
         }
 
-        if (pixel.burning) {
-            pixel.panic += 0.1
-            if (head && pixelTicks - pixel.burnStart > 240) {
-                pixel.color = head.color
-            }
-        }
-        if (pixel.charge) {
-            pixel.panic += 1
-        }
-        else if (pixel.panic > 0) {
-            pixel.panic -= 0.1
-            if (pixel.panic < 0) { pixel.panic = 0 }
-            else if (pixel.panic > 50) { pixel.panic = 50 }
-        }
-
         if (isEmpty(pixel.x, pixel.y - 1)) {
             // create blood if decapitated 10% chance
             if (Math.random() < 0.1 && !pixel.charge) {
@@ -4388,7 +4348,7 @@ elements.body_daevite = {
             }
         }
         else if (head === null) { return }
-        else if (Math.random() < 0.1 * (isEmpty(pixel.x, pixel.y + 1) ? 1 : pixel.panic + 1)) { // Move 10% chance
+        else if (Math.random() < 0.1) { // Move 10% chance
             var movesToTry = [
                 [1 * pixel.dir, 0],
                 [1 * pixel.dir, -1],
@@ -4412,7 +4372,7 @@ elements.body_daevite = {
                 pixel.dir *= -1
             }
             // homeostasis
-            if (pixel.temp > 40) { pixel.temp -= 2 }
+            if (pixel.temp > 40) { pixel.temp -= 1 }
             else if (pixel.temp < 40) { pixel.temp += 1 }
         }
 
@@ -4451,9 +4411,6 @@ elements.head_daevite = {
         "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
         "salt_water": { elem2: "bubble", attr2: { "clone": "salt_water" }, chance: 0.001 },
         "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 },
-        "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
-        "anesthesia": { attr1: { "panic": 0 } },
-        "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
     },
     properties: {
         dead: false
@@ -4477,6 +4434,10 @@ elements.head_daevite = {
                 pixel.dead = body.dead
             }
         }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && (pixelMap[pixel.x][pixel.y + 1].element == "body" || pixelMap[pixel.x][pixel.y + 1].element == "body_008")) {
+            var body = pixelMap[pixel.x][pixel.y + 1]
+            body.element = "body_daevite"
+        }
         else { var body = null }
 
         // check for eating food
@@ -4485,7 +4446,7 @@ elements.head_daevite = {
             for (var i = 0; i < interactCoordsShuffle.length; i++) {
                 var x = pixel.x + interactCoordsShuffle[i][0]
                 var y = pixel.y + interactCoordsShuffle[i][1]
-                if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].isFood && pixelMap[x][y].panic === undefined) {
+                if (!isEmpty(x, y, true) && elements[pixelMap[x][y].element].isFood) {
                     deletePixel(x, y)
                     break
                 }
@@ -4505,26 +4466,6 @@ elements.head_daevite = {
         // homeostasis
         if (pixel.temp > 40) { pixel.temp -= 1 }
         else if (pixel.temp < 40) { pixel.temp += 1 }
-    },
-    onChange: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coord = adjacentCoords[i]
-            var x = pixel.x + coord[0]
-            var y = pixel.y + coord[1]
-            if (!isEmpty(x, y, true) && pixelMap[x][y].panic !== undefined) {
-                pixelMap[x][y].panic += 20
-            }
-        }
-    },
-    onDelete: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coord = adjacentCoords[i]
-            var x = pixel.x + coord[0]
-            var y = pixel.y + coord[1]
-            if (!isEmpty(x, y, true) && pixelMap[x][y].panic !== undefined) {
-                pixelMap[x][y].panic += 20
-            }
-        }
     }
 }
 
@@ -5973,13 +5914,13 @@ elements.scp_409 = {
         if (elements.scp_409.ignore.indexOf(pixel.element) !== -1) return
         if (Math.random() < (elements[pixel.element].hardness || 0.25)) { return }
         if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas" && Math.random() > 0.1) {
-            if (elements[pixel.element].category !== "life" && elements[pixel.element].category !== "food" && pixel.element !== "wood" && pixel.element !== "bamboo" && pixel.element !== "skin" && Math.random() > 0.75) {
+            if (elements[pixel.element].category !== "life" && elements[pixel.element].category !== "food" && pixel.element !== "wood" && pixel.element !== "bamboo" && pixel.element !== "skin") {
                 changePixel(pixel, "scp_409")
             }
             else if (Math.random() > 0.75) {
                 changePixel(pixel, "scp_409")
-                if (Math.random() > 0.95) {
-                    explodeAt(pixel.x, pixel.y, 10, ["scp_409", "quartz_crystal", "scp_409", "quartz_crystal", null, null, null, null])
+                if (Math.random() > 0.97) {
+                    explodeAt(pixel.x, pixel.y, 10, ["quartz_crystal", "quartz_crystal", "quartz_crystal", "quartz_crystal", null, null, null, null])
                 }
             }
         }
@@ -5990,7 +5931,6 @@ elements.scp_409 = {
         "quartz_crystal",
         "wall",
         "waste_barrel",
-        "battery",
         "black_hole",
         "bless",
         "border",
@@ -6011,7 +5951,6 @@ elements.scp_409 = {
         "time",
         "void",
         "warp",
-        "wire",
     ],
     canPlace: true,
     category: "scp",
@@ -6057,8 +5996,9 @@ elements.scp_447 = {
         "ruins": { elem2: "rock", chance: 0.05 },
         "rust": { elem2: "steel" },
         "salt_water": { elem2: "water" },
-        "scp_804": { attr2: { radius: 200 } },
         "scp_1600": { elem2: "green_1600" },
+        "scp_804": { attr2: { radius: 200 } },
+        "scp_882_rust": { elem2: "scp_882" },
         "sugar_water": { elem2: "soda", color2: "#42ff16" },
         "tomato": { elem2: "sauce", color2: "#bfff00" },
     },
@@ -6744,7 +6684,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || manmade.category === "structural" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
+                    else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || elements[manmade.element].category == "structural" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
                         if (!manmade.repair) {
                             manmade.repair = 25
                         }
@@ -6835,7 +6775,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (manmade.panic && manmade.element == "bone" || elements[manmade.element].category == "medicine" || manmade.panic && manmade.element == "quicklime" || manmade.panic && manmade.element == "rotten_meat" || manmade.panic && manmade.element == "meat" || manmade.element == "cooked_meat" || manmade.element == "blood" || manmade.element == "infection" || manmade.element == "infected_blood" || manmade.element == "seltzer" || Math.random() > 0.9 && manmade.element == "dirty_water" || manmade.element == "pool_water" || manmade.element == "lamp_oil" || manmade.element == "neutral_acid" || manmade.element == "glue" || manmade.element == "soda" || manmade.element == "melted_wax" || manmade.element == "chocolate_milk" || manmade.element == "fruit_milk" || manmade.element == "pilk" || manmade.element == "eggnog" || manmade.element == "cream" || manmade.element == "nut_milk" || manmade.element == "vinegar" || manmade.element == "soap" || manmade.element == "bleach" || manmade.element == "dye" || manmade.element == "ink" || manmade.element == "vaccine" || manmade.element == "antidote" || manmade.element == "tea" || manmade.element == "coffee" || manmade.element == "caramel" || manmade.element == "molasses" || manmade.element == "ketchup" || manmade.element == "sauce" || manmade.element == "mayo" || manmade.element == "cyanide") {
+                    else if (manmade.panic && manmade.element == "bone" || elements[manmade.element].category == "medicine" || manmade.panic && manmade.element == "quicklime" || manmade.panic && manmade.element == "rotten_meat" || manmade.panic && manmade.element == "meat" || manmade.element == "cooked_meat" || manmade.element == "blood" || manmade.element == "infection" || manmade.element == "infected_blood" || manmade.element == "seltzer" || manmade.element == "dirty_water" || manmade.element == "pool_water" || manmade.element == "lamp_oil" || manmade.element == "neutral_acid" || manmade.element == "glue" || manmade.element == "soda" || manmade.element == "melted_wax" || manmade.element == "chocolate_milk" || manmade.element == "fruit_milk" || manmade.element == "pilk" || manmade.element == "eggnog" || manmade.element == "cream" || manmade.element == "nut_milk" || manmade.element == "vinegar" || manmade.element == "soap" || manmade.element == "bleach" || manmade.element == "dye" || manmade.element == "ink" || manmade.element == "vaccine" || manmade.element == "antidote" || manmade.element == "tea" || manmade.element == "coffee" || manmade.element == "caramel" || manmade.element == "molasses" || manmade.element == "ketchup" || manmade.element == "sauce" || manmade.element == "mayo" || manmade.element == "cyanide") {
                         if (!manmade.repair) {
                             manmade.repair = 3
                         }
@@ -6994,7 +6934,6 @@ elements.scp_882_rust = {
     tempHigh: 1538,
     reactions: {
         "oil": { elem2: "scp_882" },
-        "scp_447": { elem1: "scp_882" },
     },
 }
 
@@ -7916,10 +7855,12 @@ elements.bless.reactions.red_cloud = { elem2: "rain_cloud" }
 elements.bless.reactions.red_snow = { elem2: "snow" }
 elements.bless.reactions.red_steam = { elem2: "steam" }
 elements.bless.reactions.red_water = { elem2: "water" }
+elements.bless.reactions.scp_008 = { elem2: null }
 elements.bless.reactions.scp_009 = { elem2: "ice" }
 elements.bless.reactions.scp_009_meat = { elem2: "meat" }
 elements.bless.reactions.scp_063 = { elem2: "plastic" }
 elements.bless.reactions.scp_140 = { elem2: "paper" }
+elements.bless.reactions.scp_217 = { elem2: null }
 elements.bless.reactions.scp_229 = { elem2: null }
 elements.bless.reactions.scp_236 = { elem2: null }
 elements.bless.reactions.scp_409 = { elem2: "granite" }
