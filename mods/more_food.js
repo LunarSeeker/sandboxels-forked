@@ -9,6 +9,7 @@ const newFoods = {
     lime: "#98FB98",
     peach: "#FFDAB9",
     pear: "#9ACD32",
+    pitaya: "#ff00ff",
     plum: "#8E4585",
     pomegranate: "#8B0000",
     strawberry: "#FF4D4D",
@@ -39,3 +40,5 @@ for (const [name, color] of Object.entries(newFoods)) {
         },
     }
 }
+
+elements.pitaya.alias = "dragon fruit"

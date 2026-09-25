@@ -474,6 +474,69 @@ elements.soul = {
 }
 //
 
+const humanJobs = {
+    businessman: ["#000000"],
+    doctor: ["#ffffff", "#eff6ea"],
+    farmer: ["#822500", "#822500"],
+    firefighter: ["#ff0000"],
+    police: ["#0000ff"],
+    soldier: ["#766d31", "#78866b"],
+}
+
+for (const [name, color] of Object.entries(humanJobs)) {
+    elements[name] = {
+        buttonColor: color,
+        category: "jobs",
+        color: ["#ffdbac", "#f7ead0", "#f3e7db", "#f1c27d", "#eadaba", "#e0ac69", "#d7bd96", "#c68642", "#a07e56", "#8d5524", "#825c43", "#604134", "#3a312a"],
+        darkText: name.toLowerCase === "doctor" ? true : false,
+        properties: {
+            dead: false,
+            dir: 1,
+            panic: 0
+        },
+        onPlace: function (pixel) {
+            if (isEmpty(pixel.x, pixel.y + 1)) {
+                createPixel("body", pixel.x, pixel.y + 1)
+                pixelMap[pixel.x][pixel.y + 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y + 1], elements[name].buttonColor)
+                var color = pixel.color
+                changePixel(pixel, "head")
+                pixel.color = color
+            }
+            else if (isEmpty(pixel.x, pixel.y - 1)) {
+                createPixel("head", pixel.x, pixel.y - 1)
+                pixelMap[pixel.x][pixel.y - 1].color = pixel.color
+                changePixel(pixel, "body")
+                pixel.color = pixelColorPick(pixel, elements[name].buttonColor)
+            }
+            else {
+                deletePixel(pixel.x, pixel.y)
+            }
+        },
+        reactions: {
+            "acid_gas": { attr1: { panic: 5 } },
+            "acid": { attr1: { panic: 5 } },
+            "blood": { attr1: { panic: 1 } },
+            "c4": { attr1: { panic: 5 } },
+            "cancer": { attr1: { panic: 3 } },
+            "cold_fire": { attr1: { panic: 5 } },
+            "dynamite": { attr1: { panic: 5 } },
+            "electric": { attr1: { panic: 5 } },
+            "fire": { attr1: { panic: 5 } },
+            "grenade": { attr1: { panic: 5 } },
+            "gunpowder": { attr1: { panic: 5 } },
+            "infection": { attr1: { panic: 2 } },
+            "plague": { attr1: { panic: 5 } },
+            "plasma": { attr1: { panic: 5 } },
+            "radiation": { attr1: { panic: 5 } },
+            "tnt": { attr1: { panic: 5 } },
+            "stench": { attr1: { panic: 2 } }
+        },
+        related: ["body", "head"],
+        cooldown: defaultCooldown,
+        forceSaveColor: true,
+    }
+}
+
 elements.head.breakInto = ["blood", "soul", "meat", "bone"]
 elements.head.burnInto = ["soul", "cooked_meat"]
 elements.head.stateHigh = ["soul", "cooked_meat"]
