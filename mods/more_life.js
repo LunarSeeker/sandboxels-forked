@@ -477,9 +477,9 @@ elements.soul = {
 const humanJobs = {
     businessman: ["#000000"],
     doctor: ["#ffffff", "#eff6ea"],
-    farmer: ["#822500", "#822500"],
-    firefighter: ["#ff0000"],
-    police: ["#0000ff"],
+    farmer: ["#822500", "#f06a11"],
+    firefighter: ["#ff0000", "#ff5900"],
+    police: ["#0000ff", "#005eff"],
     soldier: ["#766d31", "#78866b"],
 }
 
@@ -488,7 +488,7 @@ for (const [name, color] of Object.entries(humanJobs)) {
         buttonColor: color,
         category: "jobs",
         color: ["#ffdbac", "#f7ead0", "#f3e7db", "#f1c27d", "#eadaba", "#e0ac69", "#d7bd96", "#c68642", "#a07e56", "#8d5524", "#825c43", "#604134", "#3a312a"],
-        darkText: name.toLowerCase === "doctor" ? true : false,
+        darkText: (name.toLowerCase === "doctor") ? true : false,
         properties: {
             dead: false,
             dir: 1,
@@ -535,6 +535,89 @@ for (const [name, color] of Object.entries(humanJobs)) {
         cooldown: defaultCooldown,
         forceSaveColor: true,
     }
+}
+
+elements.genesis_device = {
+    name: "genesis",
+    category: "special",
+    color: "#06f20a",
+    density: 1201,
+    hardness: 0.9,
+    state: "solid",
+    terraformLand: [...eLists.SOIL, "fallout"],
+    terraformLiquid: ["water", "salt_water", "dirty_water", "sugar_water", "juice"],
+    properties: {
+        active: false,
+        deviceMode: "earth",
+        radius: 50,
+    },
+    tick: function (pixel) {
+        tryMove(pixel, pixel.x, pixel.y + 1)
+        if (pixel.charge && pixel.active != true) {
+            pixel.active = true
+        }
+        if (pixel.t_progress < 3 && pixel.active != false) {
+            pixel.active = false
+        }
+        doDefaults(pixel)
+        if (pixel.radius > 0 && (!pixel.t_progress || pixel.t_progress > 2) && pixel.active == true) {
+            var coords = circleCoords(pixel.x, pixel.y, pixel.radius)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var terraformable = pixelMap[coords[i].x][coords[i].y]
+                    if (terraformable.element == "genesis_device") {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 50
+                        }
+                        if (Math.random() < 0.05) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            if (Math.random() > 0.9) {
+                                changePixel(terraformable, "metal_scrap")
+                            }
+                        }
+                    }
+                    else if (terraformable.element !== "dirt" && terraformable.element !== "rock" && elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1) {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 15
+                        }
+                        if (Math.random() < 0.25) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            if (Math.random() > 0.75) {
+                                changePixel(terraformable, "dirt")
+                            }
+                            else {
+                                changePixel(terraformable, "rock")
+                            }
+                        }
+                    }
+                    else if (terraformable.element !== "water" && elements.genesis_device.terraformLiquid.indexOf(terraformable.element) !== -1) {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 3
+                        }
+                        if (Math.random() < 0.25) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            if (Math.random() > 0.5) {
+                                changePixel(terraformable, "water")
+                            }
+                        }
+                    }
+                    terraformable.temp = 20
+                    pixelTempCheck(terraformable)
+                }
+            }
+            if (Math.random() > 0.85) {
+                pixel.radius++
+            }
+        }
+    },
+    excludeRandom: true,
+    cooldown: defaultCooldown,
 }
 
 elements.head.breakInto = ["blood", "soul", "meat", "bone"]
