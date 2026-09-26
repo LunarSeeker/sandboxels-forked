@@ -7130,6 +7130,7 @@ elements.scp_882 = {
     metals: [
         "access_door",
         "alarm",
+        "aluminum",
         "blue_gold",
         "brass",
         "bronze",
@@ -7141,6 +7142,7 @@ elements.scp_882 = {
         "invar",
         "iron",
         "keycard_terminal",
+        "lead",
         "metal_scrap",
         "nickel",
         "purple_gold",
@@ -7156,6 +7158,8 @@ elements.scp_882 = {
         "steel",
         "sterling",
         "tin",
+        "tungsten",
+        "zinc",
     ],
     reactions: {
         "body_008": { elem2: "ash" },

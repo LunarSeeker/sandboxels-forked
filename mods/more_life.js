@@ -41,6 +41,50 @@ elements.chicken = {
         "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 }
     }
 }
+elements.friend = {
+    behavior: [
+        "XX|M1 AND BO|XX",
+        "M2|XX|M2",
+        "XX|XX|XX",
+    ],
+    colorPattern: [
+        "cccccccccAAAccccccccccccccccccccccccccAAAccccccccc",
+        "cccccccccAAAAcccccccccccccccccccccccccAAAccccccccc",
+        "cccccccccAAAAAAAccccccccccccccccccAAAAAAAccccccccc",
+        "cccccccccAAAAAAAccccccccccccccccccAAAAAAAccccccccc",
+        "cccccccccAAAAAAAAAAccccccccccccAAAAAAAAAAccccccccc",
+        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAccccccccc",
+        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAccccccccc",
+        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccccc",
+        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccccc",
+        "ccccccAAAAAAAbbbbbbbbbAAAAAAdddddddddAAAAAAAcccccc",
+        "ccccccAAAAAAAbbbAAbbbbAAAAAAddddAAdddAAAAAAAcccccc",
+        "ccccccAAAAAAAbbbAAAbbbAAAAAAdddAAAAddAAAAAAAcccccc",
+        "cccAAAcccAAAAbbbbbbbbbAAAAAAdddddddddAAAAcccAAAccc",
+        "cccAAAcccAAAAbbbbbbbbbAAAAAAdddddddddAAAAcccAAAccc",
+        "cccAAAcccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccAAAccc",
+        "cccAAAcccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccAAAccc",
+        "cccAAAAAAAAAAcccAAAAAAAAAAAAAAAAAAAAAAcccAAAAAAccc",
+        "cccAAAAAAcccccccAAAccccccAAAccccccAAAAcccAAAAAAccc",
+        "cccAAAAAAcccccccAAAccccccAAAccccccAAAAcccAAAAAAccc",
+        "cccAAAAAAAAAAcccAAAccccccAAAccccccAAAAAAAAAAAAAccc",
+        "cccAAAAAAAAAAcccAAAccccccAAAccccccAAAAAAAAAAAAAccc",
+        "cccAAAAAAAAAAAAAAAAccccccAAAcccAAAAAAAAAAAAAAAAccc",
+        "cccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAccc",
+    ],
+    colorKey: {
+        "A": "#000000",
+        "b": "#ff00ff",
+        "c": "#ffffff",
+        "d": "#ffff00",
+    },
+    category: "life",
+    density: 400,
+    state: "solid",
+    reactions: {
+        "egg": { elem2: null, func: behaviors.FEEDPIXEL },
+    }
+}
 // Zombie
 
 elements.zombie = {
@@ -539,18 +583,16 @@ for (const [name, color] of Object.entries(humanJobs)) {
 
 elements.genesis_device = {
     name: "genesis",
-    behavior: behaviors.WALL,
     category: "special",
     color: "#06f20a",
     conduct: 1,
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: [...eLists.SOIL, "fallout"],
+    terraformLand: [...eLists.SOIL, "fallout", "uranium", "diamond", "red_ice", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     terraformLiquid: ["water", "salt_water", "dirty_water", "sugar_water", "juice"],
     properties: {
         active: false,
-        deviceMode: "earth",
         radius: 50,
     },
     tick: function (pixel) {
