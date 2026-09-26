@@ -20,9 +20,9 @@ elements.give_life = {
             pixel.temp = 20
             pixel.element = randomChoice(['bee', 'ant'])
         }
-        if (pixel.element == 'cancer' || pixel.element == 'dna' || pixel.element == 'head_008') {
+        if (pixel.element == 'cancer' || pixel.element == 'dna' || pixel.element == 'head_008' || pixel.element == 'infection') {
             pixel.element = 'cell'
-        } else if (pixel.element == 'meat' || pixel.element == 'cooked_meat' || pixel.element == 'cured_meat' || pixel.element == 'rotten_meat') {
+        } else if (pixel.element == 'blood' || pixel.element == 'meat' || pixel.element == 'cooked_meat' || pixel.element == 'cured_meat' || pixel.element == 'rotten_meat') {
             pixel.temp = 20
             pixel.element = randomChoice(['snail', 'fish', 'fly', 'frog'])
         }
@@ -57,12 +57,12 @@ elements.boil = {
     }
 }
 
-elements.high_temp = {
+elements.lowest_temp = {
     category: "energy",
-    color: "#ff7866",
+    color: "#ff6685",
     tool: function (pixel) {
-        if (elements[pixel.element].tempHigh) {
-            pixel.temp = elements[pixel.element].tempHigh
+        if (elements[pixel.element].tempLow) {
+            pixel.temp = elements[pixel.element].tempLow
         }
         pixelTempCheck(pixel)
     }
