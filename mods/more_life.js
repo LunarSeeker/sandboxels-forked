@@ -539,8 +539,10 @@ for (const [name, color] of Object.entries(humanJobs)) {
 
 elements.genesis_device = {
     name: "genesis",
+    behavior: behaviors.WALL,
     category: "special",
     color: "#06f20a",
+    conduct: 1,
     density: 1201,
     hardness: 0.9,
     state: "solid",
