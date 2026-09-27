@@ -621,6 +621,17 @@ elements.genesis_device = {
                             }
                         }
                     }
+                    else if (elements[terraformable.element].id === elements.blood.id) {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 15
+                        }
+                        if (Math.random() < 0.25) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            changePixel(terraformable, "cell")
+                        }
+                    }
                     else if (terraformable.element !== "dirt" && terraformable.element !== "rock" && elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1) {
                         if (!terraformable.t_progress) {
                             terraformable.t_progress = 15
@@ -671,3 +682,8 @@ elements.head.stateLow = ["soul", "frozen_meat"]
 elements.bless.reactions.soul = { elem2: "human" }
 elements.bless.reactions.zombie_body = { elem2: null }
 elements.bless.reactions.zombie_head = { elem2: null }
+elements.cell.reactions.calcium = { elem1: "bone", elem2: "bone", chance: 0.01 }
+elements.cell.reactions.cellulose = { elem1: "plant", elem2: "plant", chance: 0.01 }
+elements.cell.reactions.quicklime = { elem1: "bone", elem2: "bone", chance: 0.01 }
+elements.cell.reactions.sawdust = { elem1: "wood", elem2: "wood", chance: 0.01 }
+elements.dna.reactions.cellulose = { elem1: "plant", elem2: "plant" }

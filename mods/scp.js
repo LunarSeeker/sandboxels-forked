@@ -1439,6 +1439,7 @@ elements.fused_organism = {
     melteda: true,
     stain: 0.125,
     stainSelf: true,
+    hidden: true,
     tempHigh: 300,
     stateHigh: "cooked_meat",
     tempLow: -15,
@@ -1523,6 +1524,7 @@ elements.frozen_008 = {
     tempHigh: 0,
     stateHigh: "scp_008",
     category: "scp",
+    hidden: true,
     state: "solid",
     density: 95,
 }

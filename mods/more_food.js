@@ -18,14 +18,16 @@ const newFoods = {
 
 for (const [name, color] of Object.entries(newFoods)) {
     elements[name] = {
-        color: color,
         behavior: behaviors.POWDER,
         breakInto: "juice",
         breakIntoColor: color,
         category: "food",
+        color: color,
         density: 1154,
         isFood: true,
         state: "solid",
+        stateHigh: ["steam", "sugar"],
+        tempHigh: 256,
         reactions: {
             "radiation": { elem1: "explosion", chance: 0.1, color1: color },
             "rock": { elem1: "juice", chance: 0.1, color1: color },
