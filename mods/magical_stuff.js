@@ -19,25 +19,26 @@ removeElementsDark = [ //For elements not in the "life" category
 
 let magic_textures = {
     p_stone: [
-        "t",
-        "T",
-        "b",
-        "w",
-        "B",
-        "c",
-        "C"
+        "AB",
+        "BA"
     ],
     magic_steel: [
-        "WWRRRWWRRR",
-        "WWRRWWWRRW",
-        "WRRRWWRRRW",
-        "WRRWWWRRWW",
-        "RRRWWRRRWW",
-        "RRWWWRRWWW",
-        "RRWWRRRWWR",
-        "RWWWRRWWWR",
-        "RWWRRRWWRR",
-        "WWWRRWWWRR",
+        "ABCCCBDBBBBEBBBFBBGAGGGGGBBBBBBBBHABBBBBBBBAAAAA",
+        "BBABBBCAABBBBEEEAAGGGGGGGBBBBBBBBBAJJKAKBBBBKBBB",
+        "BBBBBBBBBDAAAAAHEIIIJCCCCCBBBJBBBBBKBBBBBKKKBBBB",
+        "BBBBBIIHHBJDBBBBBEGGGCGJJJJBBBBBBBBBKBEEKBBBBBBB",
+        "BBBDDDBBJBBBBBBBFBGGGGEEEBBBBEEECCCBBBBBBBKBBBHB",
+        "BBDJBBBBEBBBBBBFBBGGGGGGGBBBBBABBBBBBBCCCIHIKDBB",
+        "DJDDBBDBBEBBBBFBBBGGGAGGGAAAABBBABHHHBBBBBBBCKCB",
+        "GAGGGCGDGGGGEGGFGGABBBBBBGGGGGGGGGAIGJJAAAAGGKGG",
+        "GGDGJJJJEGGGGGGGFGBBBBBBBEEEEGGGGGGCCCGGGGGKDIGG",
+        "GGGAAAAGDAGGGJJAJJJJBIHHIHCCCCJJJJJAAAGGKGGGKGGG",
+        "GGGGGGDDJGGGGGGGGFBEEEBBBGGGCCCGEEEGGGGGGKGGGGGI",
+        "GGGGGGGGGIDJIIGGEGBBCJJBBGGJJGGGGGGKGKKKGGGGGGGG",
+        "GGIIHGGGGJDGGGGGGGEBBBCCBGGGGGGGGGGGEKKKGGGGGGGG",
+        "GGJDGGGDEGGGGGGFGGBBBBAAAGGGGAGAGGGGGHIHHCCCKGDD",
+        "IHBBBBBBJDBBBBBBBFEGGGGGCCCCBBBBBBBEBBBBKBBBBBBB",
+        "JCGGGGDGGGEGGGFGGGBBABBBBGGGGGGGIAGGGGGGGGGGGKGC"
     ]
 }
 
@@ -119,17 +120,13 @@ elements.dwarf = {
 }
 
 elements.philosophers_stone = {
+    name: "Alchemist's Stone",
     behavior: behaviors.POWDER,
     category: "special",
     colorPattern: magic_textures.p_stone,
     colorKey: {
-        t: "#ff8800",
-        T: "#ffff00",
-        b: "#00ff00",
-        w: "#00ffff",
-        B: "#0000ff",
-        c: "#ff00ff",
-        C: "#3D1A78"
+        "A": "#ff0000",
+        "B": "#0000ff",
     },
     darkText: true,
     density: 1,
@@ -419,16 +416,24 @@ elements.ichor = {
 
 elements.magic_steel = {
     colorKey: {
-        "R": "#888f94",
-        "W": "#71797e"
+        "A": "#ff0000",
+        "B": "#ff8800",
+        "C": "#ffff00",
+        "D": "#00ff00",
+        "E": "#00ffff",
+        "F": "#0000ff",
+        "G": "#ff00ff",
+        "H": "#ff88ff",
+        "I": "#88ffff",
+        "J": "#ffff88",
+        "K": "#880000",
     },
     colorPattern: magic_textures.magic_steel,
     behavior: behaviors.WALL,
     category: "solids",
     conduct: 0.2,
     density: 7850,
-    hardness: 0.9,
-    tempHigh: 10000
+    hardness: 0.9
 }
 
 elements.bless.reactions.dark_ice = { elem2: null }
