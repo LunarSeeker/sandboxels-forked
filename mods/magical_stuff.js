@@ -19,8 +19,8 @@ removeElementsDark = [ //For elements not in the "life" category
 
 let magic_textures = {
     p_stone: [
-        "AB",
-        "BA"
+        "ABBBBBBBBBBBBBBBBBA",
+        "BBBBBBBBBBBBBBBBBBB",
     ],
     magic_steel: [
         "ABCCCBDBBBBEBBBFBBGAGGGGGBBBBBBBBHABBBBBBBBAAAAA",

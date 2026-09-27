@@ -1247,6 +1247,7 @@ elements.melted_animal = {
     burnInto: "cooked_meat",
     state: "liquid",
     density: 900,
+    hidden: true,
     category: "scp",
 }
 
@@ -1278,6 +1279,7 @@ elements.melted_plant = {
     tempLow: -20,
     stateLow: "frozen_plant",
     burn: 10,
+    hidden: true,
     burnTime: 200,
     burnInto: ["dead_plant", "fire", "fire", "fire", "ash"],
     state: "liquid",
@@ -5456,7 +5458,6 @@ elements.scp_229 = {
         "r": "#BD2D2D",
         "t": "#31BA90",
         "b": "#1B5BB2",
-        "W": "#EDEDE5",
         "w": "#DBC0AC",
         "y": "#F2D243",
         "o": "#E47A3E",

@@ -95,6 +95,17 @@ elements.irradiated_matter = {
     hazard: true,
     state: "solid",
 }
+elements.tritium = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: "#88ddee",
+    density: 180,
+    radioactive: true,
+    state: "liquid",
+    tick(pixel) {
+        irradiateNearby(pixel, 1, 0.7)
+    }
+}
 // End of stuff taken from nuclear.js
 elements.fallout.radioactive = true
 elements.radiation.radioactive = true
@@ -158,14 +169,25 @@ elements.heavy_water = {
     category: "liquids",
     color: "#2167ff",
     conduct: 0.02,
-    density: 1.1056,
+    density: 1105.6,
     extinguish: true,
     state: "liquid",
-    stateHigh: "deuterium",
+    stateHigh: "heavy_steam",
     stateLow: "heavy_ice",
     tempHigh: 104,
     tempLow: 4,
     viscosity: 1.2467,
+}
+
+elements.heavy_steam = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#656fb5",
+    density: 1.6,
+    state: "liquid",
+    stateLow: "heavy_water",
+    temp: 150,
+    tempLow: 100
 }
 
 elements.deuterium = {
@@ -735,3 +757,4 @@ elements.bless.reactions.irradiated_matter = { elem2: "gold" }
 elements.bless.reactions.plutonium = { elem2: "gold" }
 elements.bless.reactions.radium = { elem2: "gold" }
 elements.bless.reactions.technetium = { elem2: "gold" }
+elements.neutron.reactions.deuterium = { elem1: null, elem2: "tritium" }
