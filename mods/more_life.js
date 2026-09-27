@@ -44,8 +44,8 @@ elements.chicken = {
 elements.friend = {
     behavior: [
         "XX|M1 AND BO|XX",
-        "M2|XX|M2",
-        "XX|XX|XX",
+        "XX|FX%3 AND L2:gold_coin%0.5|M2%10",
+        "XX|M1%33|XX",
     ],
     colorPattern: [
         "cccccccccAAAccccccccccccccccccccccccccAAAccccccccc",
@@ -589,8 +589,7 @@ elements.genesis_device = {
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: [...eLists.SOIL, "fallout", "uranium", "diamond", "red_ice", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
-    terraformLiquid: ["water", "salt_water", "dirty_water", "sugar_water", "juice"],
+    terraformLand: [...eLists.SOIL, "gold", "snow", "fallout", "uranium", "diamond", "red_ice", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     properties: {
         active: false,
         radius: 50,
@@ -638,7 +637,7 @@ elements.genesis_device = {
                             }
                         }
                     }
-                    else if (terraformable.element !== "water" && elements.genesis_device.terraformLiquid.indexOf(terraformable.element) !== -1) {
+                    else if (terraformable.element !== "water" && elements[terraformable.element].state === "liquid") {
                         if (!terraformable.t_progress) {
                             terraformable.t_progress = 3
                         }
