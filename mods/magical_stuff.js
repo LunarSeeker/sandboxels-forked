@@ -19,8 +19,14 @@ removeElementsDark = [ //For elements not in the "life" category
 
 let magic_textures = {
     p_stone: [
-        "ABBBBBBBBBBBBBBBBBA",
-        "BBBBBBBBBBBBBBBBBBB",
+        "gggggggggggg",
+        "ggggggggggsg",
+        "gggggggggsgg",
+        "ggggggggsggg",
+        "ggggsggggggg",
+        "gggsgggggggg",
+        "ggsgggggggsg",
+        "gsgggggggsgg",
     ],
     magic_steel: [
         "ABCCCBDBBBBEBBBFBBGAGGGGGBBBBBBBBHABBBBBBBBAAAAA",
@@ -125,8 +131,8 @@ elements.philosophers_stone = {
     category: "special",
     colorPattern: magic_textures.p_stone,
     colorKey: {
-        "A": "#ff0000",
-        "B": "#0000ff",
+        "g": "#fffdde",
+        "s": "#EAB115",
     },
     darkText: true,
     density: 1,
@@ -140,6 +146,7 @@ elements.philosophers_stone = {
         "cancer": { elem2: "cell" },
         "copper": { elem2: "bronze" },
         "electrum": { elem2: "silver", elem2: "gold" },
+        "gallium": { elem2: "silver" },
         "glitter": { elem2: "diamond" },
         "iron": { elem2: "steel" },
         "lead": { elem2: "gold" },
@@ -434,6 +441,56 @@ elements.magic_steel = {
     conduct: 0.2,
     density: 7850,
     hardness: 0.9
+}
+
+elements.ancient_curse = {
+    behavior: behaviors.LIQUID,
+    color: ["#ff695e", "#ff8682"],
+    tick: function (pixel) {
+        var coords = rectCoords(pixel.x - 1, pixel.y - 1, pixel.x + 1, pixel.y + 3)
+        for (var i = 0; i < coords.length; i++) { // Burn adjacent pixels
+            var x = coords[i].x
+            var y = coords[i].y
+            if (!isEmpty(x, y, true)) {
+                elements.ancient_curse.tool(pixelMap[x][y])
+            }
+        }
+    },
+    tool: function (pixel) {
+        if (elements[pixel.element].id === elements.ancient_curse.id) { return }
+        if (elements.ancient_curse.reactions[pixel.element]) { return }
+        if (elements[pixel.element].state === "gas") { return }
+        if (elements[pixel.element].state === "liquid") {
+            changePixel(pixel, (pixel.temp > 327 ? "molten_lead" : "ancient_curse"))
+        }
+        else if (elements[pixel.element].movable) {
+            changePixel(pixel, "sand")
+        }
+        else {
+            changePixel(pixel, "lead")
+        }
+    },
+    canPlace: true,
+    category: "special",
+    density: 193,
+    excludeRandom: true,
+    state: "liquid",
+    reactions: {
+        "aluminum": {},
+        "body": {},
+        "cooked_meat": { elem2: "rotten_meat" },
+        "cured_meat": { elem2: "rotten_meat" },
+        "gold": { elem2: "pyrite" },
+        "head": {},
+        "lead": {},
+        "meat": { elem2: "rotten_meat" },
+        "molten_lead": {},
+        "molten_silver": { elem2: "aluminum" },
+        "pipe": {},
+        "pyrite": {},
+        "sand": {},
+        "silver": { elem2: "aluminum" },
+    },
 }
 
 elements.bless.reactions.dark_ice = { elem2: null }
