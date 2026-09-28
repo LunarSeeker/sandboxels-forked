@@ -490,10 +490,13 @@ elements.ancient_curse = {
         "pyrite": {},
         "sand": {},
         "silver": { elem2: "aluminum" },
+        "wall": {},
     },
 }
 
+elements.bless.reactions.ancient_curse = { elem2: null }
 elements.bless.reactions.dark_ice = { elem2: null }
 elements.bless.reactions.dark_steam = { elem2: null }
 elements.bless.reactions.dark_water = { elem2: null }
+
 elements.ichor.reactions = elements.bless.reactions

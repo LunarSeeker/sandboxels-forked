@@ -1,4 +1,5 @@
 const newFoods = {
+    ambrosia: "#ffff00",
     apple: "#FF0000",
     banana: "#FFE135",
     blueberry: "#4B0082",

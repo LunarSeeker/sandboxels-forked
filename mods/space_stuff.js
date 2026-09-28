@@ -1,3 +1,21 @@
+function pulsar_ray(pixel) {
+    var x = pixel.x
+    for (var y = pixel.y + 1; y < height + 1; y++) {
+        if (outOfBounds(x, y)) {
+            if (isEmpty(x, y - 1)) { createPixel("light", x, y - 1) }
+            break
+        }
+        else {
+            if (elements[pixelMap[x][y].element].id === elements.pulsar.id) { break }
+            if (isEmpty(x, y - 1)) {
+                createPixel("light", x, y - 1)
+            }
+            if (Math.random() > 0.1) { continue }
+        }
+    }
+    deletePixel(pixel.x, pixel.y)
+}
+
 excludeBlackHole = [
     "art",
     "black_hole",
@@ -61,8 +79,37 @@ elements.mars_rock = {
     tempHigh: 800
 }
 //Other
+
+elements.pulsar = {
+    canPlace: true,
+    category: "space",
+    color: "#bdc2ff",
+    insulate: true,
+    movable: false,
+    noMix: true,
+    state: "gas",
+    stateLow: "supernova",
+    temp: 5504,
+    tempLow: -100,
+    tick: function (pixel) {
+        if (Math.random() > 0.8) {
+            pulsar_ray(pixel)
+        }
+    },
+    tool: function (pixel) {
+        if (pixel.element === "light") {
+            deletePixel(pixel.x, pixel.y)
+        }
+    },
+    reactions: {
+        "hydrogen": { elem2: "helium", temp1: 5 },
+        "helium": { elem2: "carbon_dioxide", temp1: 5, tempMax: 3600 },
+        "carbon_dioxide": { elem2: "neon", temp1: 5, tempMax: 1800 }
+    },
+}
+
 elements.black_hole = { //Taken from  black_hole.js and then modified to destroy elements
-    category: "special",
+    category: "space",
     color: "#000000",
     density: 99999,
     excludeRandom: true,
