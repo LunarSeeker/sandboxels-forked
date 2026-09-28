@@ -1,21 +1,3 @@
-function pulsar_ray(pixel) {
-    var x = pixel.x
-    for (var y = pixel.y + 1; y < height + 1; y++) {
-        if (outOfBounds(x, y)) {
-            if (isEmpty(x, y - 1)) { createPixel("light", x, y - 1) }
-            break
-        }
-        else {
-            if (elements[pixelMap[x][y].element].id === elements.pulsar.id) { break }
-            if (isEmpty(x, y - 1)) {
-                createPixel("light", x, y - 1)
-            }
-            if (Math.random() > 0.1) { continue }
-        }
-    }
-    deletePixel(pixel.x, pixel.y)
-}
-
 excludeBlackHole = [
     "art",
     "black_hole",
@@ -35,6 +17,7 @@ excludeBlackHole = [
     "scp_447",
     "scp_682",
     "sensor",
+    "singularity",
     "time",
     "void",
     "wall",
@@ -80,36 +63,8 @@ elements.mars_rock = {
 }
 //Other
 
-elements.pulsar = {
-    canPlace: true,
-    category: "space",
-    color: "#bdc2ff",
-    insulate: true,
-    movable: false,
-    noMix: true,
-    state: "gas",
-    stateLow: "supernova",
-    temp: 5504,
-    tempLow: -100,
-    tick: function (pixel) {
-        if (Math.random() > 0.8) {
-            pulsar_ray(pixel)
-        }
-    },
-    tool: function (pixel) {
-        if (pixel.element === "light") {
-            deletePixel(pixel.x, pixel.y)
-        }
-    },
-    reactions: {
-        "hydrogen": { elem2: "helium", temp1: 5 },
-        "helium": { elem2: "carbon_dioxide", temp1: 5, tempMax: 3600 },
-        "carbon_dioxide": { elem2: "neon", temp1: 5, tempMax: 1800 }
-    },
-}
-
 elements.black_hole = { //Taken from  black_hole.js and then modified to destroy elements
-    category: "space",
+    category: "special",
     color: "#000000",
     density: 99999,
     excludeRandom: true,
@@ -152,4 +107,52 @@ elements.black_hole = { //Taken from  black_hole.js and then modified to destroy
     },
 }
 
+elements.singularity = {
+    category: "special",
+    color: "#ffffff",
+    density: 999999,
+    excludeRandom: true,
+    hardness: 1,
+    state: "solid",
+    tick: function (pixel) {
+        // Attract other pixels within a 9-pixel radius
+        for (let dx = -9; dx <= 9; dx++) {
+            for (let dy = -9; dy <= 9; dy++) {
+                let x = pixel.x + dx
+                let y = pixel.y + dy
+
+                // Ignore out-of-bounds
+                if (!isEmpty(x, y, true)) {
+                    let other = pixelMap[x]?.[y]
+                    if (other && other.element !== "singularity") {
+                        // Attraction: move other pixel towards the black hole
+                        tryMove(other, other.x + Math.sign(pixel.x - other.x), other.y + Math.sign(pixel.y - other.y))
+                    }
+                }
+            }
+        }
+
+        // Convert touching pixels into black holes
+        const dirs = [
+            [-1, -1],
+            [0, -1],
+            [1, -1],
+            [1, 0],
+            [1, 1],
+            [-1, 1]
+        ]
+        for (let d of dirs) {
+            let nx = pixel.x + d[0]
+            let ny = pixel.y + d[1]
+            if (isEmpty(nx, ny, true)) continue
+
+            let touching = pixelMap[nx]?.[ny]
+            if (touching && touching.element !== "singularity") {
+                deletePixel(nx, ny)
+            }
+        }
+    },
+}
+
 elements.bless.reactions.black_hole = { elem2: null }
+elements.bless.reactions.singularity = { elem2: null }
