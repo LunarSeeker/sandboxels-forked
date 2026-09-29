@@ -35,7 +35,7 @@ elements.moon_rock = {
     behavior: behaviors.STURDYPOWDER,
     breakInto: "lunar_dust",
     category: "land",
-    color: ["#a5a5a5", "#bdbdbd"],
+    color: ["#808080", "#bdbdbd"],
     density: 1605,
     hardness: 0.5,
     state: "solid",
@@ -108,50 +108,17 @@ elements.black_hole = { //Taken from  black_hole.js and then modified to destroy
 }
 
 elements.singularity = {
-    category: "special",
+    behavior: [
+        "XX|XX|XX",
+        "XX|XX|XX",
+        "M2|M1 AND EX:80>hydrogen,neutron,proton,electric,helium,radiation|M2"
+    ],
+    category: "weapons",
     color: "#ffffff",
+    cooldown: defaultCooldown,
     density: 999999,
     excludeRandom: true,
-    hardness: 1,
-    state: "solid",
-    tick: function (pixel) {
-        // Attract other pixels within a 9-pixel radius
-        for (let dx = -9; dx <= 9; dx++) {
-            for (let dy = -9; dy <= 9; dy++) {
-                let x = pixel.x + dx
-                let y = pixel.y + dy
-
-                // Ignore out-of-bounds
-                if (!isEmpty(x, y, true)) {
-                    let other = pixelMap[x]?.[y]
-                    if (other && other.element !== "singularity") {
-                        // Attraction: move other pixel towards the black hole
-                        tryMove(other, other.x + Math.sign(pixel.x - other.x), other.y + Math.sign(pixel.y - other.y))
-                    }
-                }
-            }
-        }
-
-        // Convert touching pixels into black holes
-        const dirs = [
-            [-1, -1],
-            [0, -1],
-            [1, -1],
-            [1, 0],
-            [1, 1],
-            [-1, 1]
-        ]
-        for (let d of dirs) {
-            let nx = pixel.x + d[0]
-            let ny = pixel.y + d[1]
-            if (isEmpty(nx, ny, true)) continue
-
-            let touching = pixelMap[nx]?.[ny]
-            if (touching && touching.element !== "singularity") {
-                deletePixel(nx, ny)
-            }
-        }
-    },
+    state: "solid"
 }
 
 elements.bless.reactions.black_hole = { elem2: null }

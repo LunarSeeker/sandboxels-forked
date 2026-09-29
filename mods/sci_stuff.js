@@ -48,6 +48,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "portal_out",
         "scp_447",
         "scp_682",
+        "singularity",
         "sun",
         "super_acid",
         "time",
@@ -201,6 +202,8 @@ elements.deuterium = {
     },
 }
 
+//Bromine
+
 elements.bromine = {
     behavior: behaviors.LIQUID,
     category: "liquids",
@@ -241,6 +244,8 @@ elements.bromine_ice = {
     stateHigh: "bromine",
     tempHigh: -5
 }
+
+//Arsenic
 
 elements.arsenic = {
     behavior: behaviors.POWDER,
@@ -358,6 +363,8 @@ elements.arsenic_gas = {
         "hair": { elem1: null, elem2: null }
     },
 }
+
+//Hazmat
 
 elements.hazmat = {
     color: ["#ffff00", "#f1f100", "#d29720", "#eda63d"],
@@ -679,6 +686,8 @@ elements.solar_panel = {
     }
 }
 
+//Radioactive
+
 elements.technetium = {
     category: "powders",
     color: "#D3D3D3",
@@ -751,10 +760,29 @@ elements.molten_radium = {
     },
 }
 
+//Lithium
+
+elements.lithium = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: "#dadada",
+    density: 533.4,
+    tempHigh: 181,
+}
+
+elements.molten_lithium = {
+    color: "#cacaca",
+    density: 512
+}
+
+//Reactions
+
 elements.bless.reactions.arsenic = { elem2: null }
 elements.bless.reactions.arsenic_gas = { elem2: null }
 elements.bless.reactions.irradiated_matter = { elem2: "gold" }
 elements.bless.reactions.plutonium = { elem2: "gold" }
 elements.bless.reactions.radium = { elem2: "gold" }
 elements.bless.reactions.technetium = { elem2: "gold" }
+elements.helium.reactions.deuterium = { elem1: null, elem2: "lithium" }
+elements.helium.reactions.tritium = { elem1: null, elem2: "lithium" }
 elements.neutron.reactions.deuterium = { elem1: null, elem2: "tritium" }
