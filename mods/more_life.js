@@ -43,9 +43,9 @@ elements.chicken = {
 }
 elements.friend = {
     behavior: [
-        "XX|M1 AND BO|XX",
-        "XX|FX%3 AND L2:gold_coin%0.5|M2%10",
-        "XX|M1%33|XX",
+        "XX|CH:friend%25|XX",
+        "M2%5 AND CH:friend%25|XX|M2%5 AND CH:friend%25",
+        "XX|CH:friend%25 AND M1|XX"
     ],
     colorPattern: [
         "cccccccccAAAccccccccccccccccccccccccccAAAccccccccc",
@@ -80,6 +80,7 @@ elements.friend = {
     },
     category: "life",
     density: 400,
+    ignore: ["fire", "smoke", "malware", "flash", "light", "laser"],
     state: "solid",
     reactions: {
         "egg": { elem2: null, func: behaviors.FEEDPIXEL },
@@ -589,7 +590,7 @@ elements.genesis_device = {
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: [...eLists.SOIL, "gold", "snow", "fallout", "uranium", "diamond", "red_ice", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
+    terraformLand: [...eLists.SOIL, "snow", "fallout", "red_ice", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     properties: {
         active: false,
         radius: 50,
@@ -634,18 +635,13 @@ elements.genesis_device = {
                     }
                     else if (terraformable.element !== "dirt" && terraformable.element !== "rock" && elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1) {
                         if (!terraformable.t_progress) {
-                            terraformable.t_progress = 15
+                            terraformable.t_progress = 3
                         }
                         if (Math.random() < 0.25) {
                             terraformable.t_progress--
                         }
                         if (terraformable.t_progress < 1) {
-                            if (Math.random() > 0.75) {
-                                changePixel(terraformable, "dirt")
-                            }
-                            else {
-                                changePixel(terraformable, "rock")
-                            }
+                            changePixel(terraformable, "dirt")
                         }
                     }
                     else if (terraformable.element !== "water" && elements[terraformable.element].state === "liquid") {
@@ -656,9 +652,7 @@ elements.genesis_device = {
                             terraformable.t_progress--
                         }
                         if (terraformable.t_progress < 1) {
-                            if (Math.random() > 0.5) {
-                                changePixel(terraformable, "water")
-                            }
+                            changePixel(terraformable, "water")
                         }
                     }
                     terraformable.temp = 20
