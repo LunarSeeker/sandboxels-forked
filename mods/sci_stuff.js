@@ -774,21 +774,25 @@ elements.lithium = {
     conduct: 0.97,
     density: 533.4,
     state: "solid",
-    tempHigh: 181,
-    properties: {
-        dulling: 0
-    },
-    tick: function (pixel) {
-        if (pixel.dulling >= 1) { pixel.color = pixelColorPick(pixel, "#303030") }
-        if (Math.random() < 0.005 && pixel.dulling < 1.1) {
-            pixel.dulling += 0.1
-        }
-    }
+    tempHigh: 181
 }
 
 elements.molten_lithium = {
     color: "#cacaca",
     density: 512
+}
+
+//Other Materials
+
+elements.titanium = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: "#e3e5e6",
+    conduct: 0.5,
+    density: 4502,
+    hardness: 0.7,
+    state: "solid",
+    tempHigh: 1668
 }
 
 //Reactions
@@ -799,3 +803,8 @@ elements.bless.reactions.irradiated_matter = { elem2: "gold" }
 elements.bless.reactions.plutonium = { elem2: "gold" }
 elements.bless.reactions.radium = { elem2: "gold" }
 elements.bless.reactions.technetium = { elem2: "gold" }
+
+//Other
+
+elements.molten_potassium.behavior = behaviors.LIQUID
+elements.molten_sodium.behavior = behaviors.LIQUID
