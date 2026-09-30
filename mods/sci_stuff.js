@@ -103,6 +103,9 @@ elements.tritium = {
     density: 180,
     radioactive: true,
     state: "liquid",
+    reactions: {
+        "helium": { elem1: null, elem2: "lithium" }
+    },
     tick(pixel) {
         irradiateNearby(pixel, 1, 0.7)
     }
@@ -199,6 +202,8 @@ elements.deuterium = {
     state: "gas",
     reactions: {
         "oxygen": { elem1: "heavy_water", elem2: null },
+        "neutron": { elem1: null, elem2: "tritium" },
+        "helium": { elem1: null, elem2: "lithium" }
     },
 }
 
@@ -763,11 +768,23 @@ elements.molten_radium = {
 //Lithium
 
 elements.lithium = {
-    behavior: behaviors.WALL,
-    category: "solids",
+    behavior: behaviors.POWDER,
+    category: "powders",
     color: "#dadada",
+    conduct: 0.97,
     density: 533.4,
+    state: "solid",
     tempHigh: 181,
+    properties: {
+        dulling: 0
+    },
+    tick: function (pixel) {
+        if (pixel.dulling < 1 && pixel.dulling > 0.4) { pixel.color = pixelColorPick(pixel, "#e0e0e0") }
+        else if (pixel.dulling >= 1) { pixel.color = pixelColorPick(pixel, "#303030") }
+        if (Math.random() < 0.005) {
+            pixel.dulling += 0.1
+        }
+    }
 }
 
 elements.molten_lithium = {
@@ -783,6 +800,3 @@ elements.bless.reactions.irradiated_matter = { elem2: "gold" }
 elements.bless.reactions.plutonium = { elem2: "gold" }
 elements.bless.reactions.radium = { elem2: "gold" }
 elements.bless.reactions.technetium = { elem2: "gold" }
-elements.helium.reactions.deuterium = { elem1: null, elem2: "lithium" }
-elements.helium.reactions.tritium = { elem1: null, elem2: "lithium" }
-elements.neutron.reactions.deuterium = { elem1: null, elem2: "tritium" }
