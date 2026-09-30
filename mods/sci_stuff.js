@@ -773,16 +773,14 @@ elements.lithium = {
     color: "#dadada",
     conduct: 0.97,
     density: 533.4,
-    grain: 0,
     state: "solid",
     tempHigh: 181,
     properties: {
         dulling: 0
     },
     tick: function (pixel) {
-        if (pixel.dulling < 1 && pixel.dulling > 0.4) { pixel.color = pixelColorPick(pixel, "#e0e0e0") }
-        else if (pixel.dulling >= 1) { pixel.color = pixelColorPick(pixel, "#303030") }
-        if (Math.random() < 0.005) {
+        if (pixel.dulling >= 1) { pixel.color = pixelColorPick(pixel, "#303030") }
+        if (Math.random() < 0.005 && pixel.dulling < 1.1) {
             pixel.dulling += 0.1
         }
     }
