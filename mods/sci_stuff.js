@@ -773,6 +773,7 @@ elements.lithium = {
     color: "#dadada",
     conduct: 0.97,
     density: 533.4,
+    grain: 0,
     state: "solid",
     tempHigh: 181,
     properties: {
