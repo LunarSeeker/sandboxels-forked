@@ -80,10 +80,21 @@ elements.absolute_temp = {
 elements.eat = {
     color: ["#ffba79", "#efff79"],
     tool: function (pixel) {
-        if (elements[pixel.element].isFood) {
+        if (elements[pixel.element].isFood || elements[pixel.element].category === "food") {
             deletePixel(pixel.x, pixel.y)
         }
     },
     category: "tools",
     desc: "Consumes edible pixels."
+}
+
+elements.drink = {
+    color: ["#03c6fc", "#03a1fc"],
+    tool: function (pixel) {
+        if (elements[pixel.element].state === "liquid") {
+            deletePixel(pixel.x, pixel.y)
+        }
+    },
+    category: "tools",
+    desc: "Drinks pixels."
 }

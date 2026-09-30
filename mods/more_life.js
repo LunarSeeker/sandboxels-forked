@@ -6,15 +6,16 @@ function clamp(x, min, max) {
 elements.chicken = {
     color: ["#ba5700", "#d18038", "#d4ccc5"],
     behavior: [
-        "XX|XX|XX",
-        "XX|FX%3 AND L2:egg%0.5|M2%10",
+        "M2%1|M2%2|M2%1",
+        "XX|FX%3 AND L2:chicken_egg%0.5|M2%10",
         "XX|M1%33|XX"
     ],
-    breakInto: ["feather", "blood"],
+    breakInto: ["feather", "meat"],
     burn: 2,
     burnTime: 100,
     category: "life",
     density: 400,
+    egg: "chicken_egg",
     state: "solid",
     stateHigh: "cooked_meat",
     stateLow: "frozen_meat",
@@ -41,49 +42,23 @@ elements.chicken = {
         "pool_water": { elem2: "bubble", attr2: { "clone": "pool_water" }, chance: 0.001 }
     }
 }
-elements.friend = {
-    behavior: [
-        "XX|CH:friend%25|XX",
-        "M2%5 AND CH:friend%25|XX|M2%5 AND CH:friend%25",
-        "XX|CH:friend%25 AND M1|XX"
-    ],
-    colorPattern: [
-        "cccccccccAAAccccccccccccccccccccccccccAAAccccccccc",
-        "cccccccccAAAAcccccccccccccccccccccccccAAAccccccccc",
-        "cccccccccAAAAAAAccccccccccccccccccAAAAAAAccccccccc",
-        "cccccccccAAAAAAAccccccccccccccccccAAAAAAAccccccccc",
-        "cccccccccAAAAAAAAAAccccccccccccAAAAAAAAAAccccccccc",
-        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAccccccccc",
-        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAccccccccc",
-        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccccc",
-        "ccccccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccccc",
-        "ccccccAAAAAAAbbbbbbbbbAAAAAAdddddddddAAAAAAAcccccc",
-        "ccccccAAAAAAAbbbAAbbbbAAAAAAddddAAdddAAAAAAAcccccc",
-        "ccccccAAAAAAAbbbAAAbbbAAAAAAdddAAAAddAAAAAAAcccccc",
-        "cccAAAcccAAAAbbbbbbbbbAAAAAAdddddddddAAAAcccAAAccc",
-        "cccAAAcccAAAAbbbbbbbbbAAAAAAdddddddddAAAAcccAAAccc",
-        "cccAAAcccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccAAAccc",
-        "cccAAAcccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcccAAAccc",
-        "cccAAAAAAAAAAcccAAAAAAAAAAAAAAAAAAAAAAcccAAAAAAccc",
-        "cccAAAAAAcccccccAAAccccccAAAccccccAAAAcccAAAAAAccc",
-        "cccAAAAAAcccccccAAAccccccAAAccccccAAAAcccAAAAAAccc",
-        "cccAAAAAAAAAAcccAAAccccccAAAccccccAAAAAAAAAAAAAccc",
-        "cccAAAAAAAAAAcccAAAccccccAAAccccccAAAAAAAAAAAAAccc",
-        "cccAAAAAAAAAAAAAAAAccccccAAAcccAAAAAAAAAAAAAAAAccc",
-        "cccAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAccc",
-    ],
-    colorKey: {
-        "A": "#000000",
-        "b": "#ff00ff",
-        "c": "#ffffff",
-        "d": "#ffff00",
-    },
-    category: "life",
-    density: 400,
-    ignore: ["fire", "smoke", "malware", "flash", "light", "laser"],
+elements.chicken_egg = {
+    behavior: behaviors.POWDER,
+    breakInto: "yolk",
+    category: "food",
+    color: ["#e0d3ab", "#d9cdb5"],
+    density: 900,
     state: "solid",
-    reactions: {
-        "egg": { elem2: null, func: behaviors.FEEDPIXEL },
+    stateHigh: ["calcium", "ash"],
+    stateLow: "egg",
+    temp: 20,
+    tempHigh: 100,
+    tempLow: -8,
+    tick: function (pixel) {
+        if (Math.random() < 0.1 && pixel.temp >= 20 && pixel.temp <= 35) {
+            changePixel(pixel, "chicken")
+        }
+        doDefaults(pixel)
     }
 }
 // Zombie

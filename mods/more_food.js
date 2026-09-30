@@ -8,6 +8,7 @@ const newFoods = {
     kiwi: "#32CD32",
     lemon: "#FFFACD",
     lime: "#98FB98",
+    orange: "#eda137",
     peach: "#FFDAB9",
     pear: "#9ACD32",
     pitaya: "#ff00ff",
@@ -45,3 +46,27 @@ for (const [name, color] of Object.entries(newFoods)) {
 }
 
 elements.pitaya.alias = "dragon fruit"
+
+elements.mustard = {
+    behavior: behaviors.LIQUID,
+    category: "liquids", //Ketchup is in the 'liquids' category so this is just for consistency
+    color: "#e1ad01",
+    density: 1235,
+    isFood: true,
+    stain: 0.05,
+    state: "liquid",
+    stateHigh: ["carbon_dioxide", "methane", "steam", "sugar"],
+    tempHigh: 260,
+    viscosity: 50000
+}
+
+elements.pepper = {
+    behavior: behaviors.POWDER,
+    category: "food",
+    color: "#362712",
+    density: 2160,
+    isFood: true,
+    state: "solid",
+    stateHigh: ["ash", "smoke"],
+    tempHigh: 250
+}
