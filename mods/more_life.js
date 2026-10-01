@@ -656,3 +656,5 @@ elements.cell.reactions.cellulose = { elem1: "plant", elem2: "plant", chance: 0.
 elements.cell.reactions.quicklime = { elem1: "bone", elem2: "bone", chance: 0.01 }
 elements.cell.reactions.sawdust = { elem1: "wood", elem2: "wood", chance: 0.01 }
 elements.dna.reactions.cellulose = { elem1: "plant", elem2: "plant" }
+
+eLists.ANIMAL.push("chicken")
