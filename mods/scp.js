@@ -7863,9 +7863,9 @@ elements.scp_1147_flesh = {
     behavior: behaviors.WALL,
     movable: false,
     category: "life",
-    conduct: 0.05,
+    conduct: 0.2,
     hidden: true,
-    tempHigh: 200,
+    tempHigh: 100,
     stateHigh: "cooked_meat",
     state: "solid",
     density: 1019,
@@ -7878,16 +7878,10 @@ elements.scp_1147_flesh = {
             if (!pixel.lc) { pixel.lc = "#f7ead0" }
             if (!pixel.wc) { pixel.wc = "#3a312a" }
             if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    createPixel("skin", pixel.x - 1, pixel.y - 1)
-                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.lc)
-                }
-                else {
-                    createPixel("scp_1147_flesh", pixel.x - 1, pixel.y - 1)
-                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
-                }
+                createPixel("scp_1147_flesh", pixel.x - 1, pixel.y - 1)
+                pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
+                pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
+                pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
             }
             if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
                 if (Math.random() < 0.5) {
