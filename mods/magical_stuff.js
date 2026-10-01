@@ -19,32 +19,20 @@ removeElementsDark = [ //For elements not in the "life" category
 
 let magic_textures = {
     p_stone: [
-        "gggggggggggg",
-        "ggggggggggsg",
-        "gggggggggsgg",
-        "ggggggggsggg",
-        "ggggsggggggg",
-        "gggsgggggggg",
-        "ggsgggggggsg",
-        "gsgggggggsgg",
+        "sssggg",
+        "sssggg",
+        "sssggg",
+        "gggsss",
+        "gggsss",
+        "gggsss"
     ],
     magic_steel: [
-        "ABCCCBDBBBBEBBBFBBGAGGGGGBBBBBBBBHABBBBBBBBAAAAA",
-        "BBABBBCAABBBBEEEAAGGGGGGGBBBBBBBBBAJJKAKBBBBKBBB",
-        "BBBBBBBBBDAAAAAHEIIIJCCCCCBBBJBBBBBKBBBBBKKKBBBB",
-        "BBBBBIIHHBJDBBBBBEGGGCGJJJJBBBBBBBBBKBEEKBBBBBBB",
-        "BBBDDDBBJBBBBBBBFBGGGGEEEBBBBEEECCCBBBBBBBKBBBHB",
-        "BBDJBBBBEBBBBBBFBBGGGGGGGBBBBBABBBBBBBCCCIHIKDBB",
-        "DJDDBBDBBEBBBBFBBBGGGAGGGAAAABBBABHHHBBBBBBBCKCB",
-        "GAGGGCGDGGGGEGGFGGABBBBBBGGGGGGGGGAIGJJAAAAGGKGG",
-        "GGDGJJJJEGGGGGGGFGBBBBBBBEEEEGGGGGGCCCGGGGGKDIGG",
-        "GGGAAAAGDAGGGJJAJJJJBIHHIHCCCCJJJJJAAAGGKGGGKGGG",
-        "GGGGGGDDJGGGGGGGGFBEEEBBBGGGCCCGEEEGGGGGGKGGGGGI",
-        "GGGGGGGGGIDJIIGGEGBBCJJBBGGJJGGGGGGKGKKKGGGGGGGG",
-        "GGIIHGGGGJDGGGGGGGEBBBCCBGGGGGGGGGGGEKKKGGGGGGGG",
-        "GGJDGGGDEGGGGGGFGGBBBBAAAGGGGAGAGGGGGHIHHCCCKGDD",
-        "IHBBBBBBJDBBBBBBBFEGGGGGCCCCBBBBBBBEBBBBKBBBBBBB",
-        "JCGGGGDGGGEGGGFGGGBBABBBBGGGGGGGIAGGGGGGGGGGGKGC"
+        "BBCDEFGHIKK",
+        "ABCDEFGHIJK",
+        "ABCDEFGHIJK",
+        "ABCDEFGHIJK",
+        "ABCDEFGHIJK",
+        "BBCDEFGHIKK",
     ]
 }
 
@@ -341,7 +329,7 @@ elements.odd_radio = {
                 var x = pixel.x + adjacentCoords[i][0]
                 var y = pixel.y + adjacentCoords[i][1]
                 if (isEmpty(x, y)) {
-                    if (Math.random() > 0.2) { continue }
+                    if (Math.random() > 0.1) { continue }
                     createPixel("odd_radiowave", x, y)
                 }
             }
