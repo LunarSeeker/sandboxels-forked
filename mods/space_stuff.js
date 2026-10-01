@@ -130,4 +130,5 @@ if (enabledMods.includes("mods/mega_library.js")) {
         console.log(pseudorandom(531, 9834 * (seed / 2 ** 32), 16))
         console.log((pseudorandom(659, 2342 * (seed / 2 ** 32), 10) + 20))
     }
+    console.log(seed)
 }
