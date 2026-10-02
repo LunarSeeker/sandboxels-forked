@@ -19,6 +19,10 @@ const newFoods = {
 }
 
 for (const [name, color] of Object.entries(newFoods)) {
+    const leaves = name + "_leaves"
+    const branch = name + "_branch"
+    const the_seed = name + "_seed"
+
     elements[name] = {
         behavior: behaviors.POWDER,
         breakInto: "juice",
@@ -42,6 +46,98 @@ for (const [name, color] of Object.entries(newFoods)) {
             "acid": { elem1: "juice", color1: color },
             "acid_gas": { elem1: "juice", color1: color }
         },
+    }
+
+    elements[the_seed] = {
+        color: "#854610",
+        tick: function (pixel) {
+            if (isEmpty(pixel.x, pixel.y + 1)) {
+                movePixel(pixel, pixel.x, pixel.y + 1)
+            }
+            else {
+                if (Math.random() < 0.02 && pixel.age > 50 && pixel.temp < 100) {
+                    if (!outOfBounds(pixel.x, pixel.y + 1)) {
+                        var dirtPixel = pixelMap[pixel.x][pixel.y + 1]
+                        if (dirtPixel.element === "dirt" || dirtPixel.element === "mud" || dirtPixel.element === "sand" || dirtPixel.element === "wet_sand" || dirtPixel.element === "clay_soil" || dirtPixel.element === "mycelium") {
+                            changePixel(dirtPixel, "root")
+                        }
+                    }
+                    if (isEmpty(pixel.x, pixel.y - 1)) {
+                        movePixel(pixel, pixel.x, pixel.y - 1)
+                        createPixel(Math.random() > 0.5 ? "wood" : branch, pixel.x, pixel.y + 1)
+                    }
+                }
+                else if (pixel.age > 1000) {
+                    changePixel(pixel, "wood")
+                }
+                pixel.age++
+            }
+            doDefaults(pixel)
+        },
+        properties: {
+            "age": 0
+        },
+        burn: 65,
+        burnTime: 15,
+        category: "life",
+        cooldown: defaultCooldown,
+        density: 1500,
+        seed: true,
+        state: "solid",
+        stateHigh: "dead_plant",
+        stateLow: "frozen_plant",
+        tempHigh: 100,
+        tempLow: -2,
+        behavior: [
+            "XX|XX|XX",
+            "XX|FX%10|XX",
+            "XX|M1|XX",
+        ],
+    }
+
+    elements[branch] = {
+        color: "#786531",
+        behavior: [
+            "CR:" + leaves + "," + branch + "%2|CR:" + leaves + "," + leaves + "," + leaves + "," + branch + "%2|CR:" + leaves + "," + branch + "%2",
+            "XX|XX|XX",
+            "XX|XX|XX",
+        ],
+        breakInto: ["sap", "sawdust"],
+        burn: 40,
+        burnInto: ["sap", "ember", "charcoal"],
+        burnTime: 50,
+        category: "life",
+        density: 1500,
+        hardness: 0.15,
+        hidden: true,
+        state: "solid",
+        stateHigh: "wood",
+        stateLow: "wood",
+        tempHigh: 100,
+        tempLow: -30,
+        hidden: true,
+    }
+    elements[leaves] = {
+        behavior: [
+            "XX|XX|XX",
+            "XX|XX|XX",
+            "XX|CR:" + name + "%0.15|XX",
+        ],
+        breakInto: "dead_plant",
+        burn: 65,
+        burnInto: "dead_plant",
+        burnTime: 60,
+        category: "life",
+        color: "#00bf00",
+        density: 1050,
+        seed: the_seed,
+        state: "solid",
+        stateHigh: "dead_plant",
+        stateLow: "frozen_plant",
+        tempHigh: 100,
+        tempLow: -2,
+        hidden: true,
+        reactions: elements.plant.reactions,
     }
 }
 
