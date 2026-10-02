@@ -1,3 +1,23 @@
+dead_elements = [
+    "ash",
+    "blood",
+    "body_008",
+    "cancer",
+    "cooked_meat",
+    "cured_meat",
+    "dead_bug",
+    "dead_plant",
+    "dna",
+    "feather",
+    "head_008",
+    "infection",
+    "meat",
+    "rotten_meat",
+    "yolk",
+    "zombie_body",
+    "zombie_head",
+]
+
 //Random integer from 0 to n
 function randomIntegerFromZeroToValue(value) {
     var absoluteValuePlusOne = Math.abs(value) + 1
@@ -16,23 +36,9 @@ function randomChoice(array) {
 elements.give_life = {
     color: '#FF0000',
     tool: function (pixel) {
-        if (pixel.element == 'dead_bug' || pixel.element == 'zombie_body') {
+        if (dead_elements.includes(pixel.element)) {
             pixel.temp = 20
-            pixel.element = randomChoice(['bee', 'ant'])
-        }
-        if (pixel.element == 'cancer' || pixel.element == 'dna' || pixel.element == 'head_008' || pixel.element == 'infection') {
-            pixel.element = 'cell'
-        } else if (pixel.element == 'blood' || pixel.element == 'meat' || pixel.element == 'cooked_meat' || pixel.element == 'cured_meat' || pixel.element == 'rotten_meat') {
-            pixel.temp = 20
-            pixel.element = randomChoice(['snail', 'fish', 'fly', 'frog'])
-        }
-        if (pixel.element == 'dead_plant' || pixel.element == 'ash' || pixel.element == 'zombie_head' || pixel.element == 'body_008') {
-            pixel.temp = 20
-            pixel.element = randomChoice(['plant', 'grass', 'sapling', 'grass_seed', 'wheat_seed'])
-        }
-        if (pixel.element == 'feather' || pixel.element == 'yolk') {
-            pixel.temp = 20
-            pixel.element = 'bird'
+            pixel.element = randomChoice(['bee', 'ant', 'snail', 'fish', 'fly', 'frog', 'plant', 'grass', 'sapling', 'grass_seed', 'wheat_seed'])
         }
     },
     category: 'tools',
