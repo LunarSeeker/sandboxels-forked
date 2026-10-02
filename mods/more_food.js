@@ -21,7 +21,6 @@ const newFoods = {
 for (const [name, color] of Object.entries(newFoods)) {
     const leaves = name + "_leaves"
     const branch = name + "_branch"
-    const the_seed = name + "_seed"
 
     elements[name] = {
         behavior: behaviors.POWDER,
@@ -48,17 +47,14 @@ for (const [name, color] of Object.entries(newFoods)) {
         },
     }
 
-    elements[the_seed] = {
-        color: "#854610",
+    elements[name + "_seed"] = {
+        color: color,
         tick: function (pixel) {
-            if (isEmpty(pixel.x, pixel.y + 1)) {
-                movePixel(pixel, pixel.x, pixel.y + 1)
-            }
-            else {
+            if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
                 if (Math.random() < 0.02 && pixel.age > 50 && pixel.temp < 100) {
                     if (!outOfBounds(pixel.x, pixel.y + 1)) {
                         var dirtPixel = pixelMap[pixel.x][pixel.y + 1]
-                        if (dirtPixel.element === "dirt" || dirtPixel.element === "mud" || dirtPixel.element === "sand" || dirtPixel.element === "wet_sand" || dirtPixel.element === "clay_soil" || dirtPixel.element === "mycelium") {
+                        if (dirtPixel && (eLists.SOIL.indexOf(dirtPixel.element) !== -1 || dirtPixel.element === "grass")) {
                             changePixel(dirtPixel, "root")
                         }
                     }
@@ -79,7 +75,7 @@ for (const [name, color] of Object.entries(newFoods)) {
         },
         burn: 65,
         burnTime: 15,
-        category: "life",
+        category: "seeds",
         cooldown: defaultCooldown,
         density: 1500,
         seed: true,
@@ -121,7 +117,7 @@ for (const [name, color] of Object.entries(newFoods)) {
         behavior: [
             "XX|XX|XX",
             "XX|XX|XX",
-            "XX|CR:" + name + "%0.15|XX",
+            "XX|CR:" + name + "_seed%0.1|XX",
         ],
         breakInto: "dead_plant",
         burn: 65,
@@ -130,7 +126,7 @@ for (const [name, color] of Object.entries(newFoods)) {
         category: "life",
         color: "#00bf00",
         density: 1050,
-        seed: the_seed,
+        seed: name + "_seed",
         state: "solid",
         stateHigh: "dead_plant",
         stateLow: "frozen_plant",

@@ -565,7 +565,7 @@ elements.genesis_device = {
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: [...eLists.SOIL, "snow", "fallout", "red_ice", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
+    terraformLand: [...eLists.SOIL, "ash", "mulch", "snow", "fallout", "scp_009", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     properties: {
         active: false,
         radius: 50,
@@ -635,6 +635,95 @@ elements.genesis_device = {
                 }
             }
             if (Math.random() > 0.85) {
+                pixel.radius++
+            }
+        }
+    },
+    excludeRandom: true,
+    cooldown: defaultCooldown,
+}
+
+elements.life_remover = {
+    category: "weapons",
+    color: "#f82900",
+    conduct: 1,
+    density: 1201,
+    hardness: 0.9,
+    state: "solid",
+    terraformLand: [...eLists.SOIL, "mulch", "snow", "fallout", "scp_009", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
+    properties: {
+        active: false,
+        radius: 50,
+    },
+    tick: function (pixel) {
+        tryMove(pixel, pixel.x, pixel.y + 1)
+        if (pixel.charge && pixel.active != true) {
+            pixel.active = true
+        }
+        if (pixel.t_progress < 3 && pixel.active != false) {
+            pixel.active = false
+        }
+        doDefaults(pixel)
+        if (pixel.radius > 0 && (!pixel.t_progress || pixel.t_progress > 2) && pixel.active == true) {
+            var coords = circleCoords(pixel.x, pixel.y, pixel.radius)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var terraformable = pixelMap[coords[i].x][coords[i].y]
+                    if (terraformable.element == "life_remover") {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 50
+                        }
+                        if (Math.random() < 0.1) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            //if (Math.random() > 0.9) {
+                            changePixel(terraformable, "metal_scrap")
+                            //}
+                        }
+                    }
+                    else if (elements[terraformable.element].id === elements.blood.id) {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 15
+                        }
+                        if (Math.random() < 0.5) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            if (Math.random() < 0.5) {
+                                changePixel(terraformable, "iron")
+                            } else {
+                                changePixel(terraformable, "ash")
+                            }
+                        }
+                    }
+                    else if (terraformable.element !== "sand" && terraformable.element !== "rock" && elements.life_remover.terraformLand.indexOf(terraformable.element) !== -1) {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 3
+                        }
+                        if (Math.random() < 0.25) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            changePixel(terraformable, "sand")
+                        }
+                    }
+                    else if (elements[terraformable.element].category === "food" || elements[terraformable.element].category === "seeds" || elements[terraformable.element].category === "life") {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 3
+                        }
+                        if (Math.random() < 0.25) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            changePixel(terraformable, "ash")
+                        }
+                    }
+                    terraformable.temp = 20
+                    pixelTempCheck(terraformable)
+                }
+            }
+            if (Math.random() > 0.8) {
                 pixel.radius++
             }
         }

@@ -476,6 +476,7 @@ elements.ancient_curse = {
         "molten_silver": { elem2: "aluminum" },
         "pipe": {},
         "pyrite": {},
+        "rotten_meat": {},
         "sand": {},
         "silver": { elem2: "aluminum" },
         "wall": {},
