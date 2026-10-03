@@ -126,9 +126,9 @@ elements.bless.reactions.singularity = { elem2: null }
 
 if (enabledMods.includes("mods/mega_library.js")) {
     var seed = Math.floor(Math.random() * 1000)
+    console.log(seed)
+
     if (pseudorandom(232, 4564 * (seed / 2 ** 32), 1) < 0.25) {
-        console.log(pseudorandom(531, 9834 * (seed / 2 ** 32), 16))
         console.log((pseudorandom(659, 2342 * (seed / 2 ** 32), 10) + 20))
     }
-    console.log(seed)
 }

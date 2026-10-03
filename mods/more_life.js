@@ -644,7 +644,7 @@ elements.genesis_device = {
 }
 
 elements.life_remover = {
-    becomeRock: ["wood", "scp_1147_branch", "skin", "hair"],
+    becomeRock: ["wood", "scp_1147_branch", "skin", "hair", "tree_branch", "apple_branch", "green_apple_branch"],
     becomeSand: [...eLists.SOIL, "mulch", "snow", "fallout", "scp_009", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     category: "weapons",
     color: "#f82900",
