@@ -1,24 +1,18 @@
-const newFoods = {
-    ambrosia: "#ffff00",
+const newFruits = {
+    ambrosia: "#FFFF00",
     apple: "#FF0000",
     banana: "#FFE135",
-    blueberry: "#4B0082",
-    elderberry: "#990099",
     fig: "#8B4513",
-    kiwi: "#32CD32",
     lemon: "#FFFACD",
     lime: "#98FB98",
-    orange: "#eda137",
+    orange: "#EDA137",
     peach: "#FFDAB9",
     pear: "#9ACD32",
-    pitaya: "#ff00ff",
+    green_apple: "#00FF00",
     plum: "#8E4585",
-    pomegranate: "#8B0000",
-    strawberry: "#FF4D4D",
-    watermelon: "#FF6666",
 }
 
-for (const [name, color] of Object.entries(newFoods)) {
+for (const [name, color] of Object.entries(newFruits)) {
     const leaves = name + "_leaves"
     const branch = name + "_branch"
 
@@ -117,7 +111,7 @@ for (const [name, color] of Object.entries(newFoods)) {
         behavior: [
             "XX|XX|XX",
             "XX|XX|XX",
-            "XX|CR:" + name + "_seed%0.1|XX",
+            "XX|CR:" + name + "%0.09|XX",
         ],
         breakInto: "dead_plant",
         burn: 65,
@@ -137,7 +131,7 @@ for (const [name, color] of Object.entries(newFoods)) {
     }
 }
 
-elements.pitaya.alias = "dragon fruit"
+elements.green_apple.alias = "granny smith"
 
 elements.mustard = {
     behavior: behaviors.LIQUID,

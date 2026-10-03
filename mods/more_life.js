@@ -644,13 +644,14 @@ elements.genesis_device = {
 }
 
 elements.life_remover = {
+    becomeRock: ["wood", "scp_1147_branch", "skin", "hair"],
+    becomeSand: [...eLists.SOIL, "mulch", "snow", "fallout", "scp_009", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     category: "weapons",
     color: "#f82900",
     conduct: 1,
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: [...eLists.SOIL, "mulch", "snow", "fallout", "scp_009", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
     properties: {
         active: false,
         radius: 50,
@@ -679,6 +680,7 @@ elements.life_remover = {
                         if (terraformable.t_progress < 1) {
                             //if (Math.random() > 0.9) {
                             changePixel(terraformable, "metal_scrap")
+                            break
                             //}
                         }
                     }
@@ -697,7 +699,18 @@ elements.life_remover = {
                             }
                         }
                     }
-                    else if (terraformable.element !== "sand" && terraformable.element !== "rock" && elements.life_remover.terraformLand.indexOf(terraformable.element) !== -1) {
+                    else if (elements.life_remover.becomeRock.indexOf(terraformable.element) !== -1) {
+                        if (!terraformable.t_progress) {
+                            terraformable.t_progress = 15
+                        }
+                        if (Math.random() < 0.5) {
+                            terraformable.t_progress--
+                        }
+                        if (terraformable.t_progress < 1) {
+                            changePixel(terraformable, "rock")
+                        }
+                    }
+                    else if (terraformable.element !== "sand" && terraformable.element !== "rock" && elements.life_remover.becomeSand.indexOf(terraformable.element) !== -1) {
                         if (!terraformable.t_progress) {
                             terraformable.t_progress = 3
                         }
