@@ -478,28 +478,17 @@ elements.potion = {
     color: ["#ff695e", "#ff8682"],
     density: 193,
     excludeRandom: true,
-    ignore: ["black_hole", "wall", "gold", "lead", "silver", "steel", "iron"],
+    ignore: ["black_hole", "wall", "gold", "lead", "silver", "steel", "iron", "frog"],
     state: "liquid",
-    tick: function (pixel) {
-        var coords = rectCoords(pixel.x - 1, pixel.y - 1, pixel.x + 1, pixel.y + 3)
-        for (var i = 0; i < coords.length; i++) {
-            var x = coords[i].x
-            var y = coords[i].y
-            if (!isEmpty(x, y, true)) {
-                var newPixel = pixelMap[pixel.x][pixel.y]
-                var newElem = elements[newPixel.element]
-                if (newElem.id === elements.potion.id) { return }
-                if (elements.potion.reactions[newPixel.element]) { return }
-                if (elements.potion.ignore.indexOf(newPixel.element) !== -1) return
-                if (newElem.category === "life" || newElem.pickElement === "human") {
-                    if (Math.random() < 0.5) {
-                        changePixel(newPixel, "clay")
-                    } else {
-                        changePixel(newPixel, "frog")
-                    }
-                } else if (newElem.category === "solids") {
-                    changePixel(newPixel, "slime")
-                }
+    onCollide: function (_pixelOG, pixel) {
+        if (elements[pixel.element].id === elements.potion.id) { return }
+        if (elements.potion.reactions[pixel.element]) { return }
+        if (elements.potion.ignore.indexOf(pixel.element) !== -1) return
+        if (elements[pixel.element].category === "life" || elements[pixel.element].pickElement === "human") {
+            if (Math.random() < 0.5) {
+                changePixel(pixel, "concrete")
+            } else {
+                changePixel(pixel, "frog")
             }
         }
     },
