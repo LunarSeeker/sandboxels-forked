@@ -132,4 +132,33 @@ if (enabledMods.includes("mods/mega_library.js")) {
     if (pseudorandom(232, 4564 * (seed / 2 ** 32), 1) < 0.25) {
         console.log((pseudorandom(659, 2342 * (seed / 2 ** 32), 10) + 20))
     }
+
+    elements.x_dust = {
+        behavior: behaviors.POWDER,
+        category: "land",
+        color: ["#ababab", "#c5c5c5"],
+        density: 1500,
+        state: "solid"
+    }
+    elements.x_rock = {
+        behavior: behaviors.STURDYPOWDER,
+        breakInto: "x_dust",
+        category: "land",
+        color: ["#808080", "#bdbdbd"],
+        density: 1605,
+        hardness: 0.5,
+        state: "solid",
+        stateHigh: "magma",
+        tempHigh: 800
+    }
+
+    elements.water.reactions.x_dust = {
+        func: function (p1, p2) {
+            let rgb = interpolateRgb(getRGB(p1.color), getRGB(p2.color), 0.25)
+            changePixel(p1, "slime")
+            changePixel(p2, "slime")
+            p1.color = noiseify(rgb, 6)
+            p2.color = noiseify(rgb, 6)
+        }
+    }
 }
