@@ -32,6 +32,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "concrete",
         "deuterium",
         "fallout",
+        "false_vacuum",
         "filter",
         "gray_goo",
         "hazmat_body",
@@ -808,3 +809,27 @@ elements.bless.reactions.technetium = { elem2: "gold" }
 
 elements.molten_potassium.behavior = behaviors.LIQUID
 elements.molten_sodium.behavior = behaviors.LIQUID
+
+elements.honey.behavior = [
+    "XX|ST|XX",
+    "ST AND M2|XX|ST AND M2",
+    "XX|ST AND M1|XX",
+]
+
+elements.sap.behavior = [
+    "XX|ST|XX",
+    "ST AND M2|XX|ST AND M2",
+    "XX|ST AND M1|XX",
+]
+
+elements.caramel.behavior = [
+    "XX|ST|XX",
+    "ST AND M2|XX|ST AND M2",
+    "XX|ST AND M1|XX",
+]
+
+elements.melted_chocolate.behavior = [
+    "XX|ST|XX",
+    "ST AND M2|XX|ST AND M2",
+    "XX|ST AND M1|XX",
+]

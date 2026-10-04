@@ -27,12 +27,9 @@ let magic_textures = {
         "gggsss"
     ],
     magic_steel: [
-        "BBCDEFGHIKK",
-        "ABCDEFGHIJK",
-        "ABCDEFGHIJK",
-        "ABCDEFGHIJK",
-        "ABCDEFGHIJK",
-        "BBCDEFGHIKK",
+        "AAABBB",
+        "AABBCC",
+        "BBAACC",
     ]
 }
 
@@ -119,7 +116,7 @@ elements.philosophers_stone = {
     category: "special",
     colorPattern: magic_textures.p_stone,
     colorKey: {
-        "g": "#fffdde",
+        "g": "#7dce2b",
         "s": "#EAB115",
     },
     darkText: true,
@@ -133,7 +130,7 @@ elements.philosophers_stone = {
         "blue_gold": { elem2: "gold" },
         "cancer": { elem2: "cell" },
         "copper": { elem2: "bronze" },
-        "electrum": { elem2: "silver", elem2: "gold" },
+        "electrum": { elem1: "silver", elem2: "gold" },
         "gallium": { elem2: "silver" },
         "glitter": { elem2: "diamond" },
         "iron": { elem2: "steel" },
@@ -414,14 +411,6 @@ elements.magic_steel = {
         "A": "#ff0000",
         "B": "#ff8800",
         "C": "#ffff00",
-        "D": "#00ff00",
-        "E": "#00ffff",
-        "F": "#0000ff",
-        "G": "#ff00ff",
-        "H": "#ff88ff",
-        "I": "#88ffff",
-        "J": "#ffff88",
-        "K": "#880000",
     },
     colorPattern: magic_textures.magic_steel,
     behavior: behaviors.WALL,
@@ -481,6 +470,55 @@ elements.ancient_curse = {
         "silver": { elem2: "aluminum" },
         "wall": {},
     },
+}
+
+//taken from nousersthings.js
+elements.healing_serum = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: ["#79d2c5", "#77d8c0", "#78ddb9", "#7de1b0", "#85e6a6", "#91e99a", "#9fec8e"],
+    state: "liquid",
+    properties: {
+        wait: 15,
+        waitReduce: false,
+    },
+    tick: function (pixel) {
+        if (pixel.waitReduce) { pixel.wait -= 1 }
+        if (!pixel.decidedPixel) {
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coord = squareCoords[i]
+                var x = pixel.x + coord[0]
+                var y = pixel.y + coord[1]
+                if (!isEmpty(x, y, true)) {
+                    let otherPixel = pixelMap[x][y]
+                    if (otherPixel.element != "healing_serum" && !(elements.healing_serum.ignore.includes(otherPixel.element))) {
+                        pixel.decidedPixel = otherPixel
+                        pixel.waitReduce = true
+                        break
+                    }
+                }
+            }
+        }
+        if (pixel.wait <= 0) {
+            const { x, y, ...remainingProperties } = pixel.decidedPixel
+            Object.assign(pixel, remainingProperties)
+            delete pixel.decidedPixel
+            return
+        }
+    },
+    renderer: function (pixel, ctx) {
+        // interpolate pixel color and decidedpixel's color (if it has one!)
+        if (pixel.decidedPixel) {
+            var color1 = pixel.color.match(/\d+/g)
+            var color2 = getPixelColor(pixel.decidedPixel.color)
+            var ratio = pixel.wait / 15
+            drawSquare(ctx, `rgb(${color1[0] * ratio + color2[0] * (1 - ratio)},${color1[1] * ratio + color2[1] * (1 - ratio)},${color1[2] * ratio + color2[2] * (1 - ratio)})`, pixel.x, pixel.y)
+        }
+        else {
+            drawSquare(ctx, pixel.color, pixel.x, pixel.y)
+        }
+    },
+    ignore: ["wall", "cloner", "e_cloner", "border", "static", "rainbow", "black_hole", "bless", "ichor"]
 }
 
 elements.bless.reactions.ancient_curse = { elem2: null }

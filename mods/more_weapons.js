@@ -33,6 +33,7 @@ elements.subzero_bomb = {
     darkText: true,
     density: 1500,
     excludeRandom: true,
+    maxSize: 1,
     state: "solid",
     tick: function (pixel) {
         if (pixel.start === pixelTicks) { return }
@@ -58,6 +59,7 @@ elements.ultrahot_bomb = {
     cooldown: defaultCooldown,
     density: 1500,
     excludeRandom: true,
+    maxSize: 1,
     state: "solid",
     tick: function (pixel) {
         if (pixel.start === pixelTicks) { return }
@@ -84,6 +86,7 @@ elements.color_bomb = {
     cooldown: defaultCooldown,
     density: 1500,
     excludeRandom: true,
+    maxSize: 1,
     state: "solid",
     tick: function (pixel) {
         if (pixel.start === pixelTicks) { return }
@@ -110,6 +113,7 @@ elements.acid_bomb = {
     category: "weapons",
     density: 1500,
     excludeRandom: true,
+    maxSize: 1,
     state: "solid",
     cooldown: defaultCooldown
 }
@@ -124,6 +128,7 @@ elements.dirt_bomb = {
     category: "weapons",
     density: 1500,
     excludeRandom: true,
+    maxSize: 1,
     state: "solid",
     cooldown: defaultCooldown
 }
@@ -134,6 +139,7 @@ elements.terraformer = {
     cooldown: defaultCooldown,
     density: 1500,
     excludeRandom: true,
+    maxSize: 1,
     state: "solid",
     tick: function (pixel) {
         if (pixel.start === pixelTicks) { return }
@@ -154,4 +160,54 @@ elements.terraformer = {
         }
         doDefaults(pixel)
     }
+}
+
+elements.false_vacuum = {
+    category: "weapons",
+    color: "#2e2430",
+    cooldown: defaultCooldown,
+    hardness: 1,
+    maxSize: 1,
+    movable: false,
+    tick: function (pixel) {
+        if (!pixel.timeAlive) {
+            pixel.timeAlive = 0
+        }
+        if (!pixel.generations) {
+            pixel.generations = 0
+        }
+        if (pixel.generations > Math.max(width, height)) {
+            deletePixel(pixel.x, pixel.y)
+            return
+        }
+        pixel.color = `rgb(${180 / (pixel.timeAlive + 2)}, ${27 / (pixel.timeAlive + 2)}, ${27 / (pixel.timeAlive + 2)})`
+        if (pixel.timeAlive === 0) {
+            for (i = 0; i < squareCoords.length; i++) {
+                let x = squareCoords[i][0] + pixel.x
+                let y = squareCoords[i][1] + pixel.y
+                if (!isEmpty(x, y, true)) {
+                    if (pixelMap[x][y].element !== "false_vacuum") {
+                        deletePixel(x, y)
+                        createPixel("false_vacuum", x, y)
+                        pixelMap[x][y].generations = pixel.generations + 1
+                    }
+                } else if (isEmpty(x, y)) {
+                    createPixel("false_vacuum", x, y)
+                    pixelMap[x][y].generations = pixel.generations + 1
+                }
+            }
+            for (let coord of rectCoords(pixel.x - 2, pixel.y - 2, pixel.x + 2, pixel.y + 2)) {
+                let x = coord.x
+                let y = coord.y
+                if (!isEmpty(x, y, true) && pixelMap[x][y].element != "false_vacuum") {
+                    deletePixel(x, y)
+                }
+            }
+        }
+        pixel.timeAlive++
+        if (pixel.timeAlive > 20) {
+            deletePixel(pixel.x, pixel.y)
+            return
+        }
+    },
 }

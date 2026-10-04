@@ -4,6 +4,7 @@ acidBlacklist = [
 	"bless",
 	"border",
 	"cloner",
+	"false_vacuum",
 	"filter",
 	"gray_goo",
 	"ichor",

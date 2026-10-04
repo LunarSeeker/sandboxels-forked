@@ -5,6 +5,7 @@ excludeBlackHole = [
     "body_096",
     "border",
     "cloner",
+    "false_vacuum",
     "filter",
     "gray_goo",
     "head_096",
