@@ -1,0 +1,529 @@
+dwarfcrawlThru = [...eLists.SOIL, "grass", "granite", "ice", "snow", "plant", "concrete"]
+
+removeElementsDark = [ //For elements not in the "life" category
+    "ant_wall",
+    "charcoal",
+    "coal",
+    "feather",
+    "hair",
+    "ice",
+    "light",
+    "oil",
+    "plastic",
+    "skin",
+    "slime",
+    "steam",
+    "waste_barrel",
+    "water",
+]
+
+let magic_textures = {
+    p_stone: [
+        "sssggg",
+        "sssggg",
+        "sssggg",
+        "gggsss",
+        "gggsss",
+        "gggsss"
+    ],
+    magic_steel: [
+        "AAABBB",
+        "AABBCC",
+        "BBAACC",
+    ]
+}
+
+elements.dwarf_wall = {
+    behavior: behaviors.WALL,
+    breakInto: "dust",
+    category: "solids",
+    color: "#8a6249",
+    hardness: 0.9,
+    hidden: true,
+    insulate: true,
+    state: "solid",
+    stateHigh: "magma",
+    tempHigh: 5000,
+    darkText: true
+}
+
+elements.dwarf = {
+    color: ["#f3e7db", "#f7ead0", "#eadaba", "#d7bd96", "#a07e56", "#825c43", "#604134", "#3a312a"],
+    behavior: function (pixel) {
+        behaviors.CRAWLER2(pixel, function (pixel, newX, _newY) {
+            if (!pixel.dwarf_hilled && !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "dwarf_wall") {
+                pixel.dwarf_hilled = true
+            }
+        }, function (pixel, newX, _newY) {
+            if (Math.random() < 0.01 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
+                if (!pixel.dwarf_hilled || !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "dwarf_wall") {
+                    var wallCoords = [
+                        [-1, -1], [1, -1],
+                        [-1, 0], [1, 0],
+                        [0, 1]
+                    ]
+                    if (!isEmpty(pixel.x, pixel.y - 2)) {
+                        wallCoords.push([0, -1])
+                    }
+                    if (Math.random() < 0.15) { wallCoords.push([-1, 1]) }
+                    if (Math.random() < 0.15) { wallCoords.push([1, 1]) }
+                    // loop through wallCoords, change pixel to dwarf_wall if in crawlthru
+                    for (var i = 0; i < wallCoords.length; i++) {
+                        var x = pixel.x + newX + wallCoords[i][0]
+                        var y = pixel.y + 1 + wallCoords[i][1]
+                        if (!isEmpty(x, y, true) && dwarfcrawlThru.indexOf(pixelMap[x][y].element) !== -1) {
+                            changePixel(pixelMap[x][y], "dwarf_wall")
+                        }
+                    }
+                    deletePixel(pixel.x + newX, pixel.y + 1)
+                    tryMove(pixel, pixel.x + newX, pixel.y + 1)
+                }
+            }
+            else if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
+                swapPixels(pixel, pixelMap[pixel.x + newX][pixel.y - 1])
+            }
+        })
+    },
+    breakInto: "rotten_meat",
+    category: "life",
+    density: 500,
+    state: "solid",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
+    tempHigh: 120,
+    tempLow: -50,
+    reactions: {
+        "beans": { elem2: [null, null, null, "stench"], chance: 0.05 },
+        "copper": { elem2: null },
+        "diamond": { elem2: null, chance: 0.1 },
+        "fallout": { elem1: "rotten_meat", chance: 0.02 },
+        "gold_coin": { elem2: null },
+        "gold": { elem2: null },
+        "light": { stain1: "#825043" },
+        "neutron": { elem1: "rotten_meat", chance: 0.02 },
+        "oxygen": { elem2: "carbon_dioxide", chance: 0.4 },
+        "radiation": { elem1: "rotten_meat", chance: 0.1 },
+        "silver": { elem2: null, chance: 0.05 },
+        "sun": { elem1: "cooked_meat" },
+        "tungsten": { elem2: null, chance: 0.01 },
+        "zinc": { elem2: null },
+    }
+}
+
+elements.philosophers_stone = {
+    name: "Alchemist's Stone",
+    behavior: behaviors.POWDER,
+    category: "special",
+    colorPattern: magic_textures.p_stone,
+    colorKey: {
+        "g": "#fffdde",
+        "s": "#EAB115",
+    },
+    darkText: true,
+    density: 1,
+    excludeRandom: true,
+    state: "solid",
+    reactions: {
+        "aluminum": { elem2: "silver" },
+        "amalgam": { elem2: "silver" },
+        "ash": { elem2: "diamond" },
+        "blue_gold": { elem2: "gold" },
+        "cancer": { elem2: "cell" },
+        "copper": { elem2: "bronze" },
+        "electrum": { elem2: "silver", elem2: "gold" },
+        "gallium": { elem2: "silver" },
+        "glitter": { elem2: "diamond" },
+        "iron": { elem2: "steel" },
+        "lead": { elem2: "gold" },
+        "mercury": { elem2: "silver" },
+        "metal_scrap": { elem2: "steel" },
+        "nickel": { elem2: "invar" },
+        "oil": { elem2: "gold" },
+        "poison": { elem2: "vaccine" },
+        "purple_gold": { elem2: "gold" },
+        "pyrite": { elem2: "gold" },
+        "rose_gold": { elem2: "gold" },
+        "rust": { elem2: "steel" },
+        "solid_mercury": { elem2: "silver" },
+        "static": { elem2: "rainbow" },
+        "sterling": { elem2: "silver" },
+        "tin": { elem2: "brass" },
+        "zinc": { elem2: "bronze" },
+    }
+}
+
+elements.magic_drill = {
+    behavior: [
+        "XX|XX|XX",
+        "XX|DL|XX",
+        "CH:wall|M1 AND CH:magic_drill AND CR:magic_drill|CH:wall"
+    ],
+    category: "special",
+    color: "#0000ff",
+    state: "solid"
+}
+
+elements.primordial_chaos = {
+    behavior: behaviors.SUPERFLUID,
+    category: "life",
+    color: "#1b1b32",
+    density: 0.1,
+    excludeRandom: true,
+    hardness: 1,
+    insulate: true,
+    movable: false,
+    state: "liquid",
+    viscosity: 0,
+    reactions: {
+        "blood": { elem1: ["dwarf", "homunculus"], elem2: "blood" },
+        "cancer": { elem1: "cancer", elem2: "cancer" },
+        "clay": { elem1: ["dwarf", "homunculus"], elem2: "clay" },
+        "dirt": { elem1: ["algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: "dirt" },
+        "grass": { elem1: ["potato", "bee", "plant", "ant"], elem2: "grass" },
+        "light": { elem1: ["algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: null },
+        "oxygen": { elem1: ["dwarf", "homunculus", "algae", "cell", "mushroom_spore", "lichen", "yeast", "antibody"], elem2: null },
+        "poison": { elem1: ["cancer", "plague"], elem2: "poison" },
+        "water": { elem1: ["potato", "bee", "plant", "ant", "dwarf", "algae", "fish"], elem2: "water" },
+    }
+}
+
+elements.dark_ice = {
+    alias: "corrupted_ice",
+    behavior: behaviors.WALL,
+    breakInto: [
+        "snow",
+        "fallout"
+    ],
+    category: "solids",
+    color: "#00003c",
+    desc: "Cold substance.",
+    excludeRandom: true,
+    hardness: 0.9,
+    hazard: true,
+    hidden: true,
+    insulate: true,
+    stain: 1,
+    state: "solid",
+    stateHigh: "dark_water",
+    tempHigh: 1,
+    temp: -75
+}
+
+elements.dark_water = {
+    behavior: behaviors.SUPERFLUID,
+    category: "liquids",
+    color: "#00003c",
+    density: 999,
+    excludeRandom: true,
+    stain: 1,
+    state: "liquid",
+    stateHigh: "dark_steam",
+    stateLow: "dark_ice",
+    temp: 20,
+    tempHigh: 100,
+    tempLow: 0,
+    viscosity: 5,
+    reactions: {
+        "dirty_water": { elem2: "fallout" },
+        "salt_water": { elem2: null },
+        "sugar_water": { elem2: null },
+    },
+    tick: function (pixel) {
+        for (i = 0; i < adjacentCoords.length; i++) {
+            //if (Math.random() < 0.5) {
+            var checkPosX = pixel.x + adjacentCoords[i][0]
+            var checkPosY = pixel.y + adjacentCoords[i][1]
+            if (!isEmpty(checkPosX, checkPosY, true)) {
+                var newElement = pixelMap[checkPosX][checkPosY].element
+                var newCategory = elements[newElement].category
+                if (removeElementsDark.includes(newElement) || newCategory === "food" || newCategory === "life") {
+                    if (typeof (pixel[newElement]) === "undefined") {
+                        pixel[newElement] = 0
+                    };
+                    pixel[newElement]++
+                    deletePixel(checkPosX, checkPosY)
+                };
+            };
+            //};
+        };
+    },
+}
+
+elements.dark_steam = {
+    category: "gases",
+    behavior: behaviors.GAS,
+    color: "#00003c",
+    density: 999,
+    excludeRandom: true,
+    hidden: true,
+    stain: 1,
+    state: "gas",
+    stateLow: "dark_water",
+    temp: 150,
+    tempLow: 99
+}
+
+elements.electric_gas = {
+    behavior: behaviors.GAS,
+    category: "gases",
+    color: "#ffff00",
+    conduct: 1,
+    density: 20,
+    excludeRandom: true,
+    stain: -0.75,
+    state: "gas",
+    tick: function (pixel) {
+        doDefaults(pixel)
+        if (pixel.freq !== undefined && pixelTicks % (pixel.freq * 4) !== 0) return
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y, true)) {
+                chargePixel(pixelMap[x][y])
+            }
+        }
+    },
+}
+
+elements.liquid_shock = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: "#ffff00",
+    conduct: 1,
+    density: 20,
+    excludeRandom: true,
+    stain: -0.75,
+    state: "liquid",
+    viscosity: 1,
+    tick: function (pixel) {
+        doDefaults(pixel)
+        if (pixel.freq !== undefined && pixelTicks % (pixel.freq * 4) !== 0) return
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y, true)) {
+                chargePixel(pixelMap[x][y])
+            }
+        }
+    },
+}
+
+elements.odd_radio = {
+    behavior: behaviors.WALL,
+    breakInto: ["copper", "dna"],
+    category: "special",
+    color: "#6e2f04",
+    desc: "Speeds up evolution.",
+    excludeRandom: true,
+    hardness: 0.9,
+    state: "solid",
+    tick: function (pixel) {
+        doDefaults(pixel)
+        if (pixelTicks % 4 === 0) {
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var x = pixel.x + adjacentCoords[i][0]
+                var y = pixel.y + adjacentCoords[i][1]
+                if (isEmpty(x, y)) {
+                    if (Math.random() > 0.1) { continue }
+                    createPixel("odd_radiowave", x, y)
+                }
+            }
+        }
+    },
+}
+
+elements.odd_radiowave = {
+    category: "energy",
+    color: "#542607",
+    density: 0.0001,
+    ignoreAir: true,
+    insulate: true,
+    state: "gas",
+    tick: function (pixel) {
+        if (Math.random() < 0.02) {
+            deletePixel(pixel.x, pixel.y)
+            return
+        }
+        if (pixel.bx === undefined) {
+            // choose 1, 0, or -1
+            pixel.bx = Math.random() < 0.5 ? 1 : Math.random() < 0.5 ? 0 : -1
+            pixel.by = Math.random() < 0.5 ? 1 : Math.random() < 0.5 ? 0 : -1
+            // if both are 0, make one of them 1 or -1
+            if (pixel.bx === 0 && pixel.by === 0) {
+                if (Math.random() < 0.5) { pixel.bx = Math.random() < 0.5 ? 1 : -1 }
+                else { pixel.by = Math.random() < 0.5 ? 1 : -1 }
+            }
+        }
+        // move and invert direction if hit
+        if (pixel.bx && !tryMove(pixel, pixel.x + pixel.bx, pixel.y)) {
+            if (!isEmpty((pixel.x + pixel.bx), pixel.y, true)) {
+                var newPixel = pixelMap[pixel.x + pixel.bx][pixel.y]
+                if (!elements[newPixel.element].insulate) {
+                    newPixel.temp += 1
+                    pixelTempCheck(newPixel)
+                }
+            }
+            pixel.bx = -pixel.bx
+        }
+        if (!pixel.del && pixel.by && !tryMove(pixel, pixel.x, pixel.y + pixel.by)) {
+            if (!isEmpty(pixel.x, (pixel.y + pixel.by), true)) {
+                var newPixel = pixelMap[pixel.x][pixel.y + pixel.by]
+                if (!elements[newPixel.element].insulate) {
+                    newPixel.temp += 1
+                    pixelTempCheck(newPixel)
+                }
+            }
+            pixel.by = -pixel.by
+        }
+    },
+    reactions: {
+        "blood": { elem2: "human" },
+        "cancer": { elem2: "wheat_seed" },
+        "cell": { elem2: "ant" },
+        "dwarf": { elem2: "human" },
+        "flower_seed": { elem2: "sapling" },
+        "fly": { elem2: "firefly" },
+        "grass": { elem2: "sapling" },
+        "homunculus": { elem2: "human" },
+        "infection": { elem2: "wheat_seed" },
+        "plant": { elem2: "sapling" },
+        "slug": { elem2: "snail" },
+        "tagpole": { elem2: "frog" },
+    },
+}
+
+elements.ichor = {
+    behavior: behaviors.LIQUID,
+    category: "special",
+    color: "#ffff00",
+    darkText: true,
+    density: 100,
+    extinguish: true,
+    stain: -1,
+    state: "liquid",
+    viscosity: 1
+}
+
+elements.magic_steel = {
+    colorKey: {
+        "A": "#ff0000",
+        "B": "#ff8800",
+        "C": "#ffff00",
+    },
+    colorPattern: magic_textures.magic_steel,
+    behavior: behaviors.WALL,
+    category: "solids",
+    conduct: 0.2,
+    density: 7850,
+    hardness: 0.9
+}
+
+elements.ancient_curse = {
+    behavior: behaviors.LIQUID,
+    color: ["#ff695e", "#ff8682"],
+    tick: function (pixel) {
+        var coords = rectCoords(pixel.x - 1, pixel.y - 1, pixel.x + 1, pixel.y + 3)
+        for (var i = 0; i < coords.length; i++) { // Burn adjacent pixels
+            var x = coords[i].x
+            var y = coords[i].y
+            if (!isEmpty(x, y, true)) {
+                elements.ancient_curse.tool(pixelMap[x][y])
+            }
+        }
+    },
+    tool: function (pixel) {
+        if (elements[pixel.element].id === elements.ancient_curse.id) { return }
+        if (elements.ancient_curse.reactions[pixel.element]) { return }
+        if (elements[pixel.element].state === "gas") { return }
+        if (elements[pixel.element].state === "liquid") {
+            changePixel(pixel, (pixel.temp > 327 ? "molten_lead" : "ancient_curse"))
+        }
+        else if (elements[pixel.element].movable) {
+            changePixel(pixel, "sand")
+        }
+        else {
+            changePixel(pixel, "lead")
+        }
+    },
+    canPlace: true,
+    category: "special",
+    density: 193,
+    excludeRandom: true,
+    state: "liquid",
+    reactions: {
+        "aluminum": {},
+        "body": {},
+        "cooked_meat": { elem2: "rotten_meat" },
+        "cured_meat": { elem2: "rotten_meat" },
+        "gold": { elem2: "pyrite" },
+        "head": {},
+        "lead": {},
+        "meat": { elem2: "rotten_meat" },
+        "molten_lead": {},
+        "molten_silver": { elem2: "aluminum" },
+        "pipe": {},
+        "pyrite": {},
+        "rotten_meat": {},
+        "sand": {},
+        "silver": { elem2: "aluminum" },
+        "wall": {},
+    },
+}
+
+//taken from nousersthings.js
+elements.healing_serum = {
+    behavior: behaviors.LIQUID,
+    category: "liquids",
+    color: ["#79d2c5", "#77d8c0", "#78ddb9", "#7de1b0", "#85e6a6", "#91e99a", "#9fec8e"],
+    state: "liquid",
+    properties: {
+        wait: 15,
+        waitReduce: false,
+    },
+    tick: function (pixel) {
+        if (pixel.waitReduce) { pixel.wait -= 1 }
+        if (!pixel.decidedPixel) {
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coord = squareCoords[i]
+                var x = pixel.x + coord[0]
+                var y = pixel.y + coord[1]
+                if (!isEmpty(x, y, true)) {
+                    let otherPixel = pixelMap[x][y]
+                    if (otherPixel.element != "healing_serum" && !(elements.healing_serum.ignore.includes(otherPixel.element))) {
+                        pixel.decidedPixel = otherPixel
+                        pixel.waitReduce = true
+                        break
+                    }
+                }
+            }
+        }
+        if (pixel.wait <= 0) {
+            const { x, y, ...remainingProperties } = pixel.decidedPixel
+            Object.assign(pixel, remainingProperties)
+            delete pixel.decidedPixel
+            return
+        }
+    },
+    renderer: function (pixel, ctx) {
+        // interpolate pixel color and decidedpixel's color (if it has one!)
+        if (pixel.decidedPixel) {
+            var color1 = pixel.color.match(/\d+/g)
+            var color2 = getPixelColor(pixel.decidedPixel.color)
+            var ratio = pixel.wait / 15
+            drawSquare(ctx, `rgb(${color1[0] * ratio + color2[0] * (1 - ratio)},${color1[1] * ratio + color2[1] * (1 - ratio)},${color1[2] * ratio + color2[2] * (1 - ratio)})`, pixel.x, pixel.y)
+        }
+        else {
+            drawSquare(ctx, pixel.color, pixel.x, pixel.y)
+        }
+    },
+    ignore: ["wall", "cloner", "e_cloner", "border"]
+}
+
+elements.bless.reactions.ancient_curse = { elem2: null }
+elements.bless.reactions.dark_ice = { elem2: null }
+elements.bless.reactions.dark_steam = { elem2: null }
+elements.bless.reactions.dark_water = { elem2: null }
+
+elements.ichor.reactions = elements.bless.reactions
