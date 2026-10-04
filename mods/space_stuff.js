@@ -126,13 +126,6 @@ elements.bless.reactions.black_hole = { elem2: null }
 elements.bless.reactions.singularity = { elem2: null }
 
 if (enabledMods.includes("mods/mega_library.js")) {
-    var seed = Math.floor(Math.random() * 1000)
-    console.log(seed)
-
-    if (pseudorandom(232, 4564 * (seed / 2 ** 32), 1) < 0.25) {
-        console.log((pseudorandom(659, 2342 * (seed / 2 ** 32), 10) + 20))
-    }
-
     elements.x_dust = {
         behavior: behaviors.POWDER,
         category: "land",
@@ -157,7 +150,7 @@ if (enabledMods.includes("mods/mega_library.js")) {
             let rgb = interpolateRgb(getRGB(p1.color), getRGB(p2.color), 0.25)
             changePixel(p1, "slime")
             changePixel(p2, "slime")
-            p1.color = noiseify(rgb, 6)
+            p1.color = rgb
             p2.color = noiseify(rgb, 6)
         }
     }

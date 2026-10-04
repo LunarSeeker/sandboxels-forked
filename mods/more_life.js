@@ -565,7 +565,7 @@ elements.genesis_device = {
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: [...eLists.SOIL, "ash", "mulch", "snow", "fallout", "scp_009", "red_snow", "granite", "moon_rock", "lunar_dust", "mars_dust", "mars_rock"],
+    terraformLand: ["ash", "fallout", "scp_009", "red_snow"],
     properties: {
         active: false,
         radius: 50,
@@ -608,7 +608,7 @@ elements.genesis_device = {
                             changePixel(terraformable, "cell")
                         }
                     }
-                    else if (terraformable.element !== "dirt" && terraformable.element !== "rock" && elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1) {
+                    else if (terraformable.element !== "dirt" && terraformable.element !== "rock" && (elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1 || elements[terraformable.element].category === "land")) {
                         if (!terraformable.t_progress) {
                             terraformable.t_progress = 3
                         }
@@ -731,6 +731,9 @@ elements.life_remover = {
                         if (terraformable.t_progress < 1) {
                             changePixel(terraformable, "ash")
                         }
+                    }
+                    else if (elements[terraformable.element].category === "nutrition" || elements[terraformable.element].category === "circulation") {
+                        changePixel(terraformable, "ash")
                     }
                     terraformable.temp = 20
                     pixelTempCheck(terraformable)

@@ -1,4 +1,4 @@
-dwarfcrawlThru = [...eLists.SOIL, "grass", "granite", "ice", "snow", "plant", "concrete"]
+dwarfcrawlThru = [...eLists.CRAWLTHRU, ...eLists.SOIL, "granite", "ice", "snow", "plant", "concrete"]
 
 removeElementsDark = [ //For elements not in the "life" category
     "ant_wall",
@@ -472,53 +472,44 @@ elements.ancient_curse = {
     },
 }
 
-//taken from nousersthings.js
-elements.healing_serum = {
+elements.potion = {
     behavior: behaviors.LIQUID,
     category: "liquids",
-    color: ["#79d2c5", "#77d8c0", "#78ddb9", "#7de1b0", "#85e6a6", "#91e99a", "#9fec8e"],
+    color: ["#ff695e", "#ff8682"],
+    density: 193,
+    excludeRandom: true,
+    ignore: ["black_hole", "wall", "gold", "lead", "silver", "steel", "iron"],
     state: "liquid",
-    properties: {
-        wait: 15,
-        waitReduce: false,
-    },
     tick: function (pixel) {
-        if (pixel.waitReduce) { pixel.wait -= 1 }
-        if (!pixel.decidedPixel) {
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i]
-                var x = pixel.x + coord[0]
-                var y = pixel.y + coord[1]
-                if (!isEmpty(x, y, true)) {
-                    let otherPixel = pixelMap[x][y]
-                    if (otherPixel.element != "healing_serum" && !(elements.healing_serum.ignore.includes(otherPixel.element))) {
-                        pixel.decidedPixel = otherPixel
-                        pixel.waitReduce = true
-                        break
+        var coords = rectCoords(pixel.x - 1, pixel.y - 1, pixel.x + 1, pixel.y + 3)
+        for (var i = 0; i < coords.length; i++) { // Burn adjacent pixels
+            var x = coords[i].x
+            var y = coords[i].y
+            if (!isEmpty(x, y, true)) {
+                var newPixel = pixelMap[pixel.x][pixel.y]
+                var newElem = elements[newPixel.element]
+                if (newElem.id === elements.potion.id) { return }
+                if (elements.potion.reactions[newPixel.element]) { return }
+                if (elements.potion.ignore.indexOf(newPixel.element) !== -1) return
+                if (newElem.category === "life" && newPixel.temp < 100) {
+                    if (newElem.pickElement === "human") {
+                        if (Math.random() < 0.5) {
+                            changePixel(newPixel, "concrete")
+                        } else {
+                            changePixel(newPixel, "frog")
+                        }
                     }
                 }
             }
         }
-        if (pixel.wait <= 0) {
-            const { x, y, ...remainingProperties } = pixel.decidedPixel
-            Object.assign(pixel, remainingProperties)
-            delete pixel.decidedPixel
-            return
-        }
     },
-    renderer: function (pixel, ctx) {
-        // interpolate pixel color and decidedpixel's color (if it has one!)
-        if (pixel.decidedPixel) {
-            var color1 = pixel.color.match(/\d+/g)
-            var color2 = getPixelColor(pixel.decidedPixel.color)
-            var ratio = pixel.wait / 15
-            drawSquare(ctx, `rgb(${color1[0] * ratio + color2[0] * (1 - ratio)},${color1[1] * ratio + color2[1] * (1 - ratio)},${color1[2] * ratio + color2[2] * (1 - ratio)})`, pixel.x, pixel.y)
-        }
-        else {
-            drawSquare(ctx, pixel.color, pixel.x, pixel.y)
-        }
+    reactions: {
+        "cooked_meat": { elem2: "plant" },
+        "cured_meat": { elem2: "plant" },
+        "meat": { elem2: "plant" },
+        "rotten_meat": { elem2: "plant" },
+        "water": { elem2: "potion" },
     },
-    ignore: ["wall", "cloner", "e_cloner", "border", "static", "rainbow", "black_hole", "bless", "ichor"]
 }
 
 elements.bless.reactions.ancient_curse = { elem2: null }

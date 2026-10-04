@@ -1971,6 +1971,8 @@ elements.scp_009 = {
         "milk": { elem2: "scp_009", chance: 0.25 },
         "neutral_acid": { elem2: "scp_009", chance: 0.25 },
         "pee_ice": { elem2: "scp_009" },
+        "petal": { elem2: "red_plant", chance: 0.5 },
+        "pistil": { elem2: "red_plant", chance: 0.5 },
         "plant": { elem2: "red_plant", chance: 0.5 },
         "pool_water": { elem2: "scp_009", chance: 0.25 },
         "rain_cloud": { elem2: "red_rain", chance: 0.4 },
