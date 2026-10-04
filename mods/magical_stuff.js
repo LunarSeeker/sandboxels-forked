@@ -116,7 +116,7 @@ elements.philosophers_stone = {
     category: "special",
     colorPattern: magic_textures.p_stone,
     colorKey: {
-        "g": "#fffdde",
+        "g": "#7dce2b",
         "s": "#EAB115",
     },
     darkText: true,
@@ -518,7 +518,7 @@ elements.healing_serum = {
             drawSquare(ctx, pixel.color, pixel.x, pixel.y)
         }
     },
-    ignore: ["wall", "cloner", "e_cloner", "border"]
+    ignore: ["wall", "cloner", "e_cloner", "border", "static", "rainbow", "black_hole", "bless", "ichor"]
 }
 
 elements.bless.reactions.ancient_curse = { elem2: null }
