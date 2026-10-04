@@ -130,7 +130,7 @@ elements.philosophers_stone = {
         "blue_gold": { elem2: "gold" },
         "cancer": { elem2: "cell" },
         "copper": { elem2: "bronze" },
-        "electrum": { elem2: "silver", elem2: "gold" },
+        "electrum": { elem1: "silver", elem2: "gold" },
         "gallium": { elem2: "silver" },
         "glitter": { elem2: "diamond" },
         "iron": { elem2: "steel" },
