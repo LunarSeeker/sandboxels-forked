@@ -1954,6 +1954,7 @@ elements.scp_009 = {
         "dead_plant": { elem2: "scp_009", chance: 0.025 },
         "dirty_ice": { elem2: "scp_009", chance: 0.25 },
         "dirty_water": { elem2: "scp_009", chance: 0.25 },
+        "evergreen": { elem2: "red_plant" },
         "fish": { elem2: "scp_009_meat" },
         "flesh": { elem2: "scp_009_meat" },
         "frog": { elem2: "scp_009_meat" },
@@ -1996,6 +1997,11 @@ elements.scp_009 = {
         "urine": { elem2: "scp_009" },
         "water": { elem2: "scp_009" },
         "yolk": { elem2: "scp_009" },
+        "hyphae": { elem2: "red_hyphae" },
+        "mushroom_cap": { elem2: "red_mushroom_cap" },
+        "mushroom_spore": { elem2: "red_mushroom_spore" },
+        "mushroom_stalk": { elem2: "red_mushroom_stalk" },
+        "mycelium": { elem2: "red_mycelium" },
     },
 }
 
@@ -2329,6 +2335,181 @@ elements.red_plant = {
     tempHigh: 2,
     temp: -20
 }
+
+//Red mushroom
+
+elements.red_mushroom_spore = {
+    color: "#805236",
+    behavior: [
+        "XX|M2%1.5|XX",
+        "XX|L2:red_mushroom_stalk AND C2:red_mushroom_gill%20|XX",
+        "XX|M1|XX"
+    ],
+    tick: behaviors.SEEDRISE,
+    reactions: {
+        "red_plant": { elem2: "dirt", chance: 0.07 },
+        "root": { elem2: "dirt", chance: 0.07 },
+        "water": { elem2: "scp_009" },
+        "wood": { elem2: "dirt", chance: 0.04 },
+        "epsom_salt": { elem1: null, chance: 0.1 }
+    },
+    category: "life",
+    tempLow: -225,
+    stateLow: "red_steam",
+    state: "solid",
+    density: 123.6,
+    cooldown: defaultCooldown,
+    hidden: true,
+    seed: true,
+    darkText: true
+}
+
+elements.red_mushroom_stalk = {
+    color: "#d1d1d1",
+    behavior: [
+        "XX|XX|XX",
+        "XX|XX|XX",
+        "XX|CH:dirt>red_hyphae%1 AND M1|XX"
+    ],
+    reactions: {
+        "ash": { elem2: "dirt", chance: 0.04 },
+        "red_plant": { elem2: "dirt", chance: 0.07 },
+        "root": { elem2: "dirt", chance: 0.07 },
+        "salt_water": { elem2: "scp_009" },
+        "sugar_water": { elem2: "scp_009" },
+        "water": { elem2: "scp_009" },
+        "wood": { elem2: "dirt", chance: 0.04 },
+        "seltzer": { elem2: "scp_009" }
+    },
+    category: "life",
+    hidden: true,
+    tempLow: -225,
+    stateLow: "red_steam",
+    state: "solid",
+    density: 90.445,
+    seed: "red_mushroom_spore",
+    breakInto: [null, null, "red_mycelium"]
+}
+
+elements.red_mushroom_gill = {
+    color: "#d4a9a9",
+    tick: function (pixel) {
+        if (!pixel.mColor) {
+            // make it a hsl random hue, 54% saturation, 52% lightness
+            pixel.mColor = "hsl(" + Math.floor(Math.random() * 200 + 180) % 360 + ",54%,52%)"
+        }
+        if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.1) {
+            createPixel("red_mushroom_cap", pixel.x, pixel.y - 1)
+            pixelMap[pixel.x][pixel.y - 1].color = pixel.mColor
+        }
+        if (isEmpty(pixel.x - 1, pixel.y) && Math.random() < 0.02) {
+            // create either red_mushroom_gill or red_mushroom_cap
+            if (Math.random() < 0.5) {
+                createPixel("red_mushroom_gill", pixel.x - 1, pixel.y)
+                pixelMap[pixel.x - 1][pixel.y].mColor = pixel.mColor
+            } else {
+                createPixel("red_mushroom_cap", pixel.x - 1, pixel.y)
+                pixelMap[pixel.x - 1][pixel.y].color = pixel.mColor
+            }
+        }
+        if (isEmpty(pixel.x + 1, pixel.y) && Math.random() < 0.02) {
+            if (Math.random() < 0.5) {
+                createPixel("red_mushroom_gill", pixel.x + 1, pixel.y)
+                pixelMap[pixel.x + 1][pixel.y].mColor = pixel.mColor
+            } else {
+                createPixel("red_mushroom_cap", pixel.x + 1, pixel.y)
+                pixelMap[pixel.x + 1][pixel.y].color = pixel.mColor
+            }
+        }
+        doDefaults(pixel)
+    },
+    reactions: {
+        "water": { elem2: "scp_009" },
+        "salt_water": { elem2: "scp_009" },
+        "sugar_water": { elem2: "scp_009" },
+        "seltzer": { elem2: "scp_009" }
+    },
+    category: "life",
+    hidden: true,
+    movable: false,
+    tempLow: -225,
+    stateLow: "red_steam",
+    state: "solid",
+    density: 90.445,
+    seed: "red_mushroom_spore",
+    breakInto: [null, "red_mycelium", "red_mushroom_spore", "poison"]
+}
+
+elements.red_mushroom_cap = {
+    color: ["#c76243", "#c74442", "#c7437e"],
+    singleColor: true,
+    behavior: behaviors.WALL,
+    reactions: {
+        "water": { elem2: "scp_009" },
+        "salt_water": { elem2: "scp_009" },
+        "sugar_water": { elem2: "scp_009" },
+        "seltzer": { elem2: "scp_009" }
+    },
+    category: "life",
+    hidden: true,
+    tempLow: -225,
+    stateLow: "red_steam",
+    state: "solid",
+    density: 90.445,
+    seed: "red_mushroom_spore",
+    breakInto: [null, null, "red_mycelium"]
+}
+
+elements.red_hyphae = {
+    breakInto: ["dirt", "dirt", "red_mycelium"],
+    category: "life",
+    color: ["#c78989", "#bd7c7b"],
+    conduct: 0.1,
+    density: 462,
+    grain: 2,
+    hidden: true,
+    seed: "red_mushroom_spore",
+    state: "solid",
+    stateLow: "red_steam",
+    tempLow: -225,
+    behavior: [
+        "CH:dirt>red_hyphae,red_hyphae,red_mycelium%0.5|CR:red_mushroom_spore%0.5|CH:dirt>red_hyphae,red_hyphae,red_mycelium%0.5",
+        "CH:dirt>red_mycelium%0.5|XX|CH:dirt>red_mycelium%0.5",
+        "CH:dirt>red_hyphae,red_hyphae,red_mycelium%0.5|XX|CH:dirt>red_hyphae,red_hyphae,red_mycelium%0.5"
+    ],
+    reactions: {
+        "wood": { elem2: "dirt", chance: 0.04 },
+        "water": { elem2: "scp_009" },
+        "sugar_water": { elem2: "scp_009" },
+        "salt_water": { elem2: "scp_009" },
+        "root": { elem2: "dirt", chance: 0.07 },
+        "red_plant": { elem2: "dirt", chance: 0.07 },
+        "ash": { elem2: "dirt", chance: 0.04 },
+        "seltzer": { elem2: "scp_009" }
+    },
+}
+
+elements.red_mycelium = {
+    behavior: behaviors.POWDER,
+    category: "land",
+    color: ["#614040", "#6b4b4b", "#734d4d", "#755050", "#866363", "#987878"],
+    density: 462,
+    hidden: true,
+    seed: "red_mushroom_spore",
+    state: "solid",
+    stateHigh: "dirt",
+    stateLow: "permafrost",
+    tempHigh: 50,
+    tempLow: -225,
+    reactions: {
+        "dead_bug": { elem2: [null, "red_mycelium", "red_hyphae"], chance: 0.0025 },
+        "dead_plant": { elem2: [null, "red_mycelium", "red_hyphae"], chance: 0.0025 },
+        "scp_009_meat": { elem2: [null, "red_mycelium", "red_hyphae"], chance: 0.0025 },
+        "wood": { elem2: [null, "red_mycelium", "red_hyphae"], chance: 0.0025 }
+    },
+}
+
+//End of red mushroom
 
 elements.red_ice_plant.reactions = elements.scp_009.reactions
 elements.red_plant.reactions = elements.scp_009.reactions
