@@ -475,27 +475,34 @@ elements.ancient_curse = {
 elements.potion = {
     behavior: behaviors.LIQUID,
     category: "liquids",
-    color: ["#ff695e", "#ff8682"],
+    color: ["#5eff89", "#82fffd"],
     density: 193,
     excludeRandom: true,
-    ignore: ["black_hole", "wall", "gold", "lead", "silver", "steel", "iron", "frog"],
+    ignore: ["black_hole", "wall", "gold", "lead", "silver", "steel", "iron", "plant"],
     state: "liquid",
     onCollide: function (_pixelOG, pixel) {
         if (elements[pixel.element].id === elements.potion.id) { return }
         if (elements.potion.reactions[pixel.element]) { return }
         if (elements.potion.ignore.indexOf(pixel.element) !== -1) return
         if (elements[pixel.element].category === "life" || elements[pixel.element].pickElement === "human") {
-            if (Math.random() < 0.5) {
-                changePixel(pixel, "concrete")
+            if (eLists.ANIMAL.indexOf(pixel.element) !== -1) {
+                changePixel(pixel, "gold_coin")
+            } else if (eLists.SEEDS.indexOf(pixel.element) !== -1) {
+                changePixel(pixel, "ash")
+            } else if (elements[pixel.element].id === elements.tree_branch.id) {
+                changePixel(pixel, "magic_steel")
             } else {
-                changePixel(pixel, "frog")
+                changePixel(pixel, "clay")
             }
         }
     },
     reactions: {
         "cooked_meat": { elem2: "plant" },
+        "copper": { elem2: "philosophers_stone" },
         "cured_meat": { elem2: "plant" },
+        "ice": { elem2: "dark_ice" },
         "meat": { elem2: "plant" },
+        "mycelium": { elem2: "dirt" },
         "rotten_meat": { elem2: "plant" },
         "water": { elem2: "potion" },
     },
