@@ -6550,17 +6550,22 @@ elements.scp_457 = {
         panic: 0,
     },
     onPlace: function (pixel) {
+        if (!isEmpty(pixel.x, pixel.y - 1, true) && pixelMap[pixel.x][pixel.y - 1].element === "head_457") {
+            deletePixel(pixel.x, pixel.y - 1)
+        }
+        else if (!isEmpty(pixel.x, pixel.y + 1, true) && pixelMap[pixel.x][pixel.y + 1].element === "body_457") {
+            deletePixel(pixel.x, pixel.y + 1)
+        }
+
         if (isEmpty(pixel.x, pixel.y + 1)) {
             createPixel("body_457", pixel.x, pixel.y + 1)
             var color = pixel.color
             changePixel(pixel, "head_457")
             pixel.color = color
-            pixel.alpha = 0
         }
         else if (isEmpty(pixel.x, pixel.y - 1)) {
             createPixel("head_457", pixel.x, pixel.y - 1)
             pixelMap[pixel.x][pixel.y - 1].color = pixel.color
-            pixelMap[pixel.x][pixel.y - 1].alpha = 0
             changePixel(pixel, "body_457")
         }
         else {
@@ -6579,7 +6584,7 @@ elements.scp_457 = {
         "dirty_water": { attr1: { panic: 50 } },
         "cold_fire": { attr1: { panic: 50 } },
     },
-    related: ["body", "head"],
+    related: ["body_457", "head_457"],
     cooldown: defaultCooldown,
     forceSaveColor: true,
 }
@@ -6610,17 +6615,6 @@ elements.body_457 = {
         dir: 1,
         panic: 0,
         fuel: 500,
-        alpha: 0,
-    },
-    renderer: function (pixel, ctx) {
-        drawDefault(ctx, pixel)
-        if (!viewInfo[view].colorEffects) { return }
-        if (pixel.fuel > 1) {
-            drawPlus(ctx, "#ff6b21", pixel.x, pixel.y, undefined, Math.min(1, pixel.fuel / 8))
-            drawPlus(ctx, "#ffa600", pixel.x, pixel.y - 1, undefined, Math.min(1, pixel.fuel / 9))
-        }
-        drawSquare(ctx, settings.bg, pixel.x, pixel.y)
-        drawSquare(ctx, settings.bg, pixel.x, pixel.y - 1)
     },
     tick: function (pixel) {
         if (tryMove(pixel, pixel.x, pixel.y + 1)) { // Fall
@@ -6642,7 +6636,6 @@ elements.body_457 = {
         if (pixel.dead || pixel.fuel < 0) {
             if (pixelTicks - pixel.dead > 200 && Math.random() < 0.1) {
                 changePixel(pixel, "fire")
-                changePixel(pixelMap[pixel.x][pixel.y - 1], "fire")
             }
             return
         }
@@ -6822,7 +6815,6 @@ elements.head_457 = {
     properties: {
         dead: false,
         fuel: 0,
-        alpha: 0,
     },
     tick: function (pixel) {
         doHeat(pixel)
@@ -7504,8 +7496,7 @@ elements.scp_999 = {
             var moved = false
             for (var i = 0; i < move1Spots.length; i++) {
                 const j = Math.random() * move1Spots.length | 0
-                const coord = move1Spots[j]
-                if (tryMove(pixel, pixel.x + coord, pixel.y + 1)) { moved = true; break }
+                if (tryMove(pixel, pixel.x + move1Spots[j], pixel.y + 1)) { moved = true; break }
                 move1Spots.splice(j, 1)
             }
             if (!moved) {
