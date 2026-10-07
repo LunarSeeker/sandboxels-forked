@@ -117,6 +117,7 @@ elements.singularity = {
     category: "weapons",
     color: "#ffffff",
     cooldown: defaultCooldown,
+    darkText: true,
     density: 999999,
     excludeRandom: true,
     state: "solid"

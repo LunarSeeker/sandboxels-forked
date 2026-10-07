@@ -6366,6 +6366,89 @@ elements.scp_391 = {
     conduct: 0.5
 }
 
+elements.scp_407 = {
+    name: "SCP-407",
+    breakInto: ["metal_scrap", "dust"],
+    category: "scp",
+    color: "#8a8a8a",
+    conduct: 1,
+    cooldown: defaultCooldown,
+    darkText: true,
+    excludeRandom: true,
+    state: "solid",
+    stateHigh: ["metal_scrap", "dust"],
+    tempHigh: 500,
+    properties: {
+        radius: 15,
+        stage: 0,
+        active: false,
+    },
+    tick: function (pixel) {
+        tryMove(pixel, pixel.x, pixel.y + 1)
+        if (pixel.charge && pixel.active != true) {
+            pixel.active = true
+        }
+        if (pixel.evolve <= 1 && pixel.active != false) {
+            pixel.active = false
+        }
+        doDefaults(pixel)
+        if (pixel.radius > 0 && (!pixel.evolve || pixel.evolve > 2) && pixel.active == true) {
+            var coords = circleCoords(pixel.x, pixel.y, pixel.radius)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var manmade = pixelMap[coords[i].x][coords[i].y]
+                    if (!manmade.hasEvolved) {
+                        if (eLists.SEEDS.indexOf(manmade.element) !== -1 || manmade.element == "sapling" || manmade.element == "plant") {
+                            manmade.hasEvolved = true
+                        }
+                        else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || elements[manmade.element].category == "structural" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
+                            if (!manmade.evolve) {
+                                manmade.evolve = 25
+                            }
+                            if (Math.random() < 0.5) {
+                                manmade.evolve--
+                            }
+                            if (manmade.evolve < 1) {
+                                if (Math.random() < 0.5) {
+                                    changePixel(manmade, "mushroom_spore")
+                                } else {
+                                    changePixel(manmade, "bamboo_plant")
+                                }
+                                manmade.hasEvolved = true
+                            }
+                        }
+                        else if (elements[manmade.element].category == "life" || manmade.element == "wood") {
+                            if (!manmade.evolve) {
+                                manmade.evolve = 3
+                            }
+                            if (Math.random() < 0.25) {
+                                manmade.evolve--
+                            }
+                            if (manmade.evolve < 1) {
+                                if (Math.random() < 0.5) {
+                                    changePixel(manmade, "sapling")
+                                } else {
+                                    changePixel(manmade, "grass_seed")
+                                }
+                                manmade.hasEvolved = true
+                            }
+                        }
+                    }
+                    if (manmade.temp > 60) {
+                        manmade.temp -= 10
+                    }
+                    else if (manmade.temp > 40) {
+                        manmade.temp -= 1
+                    }
+                }
+            }
+            if (Math.random() > 0.85 && pixel.radius < 60) {
+                pixel.radius++
+            }
+        }
+    },
+}
+
 if (!elements.magma.reactions) { elements.magma.reactions = {} }
 elements.magma.reactions.molten_quartz = { elem1: "molten_granite", elem2: "molten_granite" }
 
@@ -7228,7 +7311,6 @@ elements.scp_804 = {
                         if (manmade.repair < 1) {
                             if (Math.random() > 0.95) {
                                 changePixel(manmade, "blood")
-                                manmade.man = true
                             }
                             else {
                                 deletePixel(manmade.x, manmade.y)

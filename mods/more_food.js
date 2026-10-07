@@ -129,6 +129,7 @@ for (const [name, color] of Object.entries(newFruits)) {
         hidden: true,
         reactions: elements.plant.reactions,
     }
+    eLists.SEEDS.push(name + "_seed")
 }
 
 elements.green_apple.alias = "granny smith"
