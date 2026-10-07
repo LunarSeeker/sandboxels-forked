@@ -6379,7 +6379,6 @@ elements.scp_407 = {
     stateHigh: ["metal_scrap", "dust"],
     tempHigh: 500,
     properties: {
-        radius: 15,
         stage: 0,
         active: false,
     },
@@ -6392,14 +6391,56 @@ elements.scp_407 = {
             pixel.active = false
         }
         doDefaults(pixel)
-        if (pixel.radius > 0 && (!pixel.evolve || pixel.evolve > 2) && pixel.active == true) {
-            var coords = circleCoords(pixel.x, pixel.y, pixel.radius)
+        if ((!pixel.evolve || pixel.evolve > 2) && pixel.active == true) {
+            var coords = circleCoords(pixel.x, pixel.y, 30)
             for (var i = 0; i < coords.length; i++) {
                 if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
                     var manmade = pixelMap[coords[i].x][coords[i].y]
                     if (!manmade.hasEvolved) {
-                        if (eLists.SEEDS.indexOf(manmade.element) !== -1 || manmade.element == "sapling" || manmade.element == "plant") {
+                        if (eLists.SEEDS.indexOf(manmade.element) !== -1 || manmade.element == "sapling" || manmade.element == "plant" || manmade.element == "tree_branch") {
                             manmade.hasEvolved = true
+                        }
+                        else if (manmade.element == "scp_407") {
+                            if (!manmade.evolve) {
+                                manmade.evolve = 25
+                            }
+                            if (Math.random() < 0.4) {
+                                manmade.evolve--
+                            }
+                            if (manmade.evolve < 1) {
+                                pixel.stage++
+                                manmade.evolve = 25
+                            }
+                        }
+                        else if (manmade.element == "dna" || manmade.element == "cell") {
+                            if (!manmade.evolve) {
+                                manmade.evolve = 10
+                            }
+                            if (Math.random() < 0.5) {
+                                manmade.evolve--
+                            }
+                            if (manmade.evolve < 1) {
+                                if (pixel.stage <= 1) {
+                                    changePixel(manmade, "fly")
+                                } else {
+                                    changePixel(manmade, "bird")
+                                    manmade.hasEvolved = true
+                                }
+                            }
+                        }
+                        else if (manmade.element == "bee" || manmade.element == "fly") {
+                            if (!manmade.evolve) {
+                                manmade.evolve = 5
+                            }
+                            if (Math.random() < 0.5) {
+                                manmade.evolve--
+                            }
+                            if (manmade.evolve < 1) {
+                                if (pixel.stage > 1) {
+                                    changePixel(manmade, "bird")
+                                    manmade.hasEvolved = true
+                                }
+                            }
                         }
                         else if (manmade.element == "skin" || manmade.element == "hair" || manmade.element == "body" || manmade.element == "head" || manmade.element == "body_012_1" || manmade.element == "head_012_1" || manmade.element == "body_008" || manmade.element == "head_008" || elements[manmade.element].category == "structural" || manmade.element == "head_035" || manmade.element == "body_049_1" || manmade.element == "head_049_1") {
                             if (!manmade.evolve) {
@@ -6409,10 +6450,10 @@ elements.scp_407 = {
                                 manmade.evolve--
                             }
                             if (manmade.evolve < 1) {
-                                if (Math.random() < 0.5) {
-                                    changePixel(manmade, "mushroom_spore")
+                                if (Math.random() < 0.5 || pixel.stage > 2) {
+                                    changePixel(manmade, "tree_branch")
                                 } else {
-                                    changePixel(manmade, "bamboo_plant")
+                                    changePixel(manmade, "mushroom_spore")
                                 }
                                 manmade.hasEvolved = true
                             }
@@ -6425,7 +6466,7 @@ elements.scp_407 = {
                                 manmade.evolve--
                             }
                             if (manmade.evolve < 1) {
-                                if (Math.random() < 0.5) {
+                                if (Math.random() < 0.2) {
                                     changePixel(manmade, "sapling")
                                 } else {
                                     changePixel(manmade, "grass_seed")
@@ -6441,9 +6482,6 @@ elements.scp_407 = {
                         manmade.temp -= 1
                     }
                 }
-            }
-            if (Math.random() > 0.85 && pixel.radius < 60) {
-                pixel.radius++
             }
         }
     },
