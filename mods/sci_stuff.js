@@ -672,6 +672,8 @@ elements.hazmat_head = {
     }
 }
 
+// Machines
+
 elements.solar_panel = {
     behavior: behaviors.WALL,
     breakInto: ["wire", "iron"],
@@ -689,6 +691,46 @@ elements.solar_panel = {
     reactions: {
         "light": { charge1: 1, elem2: null },
         "liquid_light": { charge1: 1, elem2: null }
+    }
+}
+
+elements.paste_machine = {
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#ff0096",
+    //conduct: 1,
+    darkText: true,
+    hardness: 0.8,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    stateHigh: "molten_iron",
+    temp: 15,
+    tempHigh: 300,
+    properties: {
+        paste_num: 0
+    },
+    tick: function (pixel) {
+        for (i = 0; i < adjacentCoords.length; i++) {
+            //if (Math.random() < 0.5) {
+            var checkPosX = pixel.x + adjacentCoords[i][0]
+            var checkPosY = pixel.y + adjacentCoords[i][1]
+            if (!isEmpty(checkPosX, checkPosY, true)) {
+                var newElement = pixelMap[checkPosX][checkPosY].element
+                if (elements[newElement].isFood && newElement !== "nutrient_paste") {
+                    deletePixel(checkPosX, checkPosY)
+                    pixel.paste_num++
+                };
+            };
+            //};
+        };
+        if (pixel.paste_num > 3) {
+            pixel.paste_num = 0
+            if (!outOfBounds(pixel.x, pixel.y + 1)) {
+                createPixel("nutrient_paste", pixel.x, pixel.y + 1)
+            }
+        }
     }
 }
 
@@ -783,7 +825,7 @@ elements.molten_lithium = {
     density: 512
 }
 
-//Other Materials
+//Other Elements
 
 elements.titanium = {
     behavior: behaviors.WALL,
@@ -794,6 +836,20 @@ elements.titanium = {
     hardness: 0.7,
     state: "solid",
     tempHigh: 1668
+}
+
+elements.nutrient_paste = {
+    behavior: behaviors.STURDYPOWDER,
+    burn: 5,
+    burnInto: "ash",
+    burnTime: 200,
+    category: "food",
+    color: "#ff0096",
+    density: 10,
+    isFood: true,
+    state: "solid",
+    stateHigh: "ash",
+    tempHigh: 250
 }
 
 //Reactions
