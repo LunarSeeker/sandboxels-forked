@@ -19,6 +19,62 @@ window.addEventListener("load", () => {
     })
 })
 
+function grow1147Tree(pixel, leaf, branch, color1, color2) {
+    if (!pixel.lc) { pixel.lc = color1 }
+    if (!pixel.wc) { pixel.wc = color2 }
+    if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
+        if (Math.random() < 0.5) {
+            if (Math.random() > 0.7) {
+                createPixel("scp_1147", pixel.x - 1, pixel.y - 1)
+            }
+            else {
+                createPixel(leaf, pixel.x - 1, pixel.y - 1)
+                pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.lc)
+            }
+        }
+        else {
+            createPixel("scp_1147_branch", pixel.x - 1, pixel.y - 1)
+            pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
+            pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
+            pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
+        }
+    }
+    if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
+        if (Math.random() < 0.5) {
+            if (Math.random() > 0.7) {
+                createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
+            }
+            else {
+                createPixel(leaf, pixel.x + 1, pixel.y - 1)
+                pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.lc)
+            }
+        }
+        else {
+            createPixel(branch, pixel.x + 1, pixel.y - 1)
+            pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
+            pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
+            pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
+        }
+    }
+    if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
+        if (Math.random() < 0.75) {
+            if (Math.random() > 0.8) {
+                createPixel("scp_1147", pixel.x, pixel.y - 1)
+            }
+            else {
+                createPixel(leaf, pixel.x, pixel.y - 1)
+                pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.lc)
+            }
+        }
+        else {
+            createPixel(branch, pixel.x, pixel.y - 1)
+            pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
+            pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
+            pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
+        }
+    }
+}
+
 async function _scpAskPrompt(message, defaultValue = "") {
     return new Promise(resolve => {
         promptInput(message, (result) => {
@@ -8028,8 +8084,6 @@ elements.head_1000 = {
 }
 
 elements.scp_1147 = {
-    burn: 50,
-    burnTime: 20,
     category: "scp",
     color: "#291d07",
     density: 1400,
@@ -8053,6 +8107,10 @@ elements.scp_1147 = {
                             chosenType = "scp_1147_machine"
                         } else if (dirtPixel.element === "glass" || dirtPixel.element === "stained_glass" || dirtPixel.element === "rad_glass" || dirtPixel.element === "glass_shard" || dirtPixel.element === "quartz_crystal" || dirtPixel.element === "quartz") {
                             chosenType = "scp_1147_glass"
+                        } else if (dirtPixel.element === "sand" || dirtPixel.element === "wet_sand" || dirtPixel.element === "packed_sand") {
+                            chosenType = "scp_1147_sand"
+                        } else if (dirtPixel.element === "scp_009" || dirtPixel.element === "packed_red_snow" || dirtPixel.element === "red_snow" || dirtPixel.element === "red_plant" || dirtPixel.element === "red_ice_plant") {
+                            chosenType = "scp_1147_red"
                         }
                     }
                 }
@@ -8095,59 +8153,7 @@ elements.scp_1147_branch = {
     tempLow: -30,
     tick: function (pixel) {
         if (!pixel.burning) {
-            if (!pixel.lc) { pixel.lc = "#00bf00" }
-            if (!pixel.wc) { pixel.wc = "#a0522d" }
-            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    if (Math.random() > 0.7) {
-                        createPixel("scp_1147", pixel.x - 1, pixel.y - 1)
-                    }
-                    else {
-                        createPixel("scp_1147_leaf", pixel.x - 1, pixel.y - 1)
-                        pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.lc)
-                    }
-                }
-                else {
-                    createPixel("scp_1147_branch", pixel.x - 1, pixel.y - 1)
-                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    if (Math.random() > 0.7) {
-                        createPixel("scp_1147", pixel.x + 1, pixel.y - 1)
-                    }
-                    else {
-                        createPixel("scp_1147_leaf", pixel.x + 1, pixel.y - 1)
-                        pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.lc)
-                    }
-                }
-                else {
-                    createPixel("scp_1147_branch", pixel.x + 1, pixel.y - 1)
-                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.75) {
-                    if (Math.random() > 0.8) {
-                        createPixel("scp_1147", pixel.x, pixel.y - 1)
-                    }
-                    else {
-                        createPixel("scp_1147_leaf", pixel.x, pixel.y - 1)
-                        pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.lc)
-                    }
-                }
-                else {
-                    createPixel("scp_1147_branch", pixel.x, pixel.y - 1)
-                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
-                }
-            }
+            grow1147Tree(pixel, "scp_1147_leaf", "scp_1147_branch", "#00bf00", "#a0522d")
         }
         doDefaults(pixel)
     },
@@ -8185,43 +8191,7 @@ elements.scp_1147_metal = {
     seed: "scp_1147",
     forceSaveColor: true,
     tick: function (pixel) {
-        if (!pixel.burning) {
-            if (!pixel.lc) { pixel.lc = "#888f94" }
-            if (!pixel.wc) { pixel.wc = "#71797e" }
-            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    createPixel("steel", pixel.x - 1, pixel.y - 1)
-                }
-                else {
-                    createPixel("scp_1147_metal", pixel.x - 1, pixel.y - 1)
-                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    createPixel("steel", pixel.x + 1, pixel.y - 1)
-                }
-                else {
-                    createPixel("scp_1147_metal", pixel.x + 1, pixel.y - 1)
-                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.75) {
-                    createPixel("steel", pixel.x, pixel.y - 1)
-                }
-                else {
-                    createPixel("scp_1147_metal", pixel.x, pixel.y - 1)
-                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
-                }
-            }
-        }
+        grow1147Tree(pixel, "steel", "scp_1147_metal", "#888f94", "#71797e")
         doDefaults(pixel)
     },
 }
@@ -8243,38 +8213,7 @@ elements.scp_1147_flesh = {
     forceSaveColor: true,
     tick: function (pixel) {
         if (!pixel.burning) {
-            if (!pixel.lc) { pixel.lc = "#f7ead0" }
-            if (!pixel.wc) { pixel.wc = "#3a312a" }
-            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
-                createPixel("scp_1147_flesh", pixel.x - 1, pixel.y - 1)
-                pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
-                pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
-                pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
-            }
-            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    createPixel("skin", pixel.x + 1, pixel.y - 1)
-                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.lc)
-                }
-                else {
-                    createPixel("scp_1147_flesh", pixel.x + 1, pixel.y - 1)
-                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.75) {
-                    createPixel("skin", pixel.x, pixel.y - 1)
-                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.lc)
-                }
-                else {
-                    createPixel("scp_1147_flesh", pixel.x, pixel.y - 1)
-                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
-                }
-            }
+            grow1147Tree(pixel, "skin", "scp_1147_flesh", "#f7ead0", "#3a312a")
         }
         doDefaults(pixel)
     },
@@ -8296,43 +8235,7 @@ elements.scp_1147_machine = {
     seed: "scp_1147",
     forceSaveColor: true,
     tick: function (pixel) {
-        if (!pixel.burning) {
-            if (!pixel.lc) { pixel.lc = "#4d0a03" }
-            if (!pixel.wc) { pixel.wc = "#9c6c25" }
-            if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    createPixel("wire", pixel.x - 1, pixel.y - 1)
-                }
-                else {
-                    createPixel("scp_1147_machine", pixel.x - 1, pixel.y - 1)
-                    pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.5) {
-                    createPixel("wire", pixel.x + 1, pixel.y - 1)
-                }
-                else {
-                    createPixel("scp_1147_machine", pixel.x + 1, pixel.y - 1)
-                    pixelMap[pixel.x + 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x + 1][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x + 1][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x + 1][pixel.y - 1].lc = pixel.lc
-                }
-            }
-            if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < 0.02) {
-                if (Math.random() < 0.7) {
-                    createPixel("wire", pixel.x, pixel.y - 1)
-                }
-                else {
-                    createPixel("scp_1147_machine", pixel.x, pixel.y - 1)
-                    pixelMap[pixel.x][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x][pixel.y - 1], pixel.wc)
-                    pixelMap[pixel.x][pixel.y - 1].wc = pixel.wc
-                    pixelMap[pixel.x][pixel.y - 1].lc = pixel.lc
-                }
-            }
-        }
+        grow1147Tree(pixel, "wire", "scp_1147_machine", "#4d0a03", "#9c6c25")
         doDefaults(pixel)
     },
 }
@@ -8388,9 +8291,49 @@ elements.scp_1147_glass = {
     forceSaveColor: true
 }
 
+elements.scp_1147_sand = {
+    behavior: behaviors.WALL,
+    category: "scp",
+    color: "#e6d577",
+    density: 1602,
+    hidden: true,
+    movable: false,
+    state: "solid",
+    stateHigh: "molten_glass",
+    tempHigh: 1700,
+    seed: "scp_1147",
+    forceSaveColor: true,
+    tick: function (pixel) {
+        grow1147Tree(pixel, "wood", "scp_1147_sand", "#e6d577", "#b5a85e")
+        doDefaults(pixel)
+    },
+}
+
+elements.scp_1147_red = {
+    behavior: behaviors.WALL,
+    breakInto: "scp_009",
+    category: "scp",
+    color: "#AA3527",
+    density: 1050,
+    hidden: true,
+    movable: false,
+    state: "solid",
+    stateHigh: "red_ice_plant",
+    temp: -20,
+    tempHigh: 2,
+    seed: "scp_1147",
+    forceSaveColor: true,
+    tick: function (pixel) {
+        grow1147Tree(pixel, "red_plant", "scp_1147_red", "#AA3527", "#A11D1D")
+        doDefaults(pixel)
+    },
+}
+
 elements.scp_1147_flesh.reactions = elements.skin.reactions
 elements.scp_1147_glass.reactions = elements.glass.reactions
 elements.scp_1147_metal.reactions = elements.steel.reactions
+elements.scp_1147_sand.reactions = elements.sand.reactions
+elements.scp_1147_red.reactions = elements.scp_009.reactions
 
 elements.scp_1600 = {
     behavior: behaviors.LIQUID,
