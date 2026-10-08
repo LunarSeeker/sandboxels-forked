@@ -33,7 +33,7 @@ function grow1147Tree(pixel, leaf, branch, color1, color2) {
             }
         }
         else {
-            createPixel("scp_1147_branch", pixel.x - 1, pixel.y - 1)
+            createPixel(branch, pixel.x - 1, pixel.y - 1)
             pixelMap[pixel.x - 1][pixel.y - 1].color = pixelColorPick(pixelMap[pixel.x - 1][pixel.y - 1], pixel.wc)
             pixelMap[pixel.x - 1][pixel.y - 1].wc = pixel.wc
             pixelMap[pixel.x - 1][pixel.y - 1].lc = pixel.lc
