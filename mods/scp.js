@@ -8091,7 +8091,7 @@ elements.scp_1015 = {
         if (elements[pixel.element].id === elements.scp_1015.id) { return }
         if (elements.scp_1015.reactions[pixel.element]) { return }
         if (elements.scp_1015.ignore.indexOf(pixel.element) !== -1) return
-        if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas" && elements[pixel.element].movable == true) {
+        if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
             if (Math.random() < 0.001) {
                 changePixel(pixel, "scp_1015")
             }
