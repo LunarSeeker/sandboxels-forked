@@ -8068,6 +8068,63 @@ elements.head_1000 = {
     }
 }
 
+elements.penny = {
+    color: ["#F49858", "#DE882C", "#D9752C", "#B15D23", "#C16522", "#B75C24", "#B05B28", "#AF6720"],
+    behavior: behaviors.POWDER,
+    category: "powders",
+    hidden: true,
+    tempHigh: 1085,
+    stateHigh: "molten_copper",
+    state: "solid",
+    density: 8960,
+    conduct: 0.85,
+    hardness: 0.3,
+}
+
+elements.penny.reactions = elements.copper.reactions
+
+elements.scp_1015 = {
+    name: "SCP-1015",
+    color: ["#F49858", "#DE882C", "#D9752C", "#B15D23", "#C16522", "#B75C24", "#B05B28", "#AF6720"],
+    behavior: behaviors.POWDER,
+    onCollide: function (_pixelOG, pixel) {
+        if (elements[pixel.element].id === elements.scp_1015.id) { return }
+        if (elements.scp_1015.reactions[pixel.element]) { return }
+        if (elements.scp_1015.ignore.indexOf(pixel.element) !== -1) return
+        if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas" && elements[pixel.element].movable == true) {
+            if (Math.random() < 0.001) {
+                changePixel(pixel, "scp_1015")
+            }
+            else {
+                changePixel(pixel, "penny")
+            }
+        }
+    },
+    insulate: true,
+    category: "scp",
+    state: "solid",
+    density: 8960,
+    conduct: 0.85,
+    hardness: 1,
+    reactions: {
+        "scp_001_light": { elem1: "penny" }
+    },
+    ignore: [
+        "black_hole",
+        "bless",
+        "copper",
+        "false_vacuum",
+        "gray_goo",
+        "hair",
+        "penny",
+        "salt",
+        "strange_matter",
+        "sugar",
+        "sun",
+        "wall"
+    ],
+}
+
 elements.scp_1147 = {
     category: "scp",
     color: "#291d07",
@@ -8364,6 +8421,7 @@ elements.scp_1600 = {
         "molten_gold": { elem2: "cheese", color2: "#FEDF5E" },
         "rotten_cheese": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#BBA950", "#BBA950", "#CE9F4B"] },
         "rotten_meat": { elem2: "cheese", color2: ["#B6B746", "#B6B746", "#C2995D", "#C2995D", "#CB7C8E"] },
+        "scp_001_light": { elem1: "cheese" },
         "scp_682": { stain2: "#CA8E2F", chance: 0.05, },
         "skin": { elem2: "cheese", color2: "#D5975F" },
         "solid_mercury": { elem2: "cheese", color2: "#393430" },
@@ -8431,5 +8489,6 @@ elements.bless.reactions.scp_682 = { elem2: null }
 elements.bless.reactions.scp_804 = { elem2: null }
 elements.bless.reactions.scp_882 = { elem2: "steel" }
 elements.bless.reactions.scp_882_rust = { elem2: "steel" }
+elements.bless.reactions.scp_1015 = { elem2: "penny" }
 elements.bless.reactions.scp_1600 = { elem2: "cheese" }
 elements.bless.reactions.green_1600 = { elem2: "cheese" }
