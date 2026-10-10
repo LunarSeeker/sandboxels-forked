@@ -39,6 +39,8 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "hazmat_head",
         "hazmat",
         "head_096",
+        "heavy_ice",
+        "heavy_water",
         "ichor",
         "image",
         "lead",
@@ -323,54 +325,9 @@ elements.arsenic_gas = {
     temp: 700,
     tempLow: 613,
     stateLow: "arsenic",
-    reactions: {
-        "algae": { elem1: null, elem2: null },
-        "ant": { elem1: null, elem2: "dead_bug" },
-        "bee": { elem1: null, elem2: "dead_bug" },
-        "bird": { elem2: "rotten_meat" },
-        "blood": { elem1: null, elem2: "arsenic" },
-        "body": { elem2: "rotten_meat" },
-        "cactus": { elem1: null, elem2: "dead_plant" },
-        "cheese_powder": { elem1: null, elem2: "rotten_cheese" },
-        "cheese": { elem1: null, elem2: "rotten_cheese" },
-        "coral": { elem1: null, elem2: "dirty_water" },
-        "evergreen": { elem1: null, elem2: "dead_plant" },
-        "firefly": { elem1: null, elem2: "dead_bug" },
-        "fish": { elem2: "rotten_meat" },
-        "flea": { elem1: null, elem2: "dead_bug" },
-        "flower_seed": { elem1: null, elem2: "dead_plant" },
-        "fly": { elem1: null, elem2: "dead_bug" },
-        "frog": { elem2: "slime" },
-        "grass_seed": { elem1: null, elem2: "dead_plant" },
-        "grass": { elem1: null, elem2: "dead_plant" },
-        "head": { elem2: "rotten_meat" },
-        "homunculus": { elem2: "rotten_meat" },
-        "kelp": { elem1: null, elem2: "dirty_water" },
-        "lichen": { elem1: null, elem2: null },
-        "meat": { elem2: "rotten_meat" },
-        "mushroom_cap": { elem1: null, elem2: null, chance: 0.01 },
-        "mushroom_gill": { elem1: null, elem2: null, chance: 0.01 },
-        "mushroom_spore": { elem1: null, elem2: null },
-        "mushroom_stalk": { elem1: null, elem2: null, chance: 0.01 },
-        "petal": { elem1: null, elem2: "dead_plant" },
-        "pistil": { elem1: null, elem2: "dead_plant" },
-        "plant": { elem1: null, elem2: "dead_plant" },
-        "rat": { elem2: "rotten_meat" },
-        "salt_water": { elem1: null, elem2: "dirty_water" },
-        "slug": { elem1: null, elem2: "slime" },
-        "snail": { elem1: null, elem2: "limestone" },
-        "spider": { elem1: null, elem2: "dead_bug" },
-        "stink_bug": { elem1: null, elem2: "dead_bug" },
-        "sugar_water": { elem1: null, elem2: "dirty_water" },
-        "tadpole": { elem2: "slime" },
-        "termite": { elem1: null, elem2: "dead_bug" },
-        "vine": { elem1: null, elem2: "dead_plant" },
-        "water": { elem1: null, elem2: "dirty_water" },
-        "worm": { elem1: null, elem2: "dead_bug" },
-        "yeast": { elem1: null, elem2: null },
-        "hair": { elem1: null, elem2: null }
-    },
 }
+
+elements.arsenic_gas.reactions = elements.arsenic.reactions
 
 //Hazmat
 
@@ -717,7 +674,24 @@ elements.nuclear_reactor = {
         "uranium": { charge1: 1, elem2: null },
     },
     tick: function (pixel) {
-        irradiateNearby(pixel, 5, 4)
+        if (pixel.temp > 100) {
+            irradiateNearby(pixel, 5, 4)
+        }
+        for (i = 0; i < adjacentCoords.length; i++) {
+            //if (Math.random() < 0.5) {
+            var checkPosX = pixel.x + adjacentCoords[i][0]
+            var checkPosY = pixel.y + adjacentCoords[i][1]
+            if (!isEmpty(checkPosX, checkPosY, true)) {
+                var newElement = pixelMap[checkPosX][checkPosY].element
+                if (newElement == "heavy_water" || newElement == "heavy_ice") {
+                    if (pixel.temp > 40) {
+                        deletePixel(checkPosX, checkPosY)
+                        pixel.temp -= 10
+                    }
+                };
+            };
+            //};
+        };
     }
 }
 
@@ -913,13 +887,18 @@ elements.bless.reactions.technetium = { elem2: "gold" }
 elements.beans.nutrients_value = 2
 elements.bread.nutrients_value = 2
 elements.candy.nutrients_value = 0
+elements.chocolate_milk.nutrients_value = 0
+elements.chocolate.nutrients_value = 0
 elements.corn.nutrients_value = 2
 elements.grape.nutrients_value = 2
 elements.herb.nutrients_value = 2
 elements.lettuce.nutrients_value = 4
+elements.milk.nutrients_value = 4
 elements.nut.nutrients_value = 2
 elements.pickle.nutrients_value = 4
+elements.pilk.nutrients_value = 0
 elements.potato.nutrients_value = 2
 elements.rice.nutrients_value = 2
+elements.soda.nutrients_value = 0
 elements.tomato.nutrients_value = 2
 elements.wheat.nutrients_value = 2
