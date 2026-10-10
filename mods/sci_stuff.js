@@ -42,6 +42,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "ichor",
         "image",
         "lead",
+        "nuclear_reactor",
         "philosophers_stone",
         "pipe_wall",
         "pipe",
@@ -58,6 +59,7 @@ function irradiateNearby(pixel, radius = 1, intensity = 1) {
         "wall",
         "warp",
         "waste_barrel",
+        "wire",
     ])
 
     for (let dx = -radius; dx <= radius; dx++) {
@@ -674,6 +676,51 @@ elements.hazmat_head = {
 
 // Machines
 
+elements.fossil_engine = {
+    alias: ["oil engine", "furnace"],
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#ac8862",
+    conduct: 1,
+    darkText: true,
+    hardness: 0.5,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    stateHigh: "molten_iron",
+    temp: 15,
+    tempHigh: 1538,
+    reactions: {
+        "oil": { charge1: 1, elem2: null },
+        "charcoal": { charge1: 1, elem2: null },
+    }
+}
+
+elements.nuclear_reactor = {
+    behavior: behaviors.WALL,
+    breakInto: ["uranium", "iron"],
+    category: "machines",
+    color: "#ac8862",
+    conduct: 1,
+    darkText: true,
+    hardness: 0.9,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    stateHigh: "n_explosion",
+    tempHigh: 30000,
+    reactions: {
+        "glass_shard": { elem2: "rad_shard" },
+        "neutron": { elem2: "proton" },
+        "plutonium": { charge1: 1, elem2: null },
+        "uranium": { charge1: 1, elem2: null },
+    },
+    tick: function (pixel) {
+        irradiateNearby(pixel, 5, 4)
+    }
+}
+
 elements.solar_panel = {
     behavior: behaviors.WALL,
     breakInto: ["wire", "iron"],
@@ -687,7 +734,7 @@ elements.solar_panel = {
     state: "solid",
     stateHigh: "molten_iron",
     temp: 15,
-    tempHigh: 200,
+    tempHigh: 1538,
     reactions: {
         "light": { charge1: 1, elem2: null },
         "liquid_light": { charge1: 1, elem2: null }
@@ -720,7 +767,7 @@ elements.paste_machine = {
                 var newElement = pixelMap[checkPosX][checkPosY].element
                 if (elements[newElement].isFood && newElement !== "nutrient_paste") {
                     deletePixel(checkPosX, checkPosY)
-                    pixel.paste_num++
+                    pixel.paste_num += (elements[newElement].nutrients_value || 1)
                 };
             };
             //};
@@ -863,29 +910,16 @@ elements.bless.reactions.technetium = { elem2: "gold" }
 
 //Other
 
-elements.molten_potassium.behavior = behaviors.LIQUID
-elements.molten_sodium.behavior = behaviors.LIQUID
-
-elements.honey.behavior = [
-    "XX|ST|XX",
-    "ST AND M2|XX|ST AND M2",
-    "XX|ST AND M1|XX",
-]
-
-elements.sap.behavior = [
-    "XX|ST|XX",
-    "ST AND M2|XX|ST AND M2",
-    "XX|ST AND M1|XX",
-]
-
-elements.caramel.behavior = [
-    "XX|ST|XX",
-    "ST AND M2|XX|ST AND M2",
-    "XX|ST AND M1|XX",
-]
-
-elements.melted_chocolate.behavior = [
-    "XX|ST|XX",
-    "ST AND M2|XX|ST AND M2",
-    "XX|ST AND M1|XX",
-]
+elements.beans.nutrients_value = 2
+elements.bread.nutrients_value = 2
+elements.candy.nutrients_value = 0
+elements.corn.nutrients_value = 2
+elements.grape.nutrients_value = 2
+elements.herb.nutrients_value = 2
+elements.lettuce.nutrients_value = 4
+elements.nut.nutrients_value = 2
+elements.pickle.nutrients_value = 4
+elements.potato.nutrients_value = 2
+elements.rice.nutrients_value = 2
+elements.tomato.nutrients_value = 2
+elements.wheat.nutrients_value = 2

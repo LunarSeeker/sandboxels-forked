@@ -3,12 +3,12 @@ const newFruits = {
     apple: "#FF0000",
     banana: "#FFE135",
     fig: "#8B4513",
+    green_apple: "#00FF00",
     lemon: "#FFFACD",
     lime: "#98FB98",
     orange: "#EDA137",
     peach: "#FFDAB9",
     pear: "#9ACD32",
-    green_apple: "#00FF00",
     plum: "#8E4585",
 }
 
@@ -24,6 +24,7 @@ for (const [name, color] of Object.entries(newFruits)) {
         color: color,
         density: 1154,
         isFood: true,
+        nutrients_value: 2, // For sci_stuff.js
         state: "solid",
         stateHigh: ["steam", "sugar"],
         tempHigh: 256,

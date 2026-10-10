@@ -3,7 +3,7 @@ colorstochoose = [
     "#0000ff",
     "#00ff00",
     "#00ffff",
-    "#0f0f0f",
+    "#5fb187",
     "#ff0000",
     "#ff00ff",
     "#ff8800",

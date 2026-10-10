@@ -980,6 +980,7 @@ elements.scp_001_light = {
         "salt_water": { "color1": ["#ff0000", "#a1bac9"] },
         "sugar_water": { "color1": ["#ff0000", "#a1bac9"] },
         "dirty_water": { "color1": ["#ff0000", "#a1c9a8"] },
+        "scp_409": { elem2: "quartz" },
         "seltzer": { "color1": ["#ff0000", "#c2fff9"] },
         "diamond": { "color1": ["#ff0000", "#c2c5ff", "#c2d9ff"] },
         "rainbow": { "color1": ["#ff0000", "#ff0000", "#ff8800", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#ff00ff"] },
@@ -6086,7 +6087,7 @@ elements.scp_261 = {
             var y = pixel.y + coord[1]
             if (!isEmpty(x, y, true)) {
                 let newPixel = pixelMap[x][y]
-                if ((newPixel.element == "gold_coin" || newPixel.element == "bronze_coin" || newPixel.element == "money") && Math.random() > 0.15) {
+                if ((newPixel.element == "gold_coin" || newPixel.element == "penny" || newPixel.element == "bronze_coin" || newPixel.element == "money") && Math.random() > 0.15) {
                     pixel.strange++
                     deletePixel(newPixel.x, newPixel.y)
                     if (pixel.strange > 25 && (Math.random() > (pixel.db * 0.1))) {
@@ -6693,6 +6694,7 @@ elements.scp_447 = {
         "ruins": { elem2: "rock", chance: 0.05 },
         "rust": { elem2: "steel" },
         "salt_water": { elem2: "water" },
+        "scp_001_light": { elem1: "juice", color1: "#00ff00" },
         "scp_1600": { elem2: "green_1600" },
         "scp_804": { attr2: { radius: 200 } },
         "scp_882_rust": { elem2: "scp_882" },
@@ -7567,6 +7569,7 @@ elements.scp_882 = {
         "head_1000": { elem2: "rotten_meat" },
         "head": { elem2: "rotten_meat" },
         "pool_water": { elem2: "scp_882_rust" },
+        "scp_001_light": { elem1: "iron" },
         "salt_water": { elem2: "scp_882_rust" },
     },
     onCollide: function (_pixelOG, pixel) {
@@ -7594,6 +7597,7 @@ elements.scp_882_rust = {
     tempHigh: 1538,
     reactions: {
         "oil": { elem2: "scp_882" },
+        "scp_001_light": { elem1: "rust" },
     },
 }
 
@@ -8092,7 +8096,7 @@ elements.scp_1015 = {
         if (elements.scp_1015.reactions[pixel.element]) { return }
         if (elements.scp_1015.ignore.indexOf(pixel.element) !== -1) return
         if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
-            if (Math.random() < 0.001) {
+            if (Math.random() < 0.01) {
                 changePixel(pixel, "scp_1015")
             }
             else {
