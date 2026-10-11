@@ -675,10 +675,16 @@ elements.nuclear_reactor = {
     },
     tick: function (pixel) {
         if (pixel.temp > 100) {
-            irradiateNearby(pixel, 5, 4)
+            if (Math.random() < decay(13510)) {
+                irradiateNearby(pixel, 5, 4)
+            } else if (pixel.temp < 1000) {
+                pixel.temp += 1
+            }
+        }
+        if (pixel.charge > 0) {
+            pixel.temp += 1
         }
         for (i = 0; i < adjacentCoords.length; i++) {
-            //if (Math.random() < 0.5) {
             var checkPosX = pixel.x + adjacentCoords[i][0]
             var checkPosY = pixel.y + adjacentCoords[i][1]
             if (!isEmpty(checkPosX, checkPosY, true)) {
@@ -690,7 +696,6 @@ elements.nuclear_reactor = {
                     }
                 };
             };
-            //};
         };
     }
 }
@@ -734,7 +739,6 @@ elements.paste_machine = {
     },
     tick: function (pixel) {
         for (i = 0; i < adjacentCoords.length; i++) {
-            //if (Math.random() < 0.5) {
             var checkPosX = pixel.x + adjacentCoords[i][0]
             var checkPosY = pixel.y + adjacentCoords[i][1]
             if (!isEmpty(checkPosX, checkPosY, true)) {
@@ -744,7 +748,6 @@ elements.paste_machine = {
                     pixel.paste_num += (elements[newElement].nutrients_value || 1)
                 };
             };
-            //};
         };
         if (pixel.paste_num > 3) {
             pixel.paste_num = 0
