@@ -674,25 +674,25 @@ elements.nuclear_reactor = {
         "uranium": { charge1: 1, elem2: null },
     },
     tick: function (pixel) {
-        if (pixel.temp > 100) {
-            if (Math.random() < decay(13510)) {
-                irradiateNearby(pixel, 5, 4)
-            } else if (pixel.temp < 1000) {
-                pixel.temp += 1
-            }
-        }
         if (pixel.charge > 0) {
-            pixel.temp += 1
+            irradiateNearby(pixel, 5, 4)
+            pixel.temp += 5
         }
         for (i = 0; i < adjacentCoords.length; i++) {
             var checkPosX = pixel.x + adjacentCoords[i][0]
             var checkPosY = pixel.y + adjacentCoords[i][1]
             if (!isEmpty(checkPosX, checkPosY, true)) {
                 var newElement = pixelMap[checkPosX][checkPosY].element
-                if (newElement == "heavy_water" || newElement == "heavy_ice") {
-                    if (pixel.temp > 40) {
+                if (pixel.temp > 40) {
+                    if (newElement == "heavy_water" || newElement == "heavy_ice") {
                         deletePixel(checkPosX, checkPosY)
                         pixel.temp -= 10
+                    } else if (newElement == "water" || newElement == "ice" || newElement == "red_water" || newElement == "red_steam") {
+                        deletePixel(checkPosX, checkPosY)
+                        pixel.temp -= 5
+                    } else if (newElement == "ice_nine") {
+                        deletePixel(checkPosX, checkPosY)
+                        pixel.temp -= 100
                     }
                 };
             };

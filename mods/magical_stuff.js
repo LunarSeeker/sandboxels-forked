@@ -508,9 +508,41 @@ elements.potion = {
     },
 }
 
+elements.ice_zero = {
+    category: "special",
+    color: ["#b0f7ee", "#bbfcfa", "#cefcfc"],
+    density: 940,
+    excludeRandom: true,
+    state: "solid",
+    temp: -273,
+    behavior: [
+        "M1|M1|M1",
+        "M2|XX|M2",
+        "XX|CR:ice%2.5|XX"
+    ],
+    reactions: {
+        "water": { elem2: "ice_zero" },
+        "cloud": { elem2: "ice_zero" },
+        "dirty_water": { elem2: "ice_nine" },
+        "hail_cloud": { elem2: "ice_zero" },
+        "pool_water": { elem2: "ice_zero" },
+        "rad_steam": { elem2: "ice_zero" },
+        "rain_cloud": { elem2: "ice_zero" },
+        "salt_water": { elem2: "ice_zero" },
+        "seltzer": { elem2: "ice_zero" },
+        "smog": { elem2: "ice_zero" },
+        "snow_cloud": { elem2: "ice_zero" },
+        "snow": { elem2: "ice_zero" },
+        "steam": { elem2: "ice_zero" },
+        "sugar_water": { elem2: "ice_zero" },
+        "thunder_cloud": { elem2: "ice_zero" }
+    },
+}
+
 elements.bless.reactions.ancient_curse = { elem2: null }
 elements.bless.reactions.dark_ice = { elem2: null }
 elements.bless.reactions.dark_steam = { elem2: null }
 elements.bless.reactions.dark_water = { elem2: null }
+elements.bless.reactions.ice_zero = { elem2: "ice" }
 
 elements.ichor.reactions = elements.bless.reactions
