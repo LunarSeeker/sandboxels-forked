@@ -8404,6 +8404,52 @@ elements.scp_1147_metal.reactions = elements.steel.reactions
 elements.scp_1147_red.reactions = elements.scp_009.reactions
 elements.scp_1147_sand.reactions = elements.sand.reactions
 
+elements.scp_1424 = {
+    name: "SCP-1424",
+    color: ["#E7E7E5", "#DCD9D4", "#ACACAC"],
+    temp: -20,
+    properties: {
+        dir: 1,
+    },
+    tick: function (pixel) {
+        if (tryMove(pixel, pixel.x, pixel.y + 1)) { } // Fall
+        doDefaults(pixel)
+        if (Math.random() < 0.05) { // Move 5% chance
+            var movesToTry = [
+                [1 * pixel.dir, 0],
+                [1 * pixel.dir, -1],
+            ]
+            let moved = false
+            // While movesToTry is not empty, tryMove(pixel, x, y) with a random move, then remove it. if tryMove returns true, break.
+            while (movesToTry.length > 0) {
+                var move = movesToTry.splice(Math.floor(Math.random() * movesToTry.length), 1)[0]
+                if (isEmpty(pixel.x + move[0], pixel.y + move[1])) {
+                    var origx = pixel.x + move[0]
+                    var origy = pixel.y + move[1]
+                    if (tryMove(pixel, pixel.x + move[0], pixel.y + move[1]) && pixel.x === origx && pixel.y === origy) {
+                        moved = true
+                        break
+                    }
+                }
+            }
+            // 10% chance to change direction
+            if (Math.random() < 0.1 || !moved) {
+                pixel.dir *= -1
+            }
+        }
+        if (Math.random() > 0.95) {
+            releaseElement(pixel, "ammonia", 1, true)
+        }
+        if (pixel.temp > -17) { pixel.temp -= 1 }
+        else if (pixel.temp < -22) { pixel.temp += 1 }
+    },
+    category: "scp",
+    density: 1580,
+    state: "solid",
+    conduct: .025,
+    cooldown: defaultCooldown,
+}
+
 elements.scp_1600 = {
     behavior: behaviors.LIQUID,
     category: "scp",
@@ -8434,6 +8480,7 @@ elements.scp_1600 = {
         if (elements[pixel.element].id === elements.scp_1600.id) { return }
         if (elements.scp_1600.reactions[pixel.element]) { return }
         if (elements.scp_1600.ignore.indexOf(pixel.element) !== -1) return
+        if (Math.random() < (elements[pixel.element].hardness || 0)) { return }
         if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
             var old_color = pixel.color
             changePixel(pixel, "cheese")
