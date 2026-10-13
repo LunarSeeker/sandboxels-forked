@@ -1,3 +1,9 @@
+window.addEventListener("load", () => {
+    powderyStuff = Object.keys(elements).filter(function (e) {
+        return elements[e].state == "solid" && elements[e].category === "powders"
+    })
+})
+
 dwarfcrawlThru = [...eLists.CRAWLTHRU, ...eLists.SOIL, "granite", "ice", "snow", "plant", "concrete"]
 
 removeElementsDark = [ //For elements not in the "life" category
@@ -31,6 +37,26 @@ let magic_textures = {
         "AABBCC",
         "BBAACC",
     ]
+}
+
+elements.transmutation = {
+    name: "transmute",
+    behavior: behaviors.POWDER,
+    category: "powders",
+    color: "#4e3629",
+    density: 19800,
+    state: "solid",
+    tick(pixel) {
+        for (let dx = -5; dx <= 5; dx++) {
+            for (let dy = -5; dy <= 5; dy++) {
+                if (dx === 0 && dy === 0) continue
+                let p = getPixel((pixel.x + dx), (pixel.y + dy))
+                if (p && !powderyStuff.has(p.element) && Math.random() < 0.1 && elements[p.element].state !== "solid") {
+                    changePixel(p, powderyStuff[Math.floor(Math.random() * powderyStuff.length)])
+                }
+            }
+        }
+    }
 }
 
 elements.dwarf_wall = {
@@ -489,8 +515,10 @@ elements.potion = {
                 changePixel(pixel, "gold_coin")
             } else if (eLists.SEEDS.indexOf(pixel.element) !== -1) {
                 changePixel(pixel, "ash")
-            } else if (elements[pixel.element].id === elements.tree_branch.id) {
-                changePixel(pixel, "magic_steel")
+            } else if (elements[pixel.element].id === elements.wood.id) {
+                changePixel(pixel, "tree_branch")
+            } else if (elements[pixel.element].id === elements.plant.id) {
+                changePixel(pixel, "snake")
             } else {
                 changePixel(pixel, "clay")
             }
@@ -523,7 +551,7 @@ elements.ice_zero = {
     reactions: {
         "water": { elem2: "ice_zero" },
         "cloud": { elem2: "ice_zero" },
-        "dirty_water": { elem2: "ice_nine" },
+        "dirty_water": { elem2: "ice_zero" },
         "hail_cloud": { elem2: "ice_zero" },
         "pool_water": { elem2: "ice_zero" },
         "rad_steam": { elem2: "ice_zero" },
