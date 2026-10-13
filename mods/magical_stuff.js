@@ -1,9 +1,3 @@
-window.addEventListener("load", () => {
-    powderyStuff = Object.keys(elements).filter(function (e) {
-        return elements[e].state == "solid" && elements[e].category === "powders"
-    })
-})
-
 dwarfcrawlThru = [...eLists.CRAWLTHRU, ...eLists.SOIL, "granite", "ice", "snow", "plant", "concrete"]
 
 removeElementsDark = [ //For elements not in the "life" category
@@ -37,26 +31,6 @@ let magic_textures = {
         "AABBCC",
         "BBAACC",
     ]
-}
-
-elements.transmutation = {
-    name: "transmute",
-    behavior: behaviors.POWDER,
-    category: "powders",
-    color: "#4e3629",
-    density: 19800,
-    state: "solid",
-    tick(pixel) {
-        for (let dx = -5; dx <= 5; dx++) {
-            for (let dy = -5; dy <= 5; dy++) {
-                if (dx === 0 && dy === 0) continue
-                let p = getPixel((pixel.x + dx), (pixel.y + dy))
-                if (p && !powderyStuff.has(p.element) && Math.random() < 0.1 && elements[p.element].state !== "solid") {
-                    changePixel(p, powderyStuff[Math.floor(Math.random() * powderyStuff.length)])
-                }
-            }
-        }
-    }
 }
 
 elements.dwarf_wall = {
@@ -504,7 +478,7 @@ elements.potion = {
     color: ["#5eff89", "#82fffd"],
     density: 193,
     excludeRandom: true,
-    ignore: ["black_hole", "wall", "gold", "lead", "silver", "steel", "iron", "plant"],
+    ignore: ["dwarf", "plant"],
     state: "liquid",
     onCollide: function (_pixelOG, pixel) {
         if (elements[pixel.element].id === elements.potion.id) { return }
@@ -514,21 +488,21 @@ elements.potion = {
             if (eLists.ANIMAL.indexOf(pixel.element) !== -1) {
                 changePixel(pixel, "gold_coin")
             } else if (eLists.SEEDS.indexOf(pixel.element) !== -1) {
-                changePixel(pixel, "ash")
-            } else if (elements[pixel.element].id === elements.wood.id) {
-                changePixel(pixel, "tree_branch")
-            } else if (elements[pixel.element].id === elements.plant.id) {
                 changePixel(pixel, "snake")
             } else {
                 changePixel(pixel, "clay")
             }
+        } else if (elements[pixel.element].id === elements.wood.id) {
+            changePixel(pixel, "tree_branch")
+        } else if (elements[pixel.element].id === elements.ice.id) {
+            changePixel(pixel, "ice_zero")
         }
     },
     reactions: {
+        "ant": { elem2: "dwarf" },
         "cooked_meat": { elem2: "plant" },
         "copper": { elem2: "philosophers_stone" },
         "cured_meat": { elem2: "plant" },
-        "ice": { elem2: "dark_ice" },
         "meat": { elem2: "plant" },
         "mycelium": { elem2: "dirt" },
         "rotten_meat": { elem2: "plant" },
