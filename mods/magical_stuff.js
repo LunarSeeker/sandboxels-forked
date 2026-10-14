@@ -478,7 +478,7 @@ elements.potion = {
     color: ["#5eff89", "#82fffd"],
     density: 193,
     excludeRandom: true,
-    ignore: ["dwarf", "plant"],
+    ignore: ["dwarf", "plant", "tree_branch"],
     state: "liquid",
     onCollide: function (_pixelOG, pixel) {
         if (elements[pixel.element].id === elements.potion.id) { return }
@@ -536,6 +536,71 @@ elements.ice_zero = {
         "steam": { elem2: "ice_zero" },
         "sugar_water": { elem2: "ice_zero" },
         "thunder_cloud": { elem2: "ice_zero" }
+    },
+}
+
+elements.ancient_walls = {
+    behavior: behaviors.WALL,
+    breakInto: "rock",
+    category: "land",
+    color: ["#363636", "#7a7a7a"],
+    density: 2550,
+    hardness: 0.5,
+    hidden: true,
+    movable: false,
+    seed: "ancient_tower",
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.h > 0 && pixelTicks % (50 + pixel.h) === 0) {
+            // extend to the left and right, giving the next ancient_walls h-1
+            if (isEmpty(pixel.x - 1, pixel.y)) {
+                createPixel("ancient_walls", pixel.x - 1, pixel.y)
+                pixelMap[pixel.x - 1][pixel.y].h = pixel.h - 2
+            }
+            if (isEmpty(pixel.x + 1, pixel.y)) {
+                createPixel("ancient_walls", pixel.x + 1, pixel.y)
+                pixelMap[pixel.x + 1][pixel.y].h = pixel.h - 2
+            }
+        }
+        doDefaults(pixel)
+    }
+}
+
+elements.ancient_tower = {
+    category: "special",
+    color: ["#33e3c643", "#521317"],
+    cooldown: defaultCooldown,
+    density: 1500,
+    seed: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (!tryMove(pixel, pixel.x, pixel.y + 1) && pixelTicks - pixel.start > 50) {
+            if (pixel.h === undefined) {
+                pixel.h = Math.floor(Math.random() * 5) * 2 + 5
+            }
+            if (Math.random() < 0.02 && pixel.h > 0) {
+                if (!outOfBounds(pixel.x, pixel.y + 1)) { // grow roots
+                    var dirtPixel = pixelMap[pixel.x][pixel.y + 1]
+                    if (dirtPixel && (eLists.SOIL.indexOf(dirtPixel.element) !== -1 || dirtPixel.element === "grass" || dirtPixel.element === "rock_wall")) {
+                        changePixel(dirtPixel, "rock_wall")
+                    }
+                }
+                if (isEmpty(pixel.x, pixel.y - 1) && tryMove(pixel, pixel.x, pixel.y - 1)) {
+                    if (pixel.h % 2 && pixel.h < 10) {
+                        createPixel("ancient_walls", pixel.x, pixel.y + 1)
+                        pixelMap[pixel.x][pixel.y + 1].h = pixel.h
+                    }
+                    else {
+                        createPixel("wood", pixel.x, pixel.y + 1)
+                    }
+                    pixel.h--
+                }
+            }
+            else if (pixel.h === 0) {
+                changePixel(pixel, "ancient_walls")
+            }
+        }
+        doDefaults(pixel)
     },
 }
 
