@@ -568,7 +568,7 @@ elements.ancient_walls = {
 
 elements.ancient_tower = {
     category: "special",
-    color: ["#33e3c643", "#521317"],
+    color: ["#33e3c6", "#521317"],
     cooldown: defaultCooldown,
     density: 1500,
     seed: true,
