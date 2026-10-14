@@ -671,6 +671,7 @@ elements.nuclear_reactor = {
         "glass_shard": { elem2: "rad_shard" },
         "neutron": { elem2: "proton" },
         "plutonium": { charge1: 1, elem2: null },
+        "tritium": { charge1: 1, elem2: null },
         "uranium": { charge1: 1, elem2: null },
     },
     tick: function (pixel) {
@@ -889,9 +890,6 @@ elements.bless.reactions.technetium = { elem2: "gold" }
 
 elements.beans.nutrients_value = 2
 elements.bread.nutrients_value = 2
-elements.candy.nutrients_value = 0
-elements.chocolate_milk.nutrients_value = 0
-elements.chocolate.nutrients_value = 0
 elements.corn.nutrients_value = 2
 elements.grape.nutrients_value = 2
 elements.herb.nutrients_value = 2
@@ -899,9 +897,7 @@ elements.lettuce.nutrients_value = 4
 elements.milk.nutrients_value = 4
 elements.nut.nutrients_value = 2
 elements.pickle.nutrients_value = 4
-elements.pilk.nutrients_value = 0
 elements.potato.nutrients_value = 2
 elements.rice.nutrients_value = 2
-elements.soda.nutrients_value = 0
 elements.tomato.nutrients_value = 2
 elements.wheat.nutrients_value = 2

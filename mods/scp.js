@@ -1610,8 +1610,6 @@ elements.body_008 = {
         "worm": { elem2: "slime", chance: 0.05, oneway: true },
         "stink_bug": { elem2: "stench", oneway: true },
         "grass_seed": { elem2: null, chance: 0.05 },
-        "gold_coin": { elem2: null, chance: 0.05 },
-        "diamond": { elem2: null, chance: 0.05 },
         "sun": { elem1: "infected_meat" },
         "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
         "anesthesia": { attr1: { "panic": 0 } },
@@ -6401,7 +6399,7 @@ elements.scp_391 = {
     category: "scp",
     burn: 2,
     burnTime: 100,
-    breakInto: ["feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "diamond", "gold_coin", "gold_coin", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "gold_coin", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "feather", "blood", "gold_coin",],
+    breakInto: ["feather", "blood", "diamond", "gold_coin", "gold_coin"],
     state: "solid",
     density: 400,
     cooldown: defaultCooldown,
@@ -7449,7 +7447,7 @@ elements.scp_804 = {
                             }
                         }
                     }
-                    else if (!manmade.lc && !manmade.wc && manmade.element == "wood" || manmade.element == "tinder" || manmade.element == "scp_063" || manmade.element == "scp_012" || manmade.element == "dust" || manmade.element == "insulation" || manmade.element == "cloth" || manmade.element == "plastic" || elements[manmade.element].keycard == true || manmade.element == "bead" || manmade.element == "glitter" || manmade.element == "confetti" || manmade.element == "paper" || manmade.element == "cement" || manmade.element == "acid" || manmade.element == "black_acid" || manmade.element == "alcohol" || manmade.element == "wax" || manmade.element == "poison" || manmade.element == "incense" || manmade.element == "gold_coin" || manmade.element == "borax" || manmade.element == "spray_paint" || manmade.element == "anesthesia" || manmade.element == "acid_gas" || manmade.element == "ball" || manmade.element == "potassium_salt" || manmade.element == "epsom_salt" || manmade.element == "sodium_acetate") {
+                    else if ((!manmade.lc && !manmade.wc && manmade.element == "wood") || manmade.element == "tinder" || manmade.element == "scp_063" || manmade.element == "scp_012" || manmade.element == "dust" || manmade.element == "insulation" || manmade.element == "cloth" || manmade.element == "penny" || manmade.element == "plastic" || elements[manmade.element].keycard == true || manmade.element == "bead" || manmade.element == "glitter" || manmade.element == "confetti" || manmade.element == "paper" || manmade.element == "cement" || manmade.element == "acid" || manmade.element == "black_acid" || manmade.element == "alcohol" || manmade.element == "wax" || manmade.element == "poison" || manmade.element == "incense" || manmade.element == "gold_coin" || manmade.element == "borax" || manmade.element == "spray_paint" || manmade.element == "anesthesia" || manmade.element == "acid_gas" || manmade.element == "ball" || manmade.element == "potassium_salt" || manmade.element == "epsom_salt" || manmade.element == "sodium_acetate") {
                         if (!manmade.repair) {
                             manmade.repair = 6
                         }
@@ -7541,6 +7539,7 @@ elements.scp_882 = {
         "lead",
         "metal_scrap",
         "nickel",
+        "penny",
         "purple_gold",
         "pyrite",
         "rose_gold",
@@ -7828,8 +7827,6 @@ elements.body_1000 = {
         "worm": { elem2: "slime", chance: 0.05, oneway: true },
         "stink_bug": { elem2: "stench", oneway: true },
         "grass_seed": { elem2: null, chance: 0.05 },
-        "gold_coin": { elem2: null, chance: 0.05 },
-        "diamond": { elem2: null, chance: 0.05 },
         "sun": { elem1: "cooked_meat" },
         "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
         "anesthesia": { attr1: { "panic": 0 } },

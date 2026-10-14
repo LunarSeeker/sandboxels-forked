@@ -492,10 +492,6 @@ elements.potion = {
             } else {
                 changePixel(pixel, "clay")
             }
-        } else if (elements[pixel.element].id === elements.wood.id) {
-            changePixel(pixel, "tree_branch")
-        } else if (elements[pixel.element].id === elements.ice.id) {
-            changePixel(pixel, "ice_zero")
         }
     },
     reactions: {
@@ -503,10 +499,12 @@ elements.potion = {
         "cooked_meat": { elem2: "plant" },
         "copper": { elem2: "philosophers_stone" },
         "cured_meat": { elem2: "plant" },
+        "ice": { elem2: "ice_zero" },
         "meat": { elem2: "plant" },
         "mycelium": { elem2: "dirt" },
         "rotten_meat": { elem2: "plant" },
         "water": { elem2: "potion" },
+        "wood": { elem2: "tree_branch" },
     },
 }
 
