@@ -1,7 +1,3 @@
-function clamp(x, min, max) {
-    return Math.max(min, Math.min(x, max))
-}
-
 // Life
 elements.chicken = {
     color: ["#ba5700", "#d18038", "#d4ccc5"],
@@ -608,7 +604,7 @@ elements.genesis_device = {
                             changePixel(terraformable, "cell")
                         }
                     }
-                    else if (terraformable.element !== "dirt" && terraformable.element !== "rock" && (elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1 || elements[terraformable.element].category === "land")) {
+                    else if (terraformable.element !== "dirt" && terraformable.element !== "mud" && terraformable.element !== "rock" && (elements.genesis_device.terraformLand.indexOf(terraformable.element) !== -1 || elements[terraformable.element].category === "land")) {
                         if (!terraformable.t_progress) {
                             terraformable.t_progress = 3
                         }
