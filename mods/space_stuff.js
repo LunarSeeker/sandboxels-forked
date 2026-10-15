@@ -148,11 +148,12 @@ if (enabledMods.includes("mods/mega_library.js")) {
 
     elements.water.reactions.x_dust = {
         func: function (p1, p2) {
-            let rgb = interpolateRgb(getRGB(p1.color), getRGB(p2.color), 0.25)
+            const c2 = getRGB(p2.color)
+            let rgb = interpolateRgb(getRGB(p1.color), c2, 0.25)
             changePixel(p1, "slime")
             changePixel(p2, "slime")
             p1.color = rgb
-            p2.color = noiseify(rgb, 6)
+            p2.color = normalize(c2)
         }
     }
 }
