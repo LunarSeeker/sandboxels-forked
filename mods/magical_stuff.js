@@ -568,7 +568,7 @@ elements.ancient_walls = {
 
 elements.ancient_tower = {
     category: "special",
-    color: ["#33e3c6", "#521317"],
+    color: "#33e3c6",
     cooldown: defaultCooldown,
     density: 1500,
     seed: true,
@@ -576,7 +576,7 @@ elements.ancient_tower = {
     tick: function (pixel) {
         if (!tryMove(pixel, pixel.x, pixel.y + 1) && pixelTicks - pixel.start > 50) {
             if (pixel.h === undefined) {
-                pixel.h = Math.floor(Math.random() * 5) * 2 + 5
+                pixel.h = Math.max(10, Math.floor(Math.random() * 50))
             }
             if (Math.random() < 0.02 && pixel.h > 0) {
                 if (!outOfBounds(pixel.x, pixel.y + 1)) { // grow roots
@@ -586,11 +586,13 @@ elements.ancient_tower = {
                     }
                 }
                 if (isEmpty(pixel.x, pixel.y - 1) && tryMove(pixel, pixel.x, pixel.y - 1)) {
-                    if (pixel.h % 2 && pixel.h < 10) {
+                    if (pixel.h % 4 && pixel.h < 32) {
                         createPixel("ancient_walls", pixel.x, pixel.y + 1)
                         pixelMap[pixel.x][pixel.y + 1].h = pixel.h
                     }
-                    else {
+                    else if (pixel.h % 4) {
+                        createPixel("magic_steel", pixel.x, pixel.y + 1)
+                    } else {
                         createPixel("wood", pixel.x, pixel.y + 1)
                     }
                     pixel.h--
