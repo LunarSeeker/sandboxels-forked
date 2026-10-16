@@ -838,11 +838,24 @@ elements.molten_radium = {
 elements.lithium = {
     behavior: behaviors.POWDER,
     category: "powders",
-    color: "#dadada",
-    conduct: 0.97,
-    density: 533.4,
+    color: "#bfbfbf",
+    conduct: 0.42,
+    density: 533,
     state: "solid",
-    tempHigh: 181
+    tempHigh: 181,
+    reactions: {
+        "chlorine": { elem1: "salt", elem2: null },
+        "vinegar": { elem1: "sodium_acetate", elem2: [null, null, null, "hydrogen"], attr1: { "foam": 15 } },
+        "water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "salt_water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "sugar_water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "dirty_water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "seltzer": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "pool_water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "primordial_soup": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "nut_milk": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
+        "acid": { elem1: ["hydrogen", "salt", "salt"], elem2: ["hydrogen", "salt", "salt"], temp1: 100, temp2: 100 }
+    }
 }
 
 elements.molten_lithium = {

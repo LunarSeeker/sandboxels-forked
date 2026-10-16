@@ -459,6 +459,7 @@ elements.ancient_curse = {
         "cured_meat": { elem2: "rotten_meat" },
         "gold": { elem2: "pyrite" },
         "head": {},
+        "ichor": {},
         "lead": {},
         "meat": { elem2: "rotten_meat" },
         "molten_lead": {},
@@ -586,14 +587,12 @@ elements.ancient_tower = {
                     }
                 }
                 if (isEmpty(pixel.x, pixel.y - 1) && tryMove(pixel, pixel.x, pixel.y - 1)) {
-                    if (pixel.h % 4 && pixel.h < 32) {
+                    if (pixel.h % 2 && pixel.h < 32) {
                         createPixel("ancient_walls", pixel.x, pixel.y + 1)
                         pixelMap[pixel.x][pixel.y + 1].h = pixel.h
                     }
-                    else if (pixel.h % 4) {
+                    else {
                         createPixel("magic_steel", pixel.x, pixel.y + 1)
-                    } else {
-                        createPixel("wood", pixel.x, pixel.y + 1)
                     }
                     pixel.h--
                 }

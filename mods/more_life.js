@@ -1,3 +1,7 @@
+function clamp(x, min, max) {
+    return Math.max(min, Math.min(x, max))
+}
+
 // Life
 elements.chicken = {
     color: ["#ba5700", "#d18038", "#d4ccc5"],
