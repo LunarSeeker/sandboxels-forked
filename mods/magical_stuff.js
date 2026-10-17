@@ -595,28 +595,27 @@ elements.gold_crystal = {
     movable: false,
     state: "solid",
     tick: function (pixel) {
-        growTree(pixel, "gold", "iron_crystal", 0.02)
+        growTree(pixel, "gold", "gold_crystal", 0.02)
         doDefaults(pixel)
     },
 }
 
-elements.greg = {
+elements.ore_crystal = {
     behavior: behaviors.SLIDE,
     category: "special",
-    color: "#4cd99a",
+    color: "#505050",
     density: 917,
     excludeRandom: true,
     movable: false,
     state: "solid",
     tick: function (pixel) {
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coords = adjacentCoords[i]
-            var x = pixel.x + coords[0]
-            var y = pixel.y + coords[1]
-            if (!isEmpty(x, y, true) && pixelMap[x][y].element === "gold") {
-                deletePixel(x, y)
-            }
+        if (Math.random() < 0.02) {
+            if (isEmpty(pixel.x, pixel.y - 1)) { createPixel("ore_crystal", pixel.x, pixel.y - 1) }
+            if (isEmpty(pixel.x, pixel.y + 1)) { createPixel("iron", pixel.x, pixel.y + 1) }
+            if (isEmpty(pixel.x + 1, pixel.y + 1)) { createPixel("silver", pixel.x + 1, pixel.y + 1) }
+            if (isEmpty(pixel.x + 1, pixel.y)) { createPixel("gold", pixel.x + 1, pixel.y) }
         }
+        doDefaults(pixel)
     },
 }
 
