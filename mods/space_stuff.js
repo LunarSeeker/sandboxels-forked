@@ -7,6 +7,9 @@ excludeBlackHole = [
     "cloner",
     "false_vacuum",
     "filter",
+    "glam_body",
+    "glam_head",
+    "glam",
     "gray_goo",
     "head_096",
     "ichor",
@@ -66,9 +69,11 @@ elements.mars_rock = {
 //Aliens
 
 const aliens = [
-    { name: "gleep", color: ["#0fdc27", "#00fa68"], bodyTemp: 60, blood: "slime", breakInto: ["slime", "bone"], burn: 10, burnInto: "ash", burnTime: 150, conduct: .1, stateHigh: "ash", stateLow: "ice", tempHigh: 350, tempLow: -100, },
-    { name: "martian", color: ["#f43e01", "#fa1500"], bodyTemp: 40, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 250, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 150, tempLow: -30, },
-    { name: "venusian", color: ["#b7f401", "#fac000"], bodyTemp: 40, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 250, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 150, tempLow: -30, },
+    { name: "glam", color: ["#00ff00", "#00ffff", "#ff00ff"], bodyTemp: 100, blood: "poison", breakInto: ["ash", "gold"], burn: 1, burnInto: "explosion", burnTime: 50, conduct: .01, stateHigh: "explosion", stateLow: "explosion", tempHigh: 5000, tempLow: -200 },
+    { name: "gleep", color: ["#0fdc27", "#00fa68"], bodyTemp: 60, blood: "slime", breakInto: ["slime", "bone"], burn: 10, burnInto: "ash", burnTime: 150, conduct: .1, stateHigh: "ash", stateLow: "ice", tempHigh: 350, tempLow: -100 },
+    { name: "martian", color: ["#f43e01", "#fa1500"], bodyTemp: 40, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 250, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 150, tempLow: -30 },
+    { name: "reticulan", color: ["#cacaca", "#fafafa", "#737373"], bodyTemp: 30, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 150, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 100, tempLow: -50 },
+    { name: "venusian", color: ["#b7f401", "#fac000"], bodyTemp: 40, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 250, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 150, tempLow: -30 },
 ]
 
 aliens.forEach(species => {
@@ -77,7 +82,7 @@ aliens.forEach(species => {
 
     elements[species.name] = {
         color: species.color,
-        category: "life",
+        category: "aliens",
         properties: {
             dead: false,
             dir: 1,
@@ -147,10 +152,10 @@ aliens.forEach(species => {
         pickElement: species.name,
         reactions: {
             "cancer": { elem1: "cancer", chance: 0.005 },
-            "radiation": { elem1: "ash", chance: 0.4 },
-            "neutron": { elem1: "ash", chance: 0.01 },
-            "fallout": { elem1: "ash", chance: 0.01 },
-            "plague": { elem1: "plague", chance: 0.1 },
+            "radiation": { elem1: species.burnInto, chance: 0.4 },
+            "neutron": { elem1: species.burnInto, chance: 0.01 },
+            "fallout": { elem1: species.burnInto, chance: 0.01 },
+            "plague": { elem1: "plague", chance: 0.4 },
             "egg": { elem2: "yolk", chance: 0.5, oneway: true },
             "grape": { elem2: "juice", chance: 0.5, color2: "#291824", oneway: true },
             "ant": { elem2: "dead_bug", chance: 0.05, oneway: true },
@@ -163,8 +168,7 @@ aliens.forEach(species => {
             "worm": { elem2: "slime", chance: 0.05, oneway: true },
             "stink_bug": { elem2: "stench", oneway: true },
             "grass_seed": { elem2: null, chance: 0.05 },
-            "sun": { elem1: "cooked_meat" },
-            "alcohol": { chance: 0.2, attr1: { "panic": 0 } },
+            "sun": { elem1: species.burnInto },
             "anesthesia": { attr1: { "panic": 0 } },
             "alcohol_gas": { chance: 0.2, attr1: { "panic": 0 } }
         },
@@ -319,7 +323,7 @@ aliens.forEach(species => {
             "fallout": { elem1: "ash", chance: 0.03 },
             "plague": { elem1: "plague", chance: 0.1 },
             "oxygen": { elem2: "carbon_dioxide", chance: 0.5 },
-            "sun": { elem1: "cooked_meat" },
+            "sun": { elem1: species.burnInto },
             "light": { stain1: "#825043" },
             "bee": { stain1: "#cc564b", chance: 0.2 },
             "water": { elem2: "bubble", attr2: { "clone": "water" }, chance: 0.001 },
