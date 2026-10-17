@@ -1,3 +1,33 @@
+function growTree(pixel, leaf, branch, growRate) {
+    //if (!pixel.burning) {
+    if (isEmpty(pixel.x - 1, pixel.y - 1) && Math.random() < growRate) {
+        if (Math.random() < 0.5) {
+            createPixel(leaf, pixel.x - 1, pixel.y - 1)
+        }
+        else {
+            createPixel(branch, pixel.x - 1, pixel.y - 1)
+        }
+    }
+    if (isEmpty(pixel.x + 1, pixel.y - 1) && Math.random() < growRate) {
+        if (Math.random() < 0.5) {
+            createPixel(leaf, pixel.x + 1, pixel.y - 1)
+        }
+        else {
+            createPixel(branch, pixel.x + 1, pixel.y - 1)
+        }
+    }
+    if (isEmpty(pixel.x, pixel.y - 1) && Math.random() < growRate) {
+        if (Math.random() < 0.75) {
+            createPixel(leaf, pixel.x, pixel.y - 1)
+        }
+        else {
+            createPixel(branch, pixel.x, pixel.y - 1)
+        }
+    }
+    //}
+    // Add doDefaults(pixel) at the end of every element that uses growTree just in case.
+}
+
 dwarfcrawlThru = [...eLists.CRAWLTHRU, ...eLists.SOIL, "granite", "ice", "snow", "plant", "concrete"]
 
 removeElementsDark = [ //For elements not in the "life" category
@@ -540,68 +570,53 @@ elements.ice_zero = {
     },
 }
 
-elements.ancient_walls = {
+elements.iron_crystal = {
     behavior: behaviors.WALL,
-    breakInto: "rock",
-    category: "land",
-    color: ["#363636", "#7a7a7a"],
-    density: 2550,
+    breakInto: ["iron", "glass_shard"],
+    category: "solids",
+    color: "#757575",
+    density: 1500,
     hardness: 0.5,
-    hidden: true,
     movable: false,
-    seed: "ancient_tower",
     state: "solid",
     tick: function (pixel) {
-        if (pixel.h > 0 && pixelTicks % (50 + pixel.h) === 0) {
-            // extend to the left and right, giving the next ancient_walls h-1
-            if (isEmpty(pixel.x - 1, pixel.y)) {
-                createPixel("ancient_walls", pixel.x - 1, pixel.y)
-                pixelMap[pixel.x - 1][pixel.y].h = pixel.h - 2
-            }
-            if (isEmpty(pixel.x + 1, pixel.y)) {
-                createPixel("ancient_walls", pixel.x + 1, pixel.y)
-                pixelMap[pixel.x + 1][pixel.y].h = pixel.h - 2
-            }
-        }
+        growTree(pixel, "iron", "iron_crystal", 0.05)
         doDefaults(pixel)
-    }
+    },
 }
 
-elements.ancient_tower = {
-    category: "special",
-    color: "#33e3c6",
-    cooldown: defaultCooldown,
+elements.gold_crystal = {
+    behavior: behaviors.WALL,
+    breakInto: ["gold", "glass_shard"],
+    category: "solids",
+    color: "#757575",
     density: 1500,
-    seed: true,
+    hardness: 0.5,
+    movable: false,
     state: "solid",
     tick: function (pixel) {
-        if (!tryMove(pixel, pixel.x, pixel.y + 1) && pixelTicks - pixel.start > 50) {
-            if (pixel.h === undefined) {
-                pixel.h = Math.max(10, Math.floor(Math.random() * 50))
-            }
-            if (Math.random() < 0.02 && pixel.h > 0) {
-                if (!outOfBounds(pixel.x, pixel.y + 1)) { // grow roots
-                    var dirtPixel = pixelMap[pixel.x][pixel.y + 1]
-                    if (dirtPixel && (eLists.SOIL.indexOf(dirtPixel.element) !== -1 || dirtPixel.element === "grass" || dirtPixel.element === "rock_wall")) {
-                        changePixel(dirtPixel, "rock_wall")
-                    }
-                }
-                if (isEmpty(pixel.x, pixel.y - 1) && tryMove(pixel, pixel.x, pixel.y - 1)) {
-                    if (pixel.h % 2 && pixel.h < 32) {
-                        createPixel("ancient_walls", pixel.x, pixel.y + 1)
-                        pixelMap[pixel.x][pixel.y + 1].h = pixel.h
-                    }
-                    else {
-                        createPixel("magic_steel", pixel.x, pixel.y + 1)
-                    }
-                    pixel.h--
-                }
-            }
-            else if (pixel.h === 0) {
-                changePixel(pixel, "ancient_walls")
+        growTree(pixel, "gold", "iron_crystal", 0.02)
+        doDefaults(pixel)
+    },
+}
+
+elements.greg = {
+    behavior: behaviors.SLIDE,
+    category: "special",
+    color: "#4cd99a",
+    density: 917,
+    excludeRandom: true,
+    movable: false,
+    state: "solid",
+    tick: function (pixel) {
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i]
+            var x = pixel.x + coords[0]
+            var y = pixel.y + coords[1]
+            if (!isEmpty(x, y, true) && pixelMap[x][y].element === "gold") {
+                deletePixel(x, y)
             }
         }
-        doDefaults(pixel)
     },
 }
 
