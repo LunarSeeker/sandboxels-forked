@@ -570,7 +570,7 @@ elements.ice_zero = {
     },
 }
 
-elements.iron_crystal = {
+elements.iron_tree = {
     behavior: behaviors.WALL,
     breakInto: ["iron", "glass_shard"],
     category: "solids",
@@ -580,12 +580,12 @@ elements.iron_crystal = {
     movable: false,
     state: "solid",
     tick: function (pixel) {
-        growTree(pixel, "iron", "iron_crystal", 0.05)
+        growTree(pixel, "iron", "iron_tree", 0.05)
         doDefaults(pixel)
     },
 }
 
-elements.gold_crystal = {
+elements.gold_tree = {
     behavior: behaviors.WALL,
     breakInto: ["gold", "glass_shard"],
     category: "solids",
@@ -595,13 +595,13 @@ elements.gold_crystal = {
     movable: false,
     state: "solid",
     tick: function (pixel) {
-        growTree(pixel, "gold", "gold_crystal", 0.02)
+        growTree(pixel, "gold", "gold_tree", 0.02)
         doDefaults(pixel)
     },
 }
 
 elements.ore_crystal = {
-    behavior: behaviors.SLIDE,
+    behavior: behaviors.WALL,
     category: "special",
     color: "#505050",
     density: 917,
@@ -616,6 +616,56 @@ elements.ore_crystal = {
             if (isEmpty(pixel.x + 1, pixel.y)) { createPixel("gold", pixel.x + 1, pixel.y) }
         }
         doDefaults(pixel)
+    },
+}
+
+elements.aether_crystal = {
+    behavior: behaviors.WALL,
+    category: "special",
+    color: "#505050",
+    density: 917,
+    excludeRandom: true,
+    movable: false,
+    state: "solid",
+    tick: function (pixel) {
+        if (Math.random() < 0.03) {
+            if (isEmpty(pixel.x, pixel.y - 1)) { createPixel("aether_crystal", pixel.x, pixel.y - 1) }
+            if (isEmpty(pixel.x, pixel.y + 1)) { createPixel("aether_crystal", pixel.x, pixel.y + 1) }
+            if (isEmpty(pixel.x + 1, pixel.y + 1)) { createPixel("aether", pixel.x + 1, pixel.y + 1) }
+            if (isEmpty(pixel.x + 1, pixel.y)) { createPixel("aether", pixel.x + 1, pixel.y) }
+        }
+        doDefaults(pixel)
+    },
+}
+
+elements.aether = {
+    behavior: behaviors.WALL,
+    category: "solids",
+    color: ["#FDF55F", "#FAD64A", "#EAB115", "#DC9710"],
+    conduct: 0.9,
+    density: 19300,
+    hardness: 0.5,
+    breakInto: "ichor"
+}
+
+elements.dark_aether = {
+    category: "special",
+    color: ["#0D000F", "#252422", "#302f2c"],
+    density: 1900,
+    hardness: 0.4,
+    hidden: true,
+    state: "solid",
+    tick: function (pixel) {
+        for (let d of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]) {
+            let nx = pixel.x + d[0]
+            let ny = pixel.y + d[1]
+            if (isEmpty(nx, ny, true)) continue
+
+            let touching = pixelMap[nx]?.[ny]
+            if (touching && touching.element !== "dark_aether") {
+                changePixel(touching, "dark_aether")
+            }
+        }
     },
 }
 

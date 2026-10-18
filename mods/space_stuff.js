@@ -71,6 +71,7 @@ elements.mars_rock = {
 const aliens = [
     { name: "glam", color: ["#00ff00", "#00ffff", "#ff00ff"], bodyTemp: 100, blood: "poison", breakInto: ["ash", "gold"], burn: 1, burnInto: "explosion", burnTime: 50, conduct: .01, stateHigh: "explosion", stateLow: "explosion", tempHigh: 5000, tempLow: -200 },
     { name: "gleep", color: ["#0fdc27", "#00fa68"], bodyTemp: 60, blood: "slime", breakInto: ["slime", "bone"], burn: 10, burnInto: "ash", burnTime: 150, conduct: .1, stateHigh: "ash", stateLow: "ice", tempHigh: 350, tempLow: -100 },
+    { name: "groovin", color: ["#a213a3", "#431406", "#34c528", "#65e70a", "#69db7d", "#abadae", "#0dae7f", "#bd7e3f"], bodyTemp: 73, blood: "acid", breakInto: ["acid", "dirt"], burn: 1, burnInto: "ash", burnTime: 50, conduct: .01, stateHigh: "ash", stateLow: "ice", tempHigh: 200, tempLow: 10 },
     { name: "martian", color: ["#f43e01", "#fa1500"], bodyTemp: 40, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 250, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 150, tempLow: -30 },
     { name: "reticulan", color: ["#cacaca", "#fafafa", "#737373"], bodyTemp: 30, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 150, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 100, tempLow: -50 },
     { name: "venusian", color: ["#b7f401", "#fac000"], bodyTemp: 40, blood: "blood", breakInto: ["blood", "meat", "bone"], burn: 10, burnInto: "cooked_meat", burnTime: 250, conduct: .05, stateHigh: "cooked_meat", stateLow: "frozen_meat", tempHigh: 150, tempLow: -30 },
@@ -457,7 +458,7 @@ elements.singularity = {
     behavior: [
         "XX|XX|XX",
         "XX|XX|XX",
-        "M2|M1 AND EX:80>hydrogen,neutron,proton,electric,helium,radiation|M2"
+        "M2|M1 AND EX:80>hydrogen,neutron,proton,electric,sun|M2"
     ],
     category: "weapons",
     color: "#ffffff",
