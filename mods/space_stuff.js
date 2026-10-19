@@ -1,3 +1,7 @@
+function getZeros(num) {
+    return Math.round(Math.log10(num))
+}
+
 excludeBlackHole = [
     "art",
     "black_hole",
@@ -472,34 +476,60 @@ elements.singularity = {
 elements.bless.reactions.black_hole = { elem2: null }
 elements.bless.reactions.singularity = { elem2: null }
 
-if (enabledMods.includes("mods/mega_library.js")) {
-    elements.x_dust = {
-        behavior: behaviors.POWDER,
-        category: "land",
-        color: ["#ababab", "#c5c5c5"],
-        density: 1500,
-        state: "solid"
-    }
-    elements.x_rock = {
-        behavior: behaviors.STURDYPOWDER,
-        breakInto: "x_dust",
-        category: "land",
-        color: ["#808080", "#bdbdbd"],
-        density: 1605,
-        hardness: 0.5,
-        state: "solid",
-        stateHigh: "magma",
-        tempHigh: 800
-    }
-
-    elements.water.reactions.x_dust = {
-        func: function (p1, p2) {
-            const c2 = getRGB(p2.color)
-            let rgb = interpolateRgb(getRGB(p1.color), c2, 0.25)
-            changePixel(p1, "slime")
-            changePixel(p2, "slime")
-            p1.color = rgb
-            p2.color = normalize(c2)
+//if (enabledMods.includes("mods/mega_library.js")) {
+elements.atmosphere_converter = {
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#73ff00",
+    darkText: true,
+    hardness: 0.8,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.charge > 0) {
+            var coords = circleCoords(pixel.x, pixel.y, 70)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var terraformable = pixelMap[coords[i].x][coords[i].y]
+                    if (terraformable.element !== "ozone" && terraformable.element !== "oxygen" && elements[terraformable.element].state === "gas") {
+                        changePixel(terraformable, "oxygen")
+                    }
+                }
+            }
         }
     }
 }
+elements.temperature_control = {
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#73ff00",
+    darkText: true,
+    hardness: 0.8,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.charge > 0) {
+            var coords = circleCoords(pixel.x, pixel.y, 90)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var terraformable = pixelMap[coords[i].x][coords[i].y]
+                    terraformable.temp = 20
+                    pixelTempCheck(terraformable)
+                }
+            }
+        }
+    }
+}
+//}
+const testNum = Math.random() * -10
+
+console.log("Loaded!")
+console.log(getZeros(testNum))
+console.log(getZeros(Math.round(testNum)))
+console.log(getZeros(Math.abs(testNum)))
+console.log(getZeros(Math.abs(Math.round(testNum))))
+console.log("Math!")
