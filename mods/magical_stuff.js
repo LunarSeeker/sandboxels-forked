@@ -563,26 +563,7 @@ elements.hot_ice = {
     stateLow: "mirror_water",
     temp: 150,
     tempLow: 95,
-    hidden: true,
-    reactions: {
-        "hot_ice": { elem1: "cloud", elem2: "cloud", chance: 0.05, "y": [0, 15], setting: "clouds" },
-        "rain_cloud": { elem1: "rain_cloud", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "cloud": { elem1: "cloud", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "snow_cloud": { elem1: "rain_cloud", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "hail_cloud": { elem1: "rain_cloud", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "thunder_cloud": { elem1: "rain_cloud", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "pyrocumulus": { elem1: "cloud", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "anesthesia": { elem1: "acid_cloud", elem2: null, chance: 0.05, "y": [0, 12], setting: "clouds" },
-        "fire_cloud": { elem1: "cloud", elem2: "pyrocumulus", chance: 0.4, "y": [0, 12], setting: "clouds" },
-        "smoke": { elem1: "smog", elem2: null, chance: 0.001 },
-        "carbon_dioxide": { elem1: "smog", elem2: null, chance: 0.001 },
-        "plasma": { elem1: "ozone", tempMin: 500, charged: true },
-        "oxidized_copper": { elem2: "copper", chance: 0.01 },
-        "rust": { elem2: "oxygen", chance: 0.005 },
-        "tornado": { elem1: "cloud" },
-        "melted_wax": { elem1: "explosion" },
-        "methane": { elem1: "hydrogen", tempMin: 150 }
-    }
+    hidden: true
 }
 
 elements.mirror_water = {
@@ -599,17 +580,6 @@ elements.mirror_water = {
     tempHigh: 100,
     tempLow: 0,
     reactions: {
-        "salt": { elem1: "salt_water", elem2: null, temp1: 20 },
-        "sugar": { elem1: "sugar_water", elem2: null },
-        "honey": { elem1: "sugar_water" },
-        "caramel": { elem1: "sugar_water", elem2: null },
-        "molasses": { elem1: "sugar_water", chance: 0.05 },
-        "candy": { elem1: "sugar_water", elem2: "foam", chance: 0.005 },
-        "dust": { elem1: "dirty_water", elem2: null },
-        "ash": { elem1: "dirty_water", elem2: null },
-        "cyanide": { elem1: "dirty_water", elem2: null },
-        "cyanide_gas": { elem1: "dirty_water", elem2: null },
-        "carbon_dioxide": { elem1: "seltzer", elem2: null, oneway: true },
         "wet_sand": { elem2: "tuff", chance: 0.00035 },
         "rock": { elem2: "ruins", chance: 0.00035 },
         "mud": { elem2: "mudstone", chance: 0.00035 },
@@ -618,7 +588,7 @@ elements.mirror_water = {
         "bee": { elem2: "dead_bug", chance: 0.05, oneway: true },
         "stink_bug": { elem2: "dead_bug", chance: 0.1, oneway: true },
         "water": { elem2: "mirror_water", chance: 0.1 },
-        "mirror_water": { elem2: "bubble", attr2: { "clone": "mirror_water" }, chance: 0.001, tempMin: 15 },
+        "mirror_water": { elem2: "bubble", attr2: { "clone": "mirror_water" }, chance: 0.001, tempMax: 15 },
         // electrolysis:
         "aluminum": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0025 },
         "zinc": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.015 },
