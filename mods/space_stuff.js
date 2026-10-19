@@ -476,52 +476,60 @@ elements.singularity = {
 elements.bless.reactions.black_hole = { elem2: null }
 elements.bless.reactions.singularity = { elem2: null }
 
-if (enabledMods.includes("mods/mega_library.js")) {
-    elements.atmosphere_converter = {
-        behavior: behaviors.WALL,
-        breakInto: ["wire", "iron"],
-        category: "machines",
-        color: "#73ff00",
-        darkText: true,
-        hardness: 0.8,
-        insulate: true,
-        noMix: true,
-        state: "solid",
-        tick: function (pixel) {
-            if (pixel.charge > 0) {
-                var coords = circleCoords(pixel.x, pixel.y, 70)
-                for (var i = 0; i < coords.length; i++) {
-                    if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
-                        var terraformable = pixelMap[coords[i].x][coords[i].y]
-                        if (terraformable.element !== "ozone" && terraformable.element !== "oxygen" && elements[terraformable.element].state === "gas") {
-                            changePixel(terraformable, "oxygen")
-                        }
-                    }
-                }
-            }
-        }
-    }
-    elements.temperature_control = {
-        behavior: behaviors.WALL,
-        breakInto: ["wire", "iron"],
-        category: "machines",
-        color: "#73ff00",
-        darkText: true,
-        hardness: 0.8,
-        insulate: true,
-        noMix: true,
-        state: "solid",
-        tick: function (pixel) {
-            if (pixel.charge > 0) {
-                var coords = circleCoords(pixel.x, pixel.y, 90)
-                for (var i = 0; i < coords.length; i++) {
-                    if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
-                        var terraformable = pixelMap[coords[i].x][coords[i].y]
-                        terraformable.temp = 20
-                        pixelTempCheck(terraformable)
+//if (enabledMods.includes("mods/mega_library.js")) {
+elements.atmosphere_converter = {
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#73ff00",
+    darkText: true,
+    hardness: 0.8,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.charge > 0) {
+            var coords = circleCoords(pixel.x, pixel.y, 70)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var terraformable = pixelMap[coords[i].x][coords[i].y]
+                    if (terraformable.element !== "ozone" && terraformable.element !== "oxygen" && elements[terraformable.element].state === "gas") {
+                        changePixel(terraformable, "oxygen")
                     }
                 }
             }
         }
     }
 }
+elements.temperature_control = {
+    behavior: behaviors.WALL,
+    breakInto: ["wire", "iron"],
+    category: "machines",
+    color: "#73ff00",
+    darkText: true,
+    hardness: 0.8,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.charge > 0) {
+            var coords = circleCoords(pixel.x, pixel.y, 90)
+            for (var i = 0; i < coords.length; i++) {
+                if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
+                    var terraformable = pixelMap[coords[i].x][coords[i].y]
+                    terraformable.temp = 20
+                    pixelTempCheck(terraformable)
+                }
+            }
+        }
+    }
+}
+//}
+const testNum = Math.random() * -10
+
+console.log("Loaded!")
+console.log(getZeros(testNum))
+console.log(getZeros(Math.round(testNum)))
+console.log(getZeros(Math.abs(testNum)))
+console.log(getZeros(Math.abs(Math.round(testNum))))
+console.log("Math!")
