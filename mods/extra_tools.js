@@ -9,6 +9,7 @@ dead_elements = [
     "dead_bug",
     "dead_plant",
     "dna",
+    "dust",
     "feather",
     "head_008",
     "infection",

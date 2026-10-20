@@ -482,6 +482,7 @@ elements.atmosphere_converter = {
     breakInto: ["wire", "iron"],
     category: "machines",
     color: "#73ff00",
+    conduct: 1,
     darkText: true,
     hardness: 0.8,
     insulate: true,
@@ -506,6 +507,7 @@ elements.temperature_control = {
     breakInto: ["wire", "iron"],
     category: "machines",
     color: "#73ff00",
+    conduct: 1,
     darkText: true,
     hardness: 0.8,
     insulate: true,
@@ -525,6 +527,7 @@ elements.temperature_control = {
     }
 }
 //}
+
 const testNum = Math.random() * -10
 
 console.log("Loaded!")
