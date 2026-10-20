@@ -528,9 +528,11 @@ elements.temperature_control = {
 }
 //}
 
+const testNum = Math.random() * -10
+
 console.log("Loaded!")
-console.log(getZeros((Math.random() * -10)))
-console.log(getZeros(Math.round((Math.random() * -10))))
-console.log(getZeros(Math.abs((Math.random() * -10))))
-console.log(getZeros(Math.abs(Math.round((Math.random() * -10)))))
+console.log(getZeros(testNum))
+console.log(getZeros(Math.round(testNum)))
+console.log(getZeros(Math.abs(testNum)))
+console.log(getZeros(Math.abs(Math.round(testNum))))
 console.log("Math!")
