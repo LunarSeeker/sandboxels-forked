@@ -184,7 +184,7 @@ elements.philosophers_stone = {
 
 elements.magic_drill = {
     behavior: [
-        "XX|M1 AND BO|XX",
+        "XX|XX|XX",
         "DL|XX|DL",
         "M2|M1|M2"
     ],
