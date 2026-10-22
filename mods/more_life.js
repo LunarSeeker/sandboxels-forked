@@ -744,19 +744,15 @@ elements.life_remover = {
     cooldown: defaultCooldown,
 }
 
-//Mirror Stuff
+//Flesh Stuff
 
-elements.mirror_sapling = {
-    burn: 5,
-    burnTime: 100,
+elements.flesh_sapling = {
     category: "life",
-    color: ["#33e3c5", "#72f274"],
+    color: ["#5c3e33", "#472f27", "#31211b"],
     cooldown: defaultCooldown,
     density: 1500,
     seed: true,
     state: "solid",
-    stateHigh: "glass",
-    tempHigh: 500,
     tick: function (pixel) {
         if (!tryMove(pixel, pixel.x, pixel.y + 1) && pixelTicks - pixel.start > 50) {
             if (pixel.h === undefined) { // set to even number between 6 and 20
@@ -765,138 +761,61 @@ elements.mirror_sapling = {
             if (Math.random() < 0.02 && pixel.h > 0 && pixel.temp < 100) {
                 if (!outOfBounds(pixel.x, pixel.y + 1)) { // grow roots
                     var dirtPixel = pixelMap[pixel.x][pixel.y + 1]
-                    if (dirtPixel && (eLists.SOIL.indexOf(dirtPixel.element) !== -1 || dirtPixel.element === "mirror_grass")) {
-                        changePixel(dirtPixel, "root")
+                    if (dirtPixel && (eLists.SOIL.indexOf(dirtPixel.element) !== -1 || dirtPixel.element === "skin")) {
+                        changePixel(dirtPixel, "bone")
                     }
                 }
                 if (isEmpty(pixel.x, pixel.y - 1) && tryMove(pixel, pixel.x, pixel.y - 1)) {
                     if (pixel.h % 2 && pixel.h < 12) {
-                        createPixel("mirror_leaves", pixel.x, pixel.y + 1)
+                        createPixel("flesh_leaves", pixel.x, pixel.y + 1)
                         pixelMap[pixel.x][pixel.y + 1].h = pixel.h
                     }
                     else {
-                        createPixel("wood", pixel.x, pixel.y + 1)
+                        createPixel("bone", pixel.x, pixel.y + 1)
                     }
                     pixel.h--
                 }
             }
             else if (pixel.h === 0) {
-                changePixel(pixel, "mirror_leaves")
+                changePixel(pixel, "flesh_leaves")
             }
         }
         doDefaults(pixel)
     },
 }
-elements.mirror_leaves = {
-    breakInto: ["glass_shard", "dirt", "sap"],
-    burn: 45,
-    burnInto: ["glass", "mirror_sapling"],
-    burnTime: 75,
+elements.flesh_leaves = {
+    breakInto: ["blood", "meat"],
+    burn: 5,
+    burnInto: ["cooked_meat", "flesh_sapling"],
+    burnTime: 400,
     category: "life",
-    color: "#630000",
+    color: "#d7bd96",
     density: 1050,
     hidden: true,
     movable: false,
-    seed: "mirror_sapling",
+    seed: "flesh_sapling",
     state: "solid",
-    stateHigh: "glass",
+    stateHigh: "cooked_meat",
+    stateLow: "frozen_meat",
     tempHigh: 100,
+    tempLow: -18,
     tick: function (pixel) {
         if (pixel.h > 0 && pixelTicks % (50 + pixel.h) === 0) {
-            // extend to the left and right, giving the next mirror_leaves h-1
+            // extend to the left and right, giving the next flesh_leaves h-1
             if (isEmpty(pixel.x - 1, pixel.y)) {
-                createPixel("mirror_leaves", pixel.x - 1, pixel.y)
+                createPixel("flesh_leaves", pixel.x - 1, pixel.y)
                 pixelMap[pixel.x - 1][pixel.y].h = pixel.h - 2
             }
             if (isEmpty(pixel.x + 1, pixel.y)) {
-                createPixel("mirror_leaves", pixel.x + 1, pixel.y)
+                createPixel("flesh_leaves", pixel.x + 1, pixel.y)
                 pixelMap[pixel.x + 1][pixel.y].h = pixel.h - 2
             }
         }
         doDefaults(pixel)
     },
-    reactions: {
-        "vinegar": { elem1: "glass_shard", elem2: null, chance: 0.035 },
-        "baking_soda": { elem1: "glass_shard", elem2: null, chance: 0.01 },
-        "bleach": { elem1: "glass_shard", elem2: null, chance: 0.05 },
-        "alcohol": { elem1: "glass_shard", elem2: null, chance: 0.035 }
-    },
 }
 
-elements.mirror_grass = {
-    color: ["#115811", "#21b721", "#41d631"],
-    renderer: renderPresets.PLANTCHAR,
-    properties: {
-        "h": 0
-    },
-    breakInto: "glass_shard",
-    burn: 3,
-    burnTime: 20,
-    category: "life",
-    density: 1400,
-    seed: "mirror_grass_seed",
-    state: "solid",
-    stateHigh: "glass",
-    stateLow: "glass",
-    tempHigh: 100,
-    tempLow: -2,
-    reactions: {
-        "vinegar": { elem1: "glass_shard", elem2: null, chance: 0.035 },
-        "mercury": { elem1: "glass_shard", elem2: null, chance: 0.01 },
-        "alcohol": { elem1: "glass_shard", elem2: null, chance: 0.035 },
-        "baking_soda": { elem1: "glass_shard", elem2: null, chance: 0.01 }
-    },
-    tick: function (pixel) {
-        if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
-            if (pixel.h < 2 && Math.random() < 0.0005 && isEmpty(pixel.x, pixel.y - 1)) {
-                createPixel(pixel.element, pixel.x, pixel.y - 1)
-                pixelMap[pixel.x][pixel.y - 1].h = pixel.h + 1
-            }
-            var coords = [
-                [pixel.x + 1, pixel.y],
-                [pixel.x - 1, pixel.y],
-                [pixel.x + 1, pixel.y + 1],
-                [pixel.x - 1, pixel.y + 1],
-            ]
-            for (var i = 0; i < coords.length; i++) {
-                if (Math.random() < 0.005 && isEmpty(coords[i][0], coords[i][1])) {
-                    if (!isEmpty(coords[i][0], coords[i][1] + 1, true)) {
-                        if (eLists.SOIL.indexOf(pixelMap[coords[i][0]][coords[i][1] + 1].element) !== -1) {
-                            createPixel(pixel.element, coords[i][0], coords[i][1])
-                        }
-                    }
-                }
-            }
-        }
-        doDefaults(pixel)
-    },
-}
-
-elements.mirror_grass_seed = {
-    color: ["#115811", "#21b721", "#41d631"],
-    behavior: [
-        "XX|M2%0.05|XX",
-        "XX|L2:mirror_grass|XX",
-        "XX|M1|XX"
-    ],
-    breakInto: null,
-    burn: 50,
-    burnTime: 20,
-    category: "life",
-    cooldown: defaultCooldown,
-    density: 1400,
-    hidden: true,
-    state: "solid",
-    stateHigh: "glass",
-    stateLow: "glass",
-    tempHigh: 100,
-    tempLow: -2,
-    tick: behaviors.SEEDRISE,
-    seed: true
-}
-
-eLists.CRAWLTHRU.push("mirror_grass")
-eLists.SEEDS.push("mirror_grass_seed")
+elements.flesh_leaves.reactions = elements.skin.reactions
 //
 
 elements.head.breakInto = ["blood", "soul", "meat", "bone"]
