@@ -141,7 +141,7 @@ elements.dwarf = {
 }
 
 elements.philosophers_stone = {
-    name: "Alchemist's Stone",
+    name: "ALCHEMY",
     behavior: behaviors.POWDER,
     category: "special",
     colorPattern: magic_textures.p_stone,
@@ -184,9 +184,9 @@ elements.philosophers_stone = {
 
 elements.magic_drill = {
     behavior: [
-        "XX|XX|XX",
-        "XX|DL|XX",
-        "CH:wall|M1 AND CH:magic_drill AND CR:magic_drill|CH:wall"
+        "XX|M1 AND BO|XX",
+        "DL|XX|DL",
+        "M2|M1|M2"
     ],
     category: "special",
     color: "#0000ff",
