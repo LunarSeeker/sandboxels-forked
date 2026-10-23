@@ -229,15 +229,15 @@ dependOn("mega_library.js", function () {
             if (elements[pixel.element].state === "liquid") {
                 changePixel(pixel, (pixel.temp > 327 ? "molten_lead" : "ancient_curse"))
             }
+            else if (elements[pixel.element].category === "life") {
+                changePixel(getNearestPixel(pixel.x, pixel.y, "lead"), "sand")
+                changePixel(pixel, "sand")
+            }
             else if (elements[pixel.element].movable) {
                 changePixel(pixel, "sand")
             }
             else {
                 changePixel(pixel, "lead")
-            }
-            if (pixel.temp > -100) {
-                pixel.temp = clamp(pixel.temp, 15, 400)
-                pixelTempCheck(pixel)
             }
         },
         canPlace: true,

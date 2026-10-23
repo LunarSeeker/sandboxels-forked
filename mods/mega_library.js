@@ -45,6 +45,7 @@ function getRGB(rgb) {
         return hexToRGB(rgb)
     }
 }
+
 function pixelToggle(pixel, multi = { r: 1, g: 1, b: 1 }) {
     if (pixel.toggle != undefined) {
         pixel.toggle = !pixel.toggle
@@ -63,12 +64,12 @@ function pixelToggle(pixel, multi = { r: 1, g: 1, b: 1 }) {
                 rgb[key] = Math.round(Math.max(Math.min(rgb[key], 255), 0))
             }
             pixel.color = `rgb(${rgb.r + num},${rgb.g + num},${rgb.b + num})`
-        }
-        else {
+        } else {
             pixel.color = `rgb(${rgb.r + num},${rgb.g + num},${rgb.b + num})`
         }
     }
 }
+
 function normalize(obj) {
     return `rgb(${obj.r},${obj.g},${obj.b})`
 }
@@ -87,8 +88,27 @@ function clamp(x, min, max) {
     return Math.max(min, Math.min(x, max))
 }
 
-function pseudorandom(key, num, max = 1) {
-    return (Math.log(key) * (num * Math.log(1625.4986772154357))) % max
+function getDistance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+}
+
+function getNearestPixel(posX, posY, targetElement) {
+    let nearestPixel
+    let minDistance = Infinity
+
+    for (let index in pixelMap) {
+        for (let pixel of pixelMap[index]) {
+            if (pixel == undefined) continue
+            if (pixel.element == targetElement) {
+                let distance = getDistance(pixel.x, pixel.y, posX, posY)
+                if (distance < minDistance) {
+                    minDistance = distance
+                    nearestPixel = pixel
+                }
+            }
+        }
+    }
+    return nearestPixel
 }
 
 //More elists
