@@ -472,7 +472,7 @@ elements.singularity = {
 elements.bless.reactions.black_hole = { elem2: null }
 elements.bless.reactions.singularity = { elem2: null }
 
-//if (enabledMods.includes("mods/mega_library.js")) {
+//Machines
 elements.atmosphere_converter = {
     behavior: behaviors.WALL,
     breakInto: ["wire", "iron"],
@@ -486,7 +486,7 @@ elements.atmosphere_converter = {
     state: "solid",
     tick: function (pixel) {
         if (pixel.charge > 0) {
-            var coords = circleCoords(pixel.x, pixel.y, 70)
+            var coords = circleCoords(pixel.x, pixel.y, 90)
             for (var i = 0; i < coords.length; i++) {
                 if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
                     var terraformable = pixelMap[coords[i].x][coords[i].y]
@@ -522,4 +522,33 @@ elements.temperature_control = {
         }
     }
 }
-//}
+
+//strange planet
+elements.strange_glass = {
+    colorPattern: textures.GLASS,
+    colorKey: {
+        "g": "#483248",
+        "s": "#9F2B68",
+        "S": "#BF40BF"
+    },
+    behavior: behaviors.WALL,
+    category: "solids",
+    density: 2500,
+    noMix: true,
+    state: "solid"
+}
+elements.strange_metal = {
+    colorPattern: textures.BRICK,
+    colorKey: {
+        "l": "#9F2B68",
+        "r": "#BF40BF",
+        "d": "#301934",
+        "w": "#483248"
+    },
+    behavior: behaviors.WALL,
+    category: "solids",
+    density: 1605,
+    hardness: 0.9,
+    noMix: true,
+    state: "solid"
+}
