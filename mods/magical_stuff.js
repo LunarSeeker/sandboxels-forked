@@ -230,8 +230,13 @@ dependOn("mega_library.js", function () {
                 changePixel(pixel, (pixel.temp > 327 ? "molten_lead" : "ancient_curse"))
             }
             else if (elements[pixel.element].category === "life") {
-                changePixel(getNearestPixel(pixel.x, pixel.y, "lead"), "sand")
-                changePixel(pixel, "sand")
+                const lead_pixel = getNearestPixel(pixel.x, pixel.y, "lead")
+                if (lead_pixel) {
+                    changePixel(lead_pixel, "sand")
+                    changePixel(pixel, "sand")
+                } else {
+                    changePixel(pixel, "rotten_meat")
+                }
             }
             else if (elements[pixel.element].movable) {
                 changePixel(pixel, "sand")
