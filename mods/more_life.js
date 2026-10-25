@@ -382,7 +382,7 @@ elements.odd_fish = {
     eggColor: ["#e9c5c5", "#a79093", "#dca49e"],
     foodNeed: 20,
     state: "solid",
-    stateLow: ["frozen_meat", "frozen_meat", "frozen_meat", "frozen_fish"],
+    stateLow: ["frozen_meat", "fish_soul", "frozen_fish"],
     temp: 20,
     tempLow: -40,
     behavior: [
@@ -400,7 +400,11 @@ elements.odd_fish = {
         "plastic": { elem2: null, chance: 0.5, func: behaviors.FEEDPIXEL },
         "pool_water": { elem1: null },
         "salt_water": { elem1: null },
-        "smoke": { elem2: null, chance: 0.2, func: behaviors.FEEDPIXEL },
+        "smoke": { elem2: null, func: behaviors.FEEDPIXEL },
+        "spider": { elem2: null, func: behaviors.FEEDPIXEL },
+        "tadpole": { elem2: null, func: behaviors.FEEDPIXEL },
+        "tea": { elem2: null, func: behaviors.FEEDPIXEL },
+        "vinegar": { elem1: "meat", chance: 0.001 },
         "water": { elem1: null },
     },
 }
@@ -817,12 +821,38 @@ elements.flesh_leaves = {
 
 elements.flesh_leaves.reactions = elements.skin.reactions
 //
+elements.fish_soul = {
+    behavior: [
+        "XX|M2%5|SW:water,salt_water,sugar_water,dirty_water,seltzer,pool_water,oil%14",
+        "XX|FX%0.5|BO",
+        "M2|M1|M2 AND SW:water,salt_water,sugar_water,dirty_water,seltzer,pool_water,primordial_soup%5"
+    ],
+    category: "life",
+    color: "#87fff9",
+    density: 1080,
+    emit: 3,
+    glow: true,
+    hardness: 100,
+    hidden: true,
+    insulate: true,
+    state: "solid",
+    reactions: {
+        "body": { attr2: { "panic": 20 } },
+        "led": { charged: true },
+        "light_bulb": { charged: true, elem2: "explosion" },
+        "proton": { elem1: null },
+        "wire": { charge2: 1, chance: 0.05 },
+    },
+}
+//
 
-elements.head.breakInto = ["blood", "soul", "meat", "bone"]
+elements.fish.stateLow.push("fish_soul")
+elements.head.breakInto.push("soul")
 elements.head.burnInto = ["soul", "cooked_meat"]
 elements.head.stateHigh = ["soul", "cooked_meat"]
 elements.head.stateLow = ["soul", "frozen_meat"]
 
+elements.bless.reactions.fish_soul = { elem2: "fish" }
 elements.bless.reactions.soul = { elem2: "human" }
 elements.bless.reactions.zombie_body = { elem2: null }
 elements.bless.reactions.zombie_head = { elem2: null }
