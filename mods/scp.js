@@ -8443,7 +8443,7 @@ elements.bless.reactions.scp_1015 = { elem2: "penny" }
 elements.bless.reactions.scp_1600 = { elem2: "cheese" }
 elements.bless.reactions.green_1600 = { elem2: "cheese" }
 
-const redStuff = ["scp_009_meat", "red_packed_snow", "red_snow", "scp_009", "red_water", "red_steam", "red_plant", "red_ice_plant"]
+const redStuff = ["scp_009_meat", "packed_red_snow", "red_snow", "scp_009", "red_water", "red_steam", "red_plant", "red_ice_plant"]
 const turnInto009 = [
     "ant",
     "antibody",
