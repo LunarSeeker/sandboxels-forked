@@ -143,7 +143,7 @@ elements.mustard = {
     isFood: true,
     stain: 0.05,
     state: "liquid",
-    stateHigh: ["carbon_dioxide", "methane", "steam", "sugar"],
+    stateHigh: ["carbon_dioxide", "methane", "steam", "steam"],
     tempHigh: 260,
     viscosity: 50000
 }

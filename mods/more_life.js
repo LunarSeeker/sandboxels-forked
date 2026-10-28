@@ -565,7 +565,7 @@ elements.genesis_device = {
     density: 1201,
     hardness: 0.9,
     state: "solid",
-    terraformLand: ["ash", "fallout", "scp_009", "red_snow"],
+    terraformLand: ["ash", "fallout", "scp_009", "red_snow", "red_plant", "red_ice_plant", "charcoal"],
     properties: {
         active: false,
         radius: 50,

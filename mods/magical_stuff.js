@@ -8,10 +8,10 @@ dependOn("mega_library.js", function () {
             "gggsss",
             "gggsss"
         ],
-        magic_steel: [
-            "AAABBB",
-            "AABBCC",
-            "BBAACC",
+        levitatium: [
+            "AABBAA",
+            "AABBAA",
+            "AACCAA",
         ]
     }
 
@@ -195,17 +195,18 @@ dependOn("mega_library.js", function () {
         viscosity: 1
     }
 
-    elements.magic_steel = {
+    elements.levitatium = {
         colorKey: {
             "A": "#ff0000",
             "B": "#ff8800",
             "C": "#ffff00",
         },
-        colorPattern: magic_textures.magic_steel,
-        behavior: behaviors.WALL,
-        category: "solids",
+        colorPattern: magic_textures.levitatium,
+        behavior: behaviors.AGPOWDER,
+        category: "special",
         conduct: 0.2,
         density: 7850,
+        state: "solid",
         hardness: 0.9
     }
 
@@ -265,45 +266,10 @@ dependOn("mega_library.js", function () {
             "pipe": {},
             "pyrite": {},
             "rotten_meat": {},
+            "salt_water": { elem2: "salt" },
             "sand": {},
             "silver": { elem2: "aluminum" },
             "wall": {},
-        },
-    }
-
-    elements.potion = {
-        behavior: behaviors.LIQUID,
-        category: "liquids",
-        color: ["#5eff89", "#82fffd"],
-        density: 193,
-        excludeRandom: true,
-        ignore: ["dwarf", "plant", "tree_branch"],
-        state: "liquid",
-        onCollide: function (_pixelOG, pixel) {
-            if (elements[pixel.element].id === elements.potion.id) { return }
-            if (elements.potion.reactions[pixel.element]) { return }
-            if (elements.potion.ignore.indexOf(pixel.element) !== -1) return
-            if (elements[pixel.element].category === "life" || elements[pixel.element].pickElement === "human") {
-                if (eLists.ANIMAL.indexOf(pixel.element) !== -1) {
-                    changePixel(pixel, "gold_coin")
-                } else if (eLists.SEEDS.indexOf(pixel.element) !== -1) {
-                    changePixel(pixel, "snake")
-                } else {
-                    changePixel(pixel, "clay")
-                }
-            }
-        },
-        reactions: {
-            "ant": { elem2: "dwarf" },
-            "cooked_meat": { elem2: "plant" },
-            "copper": { elem2: "philosophers_stone" },
-            "cured_meat": { elem2: "plant" },
-            "ice": { elem2: "cold_steam" },
-            "meat": { elem2: "plant" },
-            "mycelium": { elem2: "dirt" },
-            "rotten_meat": { elem2: "plant" },
-            "water": { elem2: "potion" },
-            "wood": { elem2: "tree_branch" },
         },
     }
 

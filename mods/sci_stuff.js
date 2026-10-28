@@ -844,7 +844,7 @@ elements.lithium = {
     state: "solid",
     tempHigh: 181,
     reactions: {
-        "chlorine": { elem1: "salt", elem2: null },
+        "chlorine": { elem1: "salt", elem2: "pop" },
         "vinegar": { elem1: "sodium_acetate", elem2: [null, null, null, "hydrogen"], attr1: { "foam": 15 } },
         "water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
         "salt_water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
@@ -854,7 +854,7 @@ elements.lithium = {
         "pool_water": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
         "primordial_soup": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
         "nut_milk": { elem1: "hydrogen", chance: 0.01, temp2: 200 },
-        "acid": { elem1: ["hydrogen", "salt", "salt"], elem2: ["hydrogen", "salt", "salt"], temp1: 100, temp2: 100 }
+        "acid": { elem1: ["hydrogen", "salt", "salt", "pop"], elem2: ["hydrogen", "salt", "salt", "pop"], "temp1": 100, temp2: 100 },
     }
 }
 

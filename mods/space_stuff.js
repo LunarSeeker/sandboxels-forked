@@ -522,33 +522,3 @@ elements.temperature_control = {
         }
     }
 }
-
-//strange planet
-elements.strange_glass = {
-    colorPattern: textures.GLASS,
-    colorKey: {
-        "g": "#483248",
-        "s": "#9F2B68",
-        "S": "#BF40BF"
-    },
-    behavior: behaviors.WALL,
-    category: "solids",
-    density: 2500,
-    noMix: true,
-    state: "solid"
-}
-elements.strange_metal = {
-    colorPattern: textures.BRICK,
-    colorKey: {
-        "l": "#9F2B68",
-        "r": "#BF40BF",
-        "d": "#301934",
-        "w": "#483248"
-    },
-    behavior: behaviors.WALL,
-    category: "solids",
-    density: 1605,
-    hardness: 0.9,
-    noMix: true,
-    state: "solid"
-}
