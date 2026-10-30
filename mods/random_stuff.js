@@ -4,23 +4,20 @@ elements.void.color = "#ff0000"
 //Elements
 elements.idk_one = {
     behavior: [
-        "XX|CR:radiation%3 AND CR:fallout%0.2|XX",
-        "CR:steel|XX|CR:wood",
+        "XX|XX|XX",
+        "XX|LB:wall AND RT%5|M1 AND BO:1,2,3",
         "XX|XX|XX"
     ],
-    category: "misc",
+    category: "special",
     color: "#00d9ff",
     excludeRandom: true,
-    hidden: true
+    rotatable: true
 }
 elements.idk_two = {
-    behavior: [
-        "XX|XX|XX",
-        "M2|CH:gold_coin,water,cell%5|M2",
-        "M1|M1|M1"
-    ],
-    category: "misc",
+    behavior: behaviors.POWDER,
+    category: "special",
     color: "#ff0000",
     density: rng_density,
-    state: "liquid"
+    extinguish: true,
+    state: "solid"
 }
