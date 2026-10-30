@@ -210,6 +210,25 @@ dependOn("mega_library.js", function () {
         hardness: 0.9
     }
 
+    elements.time = {
+        category: "energy",
+        color: "#ffffff",
+        density: 0.0001,
+        ignoreAir: true,
+        state: "gas",
+        tick: behaviors.BOUNCY,
+        reactions: {
+            "ant": { elem1: null, elem2: "dead_bug" },
+            "bee": { elem1: null, elem2: "dead_bug" },
+            "body": { elem2: "rotten_meat" },
+            "head": { elem2: "rotten_meat" },
+            "meat": { elem1: null, elem2: "rotten_meat" },
+            "plant": { elem1: null, elem2: "dead_plant" },
+            "tree_branch": { elem1: null, elem2: "wood" },
+            "uranium": { elem1: null, elem2: "lead" },
+        }
+    }
+
     elements.ancient_curse = {
         behavior: behaviors.LIQUID,
         color: ["#ff695e", "#ff8682"],

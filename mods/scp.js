@@ -2082,8 +2082,9 @@ elements.red_water = {
         "body": { elem2: "scp_009_meat", chance: 0.004 },
         "head": { elem2: "scp_009_meat", chance: 0.005 },
         "frozen_meat": { elem2: "scp_009_meat", chance: 0.015 },
-        "fish": { elem2: "scp_009_meat", chance: 0.015 },
         "bird": { elem2: "scp_009_meat", chance: 0.015 },
+        "fish": { elem2: "scp_009_meat", chance: 0.015 },
+        "snow": { elem2: "red_snow", chance: 0.4 },
         "frog": { elem2: "scp_009_meat", chance: 0.015 },
         "tadpole": { elem2: "scp_009_meat", chance: 0.015 },
         "iron": { elem1: null, elem2: "rust", chance: 0.025 },
@@ -2134,6 +2135,7 @@ elements.red_steam = {
         "frozen_plant": { elem2: "red_plant", chance: 0.05 },
         "grass": { elem2: "red_plant" },
         "plant": { elem2: "red_plant" },
+        "snow": { elem2: "red_snow", chance: 0.4 },
         "meat": { elem2: "scp_009_meat", chance: 0.015 },
         "skin": { elem2: "scp_009_meat", chance: 0.0075 },
         "body": { elem2: "scp_009_meat", chance: 0.04 },
@@ -8459,6 +8461,7 @@ const turnInto009 = [
     "infection",
     "juice_ice",
     "juice",
+    "ketchup",
     "milk",
     "neutral_acid",
     "pool_water",
@@ -8479,12 +8482,13 @@ const turnInto009 = [
 
 if (enabledMods.includes("mods/more_life.js")) {
     turnInto009.push("chicken")
+    turnInto009.push("flesh_leaves")
     turnInto009.push("zombie_body")
     turnInto009.push("zombie_head")
 };
 if (enabledMods.includes("mods/biology.js")) {
-    turnInto009.push("urine")
     turnInto009.push("pee_ice")
+    turnInto009.push("urine")
 };
 
 runAfterLoad(function () {

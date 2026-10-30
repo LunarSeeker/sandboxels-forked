@@ -633,6 +633,61 @@ elements.hazmat_head = {
 
 // Machines
 
+elements.drain = {
+    behavior: behaviors.WALL,
+    category: "machines",
+    color: "#ede6de",
+    conduct: 1,
+    darkText: true,
+    desc: "Removes liquid elements.",
+    hardness: 0.5,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.charge > 0) {
+            for (i = 0; i < adjacentCoords.length; i++) {
+                var checkPosX = pixel.x + adjacentCoords[i][0]
+                var checkPosY = pixel.y + adjacentCoords[i][1]
+                if (!isEmpty(checkPosX, checkPosY, true)) {
+                    var gasPixel = pixelMap[checkPosX][checkPosY]
+                    if (elements[gasPixel.element].state === "liquid") {
+                        deletePixel(gasPixel.x, gasPixel.y)
+                    }
+                };
+            };
+        }
+    }
+}
+
+elements.vent = {
+    alias: ["air filter"],
+    behavior: behaviors.WALL,
+    category: "machines",
+    color: "#ac8862",
+    conduct: 1,
+    darkText: true,
+    desc: "Removes gaseous elements.",
+    hardness: 0.5,
+    insulate: true,
+    noMix: true,
+    state: "solid",
+    tick: function (pixel) {
+        if (pixel.charge > 0) {
+            for (i = 0; i < adjacentCoords.length; i++) {
+                var checkPosX = pixel.x + adjacentCoords[i][0]
+                var checkPosY = pixel.y + adjacentCoords[i][1]
+                if (!isEmpty(checkPosX, checkPosY, true)) {
+                    var gasPixel = pixelMap[checkPosX][checkPosY]
+                    if (elements[gasPixel.element].state === "gas") {
+                        deletePixel(gasPixel.x, gasPixel.y)
+                    }
+                };
+            };
+        }
+    }
+}
+
 elements.fossil_engine = {
     alias: ["oil engine", "furnace"],
     behavior: behaviors.WALL,
