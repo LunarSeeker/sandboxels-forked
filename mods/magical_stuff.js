@@ -267,6 +267,7 @@ dependOn("mega_library.js", function () {
             "pyrite": {},
             "rotten_meat": {},
             "salt_water": { elem2: "salt" },
+            "salt": {},
             "sand": {},
             "silver": { elem2: "aluminum" },
             "wall": {},
