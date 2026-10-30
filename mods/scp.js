@@ -7995,7 +7995,7 @@ elements.scp_1015 = {
         if (elements.scp_1015.reactions[pixel.element]) { return }
         if (elements.scp_1015.ignore.indexOf(pixel.element) !== -1) return
         if (elements[pixel.element].state !== "liquid" && elements[pixel.element].state !== "gas") {
-            if (Math.random() < 0.01) {
+            if (Math.random() <= 0.1) {
                 changePixel(pixel, "scp_1015")
             }
             else {
@@ -8494,6 +8494,7 @@ runAfterLoad(function () {
         }
         for (j = 0; j < turnInto009.length; j++) {
             elements[redStuff[i]].reactions[turnInto009[j]] = { "elem2": "scp_009", "chance": 0.25 }
+            elements[redStuff[i]].reactions["udder"] = { "elem2": "scp_009_meat" }
         };
     };
 })
