@@ -11,6 +11,31 @@ colorstochoose = [
     "#ffffff"
 ]
 
+excludedestabilizer = [
+    "art",
+    "black_hole",
+    "bless",
+    "border",
+    "cloner",
+    "false_vacuum",
+    "filter",
+    "gray_goo",
+    "ichor",
+    "image",
+    "pipe_wall",
+    "pipe",
+    "portal_in",
+    "portal_out",
+    "destabilizer",
+    "sensor",
+    "singularity",
+    "time",
+    "unstablium",
+    "void",
+    "wall",
+    "warp"
+]
+
 //Random integer from 0 to n
 function randomIntegerFromZeroToValue(value) {
     var absoluteValuePlusOne = Math.abs(value) + 1
@@ -133,35 +158,6 @@ elements.dirt_bomb = {
     cooldown: defaultCooldown
 }
 
-elements.terraformer = {
-    category: "weapons",
-    color: "#568115",
-    cooldown: defaultCooldown,
-    density: 1500,
-    excludeRandom: true,
-    maxSize: 1,
-    state: "solid",
-    tick: function (pixel) {
-        if (pixel.start === pixelTicks) { return }
-        if (!tryMove(pixel, pixel.x, pixel.y + 1)) {
-            if (outOfBounds(pixel.x, pixel.y + 1) || (pixelMap[pixel.x][pixel.y + 1].element !== "terraformer")) {
-                for (i = 0; i < currentPixels.length; i++) {
-                    var newPixel = currentPixels[i]
-                    if (newPixel.temp < 0 || newPixel.temp > 90) {
-                        newPixel.temp = 20
-                    }
-                    if (elements[newPixel.element].category === "land" && (newPixel.element !== "dirt" && newPixel.element !== "mud" && newPixel.element !== "rock")) {
-                        changePixel(newPixel, "dirt")
-                    }
-                    pixelTempCheck(newPixel)
-                }
-                explodeAt(pixel.x, pixel.y + 1, 10, "flash")
-            }
-        }
-        doDefaults(pixel)
-    }
-}
-
 elements.false_vacuum = {
     category: "weapons",
     color: "#2e2430",
@@ -208,6 +204,72 @@ elements.false_vacuum = {
         if (pixel.timeAlive > 20) {
             deletePixel(pixel.x, pixel.y)
             return
+        }
+    },
+}
+
+elements.destabilizer = {
+    category: "weapons",
+    color: "#343f30",
+    cooldown: 12,
+    hardness: 1,
+    maxSize: 1,
+    movable: false,
+    tick: function (pixel) {
+        // Attract other pixels within a 9-pixel radius
+        for (let dx = -9; dx <= 9; dx++) {
+            for (let dy = -9; dy <= 9; dy++) {
+                let x = pixel.x + dx
+                let y = pixel.y + dy
+
+                // Ignore out-of-bounds
+                if (!isEmpty(x, y, true)) {
+                    let other = pixelMap[x]?.[y]
+                    if (other && !excludedestabilizer.includes(other.element)) {
+                        // Attraction: move other pixel towards the black hole
+                        tryMove(other, other.x + Math.sign(pixel.x - other.x), other.y + Math.sign(pixel.y - other.y))
+                    }
+                }
+            }
+        }
+
+        // Convert touching pixels into black holes
+        const dirs = [
+            [1, 0], [-1, 0], [0, 1], [0, -1],
+            [1, 1], [-1, -1], [1, -1], [-1, 1]
+        ]
+        for (let d of dirs) {
+            let nx = pixel.x + d[0]
+            let ny = pixel.y + d[1]
+            if (isEmpty(nx, ny, true)) continue
+
+            let touching = pixelMap[nx]?.[ny]
+            if (touching && !excludedestabilizer.includes(touching.element)) {
+                changePixel(touching, "unstablium")
+            }
+        }
+    },
+}
+
+elements.unstablium = {
+    category: "special",
+    color: "#343f30",
+    hardness: 1,
+    hidden: true,
+    tick: function (pixel) {
+        const dirs = [
+            [1, 0], [-1, 0], [0, 1], [0, -1],
+            [1, 1], [-1, -1], [1, -1], [-1, 1]
+        ]
+        for (let d of dirs) {
+            let nx = pixel.x + d[0]
+            let ny = pixel.y + d[1]
+            if (isEmpty(nx, ny, true)) continue
+
+            let touching = pixelMap[nx]?.[ny]
+            if (touching && !excludedestabilizer.includes(touching.element)) {
+                changePixel(touching, "unstablium")
+            }
         }
     },
 }
