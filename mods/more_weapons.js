@@ -17,6 +17,7 @@ excludedestabilizer = [
     "bless",
     "border",
     "cloner",
+    "destabilizer",
     "false_vacuum",
     "filter",
     "gray_goo",
@@ -26,14 +27,16 @@ excludedestabilizer = [
     "pipe",
     "portal_in",
     "portal_out",
-    "destabilizer",
     "sensor",
     "singularity",
+    "soul",
+    "super_acid",
     "time",
     "unstablium",
     "void",
     "wall",
-    "warp"
+    "warp",
+    "waste_barrel"
 ]
 
 //Random integer from 0 to n
@@ -213,6 +216,7 @@ elements.destabilizer = {
     color: "#343f30",
     cooldown: 12,
     hardness: 1,
+    hazard: true,
     maxSize: 1,
     movable: false,
     tick: function (pixel) {
@@ -234,11 +238,7 @@ elements.destabilizer = {
         }
 
         // Convert touching pixels into black holes
-        const dirs = [
-            [1, 0], [-1, 0], [0, 1], [0, -1],
-            [1, 1], [-1, -1], [1, -1], [-1, 1]
-        ]
-        for (let d of dirs) {
+        for (let d of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]) {
             let nx = pixel.x + d[0]
             let ny = pixel.y + d[1]
             if (isEmpty(nx, ny, true)) continue
@@ -255,13 +255,10 @@ elements.unstablium = {
     category: "special",
     color: "#343f30",
     hardness: 1,
+    hazard: true,
     hidden: true,
     tick: function (pixel) {
-        const dirs = [
-            [1, 0], [-1, 0], [0, 1], [0, -1],
-            [1, 1], [-1, -1], [1, -1], [-1, 1]
-        ]
-        for (let d of dirs) {
+        for (let d of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]) {
             let nx = pixel.x + d[0]
             let ny = pixel.y + d[1]
             if (isEmpty(nx, ny, true)) continue
@@ -273,3 +270,5 @@ elements.unstablium = {
         }
     },
 }
+
+elements.bless.reactions.unstablium = { elem2: null }
