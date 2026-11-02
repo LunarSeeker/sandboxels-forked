@@ -37,7 +37,7 @@ dependOn("mega_library.js", function () {
                     pixel.dwarf_hilled = true
                 }
             }, function (pixel, newX, _newY) {
-                if (Math.random() < 0.01 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
+                if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y + 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y + 1].element) !== -1) {
                     if (!pixel.dwarf_hilled || !isEmpty(pixel.x + newX, pixel.y, true) && pixelMap[pixel.x + newX][pixel.y].element === "dwarf_wall") {
                         var wallCoords = [
                             [-1, -1], [1, -1],
@@ -61,7 +61,7 @@ dependOn("mega_library.js", function () {
                         tryMove(pixel, pixel.x + newX, pixel.y + 1)
                     }
                 }
-                else if (Math.random() < 0.1 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
+                else if (Math.random() < 0.12 && !isEmpty(pixel.x + newX, pixel.y - 1, true) && dwarfcrawlThru.indexOf(pixelMap[pixel.x + newX][pixel.y - 1].element) !== -1) {
                     swapPixels(pixel, pixelMap[pixel.x + newX][pixel.y - 1])
                 }
             })
@@ -355,6 +355,37 @@ dependOn("mega_library.js", function () {
             "copper": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0075 },
             "silver": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0075 },
             "gold": { elem1: ["hydrogen", "hydrogen", "oxygen"], charged: true, chance: 0.0075 }
+        }
+    }
+
+    elements.odd_soda = {
+        behavior: [
+            "XX|XX|XX",
+            "M2|XX|M2",
+            "M2|M1|M2"
+        ],
+        tick: function (pixel) {
+            if (Math.random() < 0.03 && isEmpty(pixel.x, pixel.y - 1)) {
+                let foam = releaseElement(pixel, "foam")
+                if (foam) foam.color = pixelColorPick(foam, "#422016")
+            }
+        },
+        category: "liquids",
+        color: "#dbb586",
+        density: 1030,
+        isFood: true,
+        state: "liquid",
+        reactions: {
+            "candy": { elem2: "foam", color2: "#422016" },
+            "caramel": { elem2: "foam", color2: "#422016" },
+            "egg": { elem2: "yolk" },
+            "rock": { elem2: "wet_sand" },
+            "rust": { elem2: "iron" },
+            "salt_water": { elem2: "foam", color2: "#422016" },
+            "salt": { elem2: "foam", chance: 0.05, color2: "#422016" },
+            "sugar": { elem2: "foam", chance: 0.01, color2: "#422016" },
+            "water": { elem1: "sugar_water", elem2: "sugar_water" },
+            "oxidized_copper": { elem2: "copper" }
         }
     }
 
