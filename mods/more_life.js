@@ -564,6 +564,7 @@ elements.genesis_device = {
     conduct: 1,
     density: 1201,
     hardness: 0.9,
+    maxSize: 1,
     state: "solid",
     terraformLand: ["ash", "fallout", "scp_009", "red_snow", "red_plant", "red_ice_plant", "charcoal"],
     properties: {
@@ -651,6 +652,7 @@ elements.life_remover = {
     conduct: 1,
     density: 1201,
     hardness: 0.9,
+    maxSize: 1,
     state: "solid",
     properties: {
         active: false,
