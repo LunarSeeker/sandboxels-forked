@@ -229,6 +229,55 @@ dependOn("mega_library.js", function () {
         }
     }
 
+    elements.chocolate_midas = {
+        color: ["#4d2818", "#3b1b0d", "#33160a"],
+        behavior: behaviors.LIQUID,
+        tick: function (pixel) {
+            var coords = rectCoords(pixel.x - 1, pixel.y - 1, pixel.x + 1, pixel.y + 3)
+            for (var i = 0; i < coords.length; i++) {
+                var x = coords[i].x
+                var y = coords[i].y
+                if (!isEmpty(x, y, true)) {
+                    elements.chocolate_midas.tool(pixelMap[x][y])
+                }
+            }
+        },
+        tool: function (pixel) {
+            if (elements[pixel.element].id === elements.chocolate_midas.id) { return }
+            if (elements.chocolate_midas.reactions[pixel.element]) { return }
+            if (elements[pixel.element].hardness >= 1) { return }
+            if (elements[pixel.element].state === "gas") { return }
+            if (elements[pixel.element].state === "liquid") {
+                changePixel(pixel, "chocolate_milk")
+            }
+            else {
+                changePixel(pixel, "chocolate")
+            }
+        },
+        canPlace: true,
+        reactions: {
+            "ancient_curse": {},
+            "body": {},
+            "candy": {},
+            "caramel": {},
+            "chocolate_milk": {},
+            "chocolate_powder": {},
+            "chocolate": {},
+            "head": {},
+            "honey": { elem2: "caramel" },
+            "ichor": {},
+            "melted_chocolate": {},
+            "midas_touch": {},
+            "pipe": {},
+            "salt": { elem2: "sugar" },
+            "sugar": {},
+        },
+        density: 193,
+        state: "liquid",
+        category: "special",
+        excludeRandom: true
+    }
+
     elements.ancient_curse = {
         behavior: behaviors.LIQUID,
         color: ["#ff695e", "#ff8682"],
@@ -390,6 +439,7 @@ dependOn("mega_library.js", function () {
     }
 
     elements.bless.reactions.ancient_curse = { elem2: null }
+    elements.bless.reactions.chocolate_midas = { elem2: "chocolate" }
     elements.bless.reactions.cold_steam = { elem2: "ice" }
     elements.bless.reactions.hot_ice = { elem2: "steam" }
     elements.bless.reactions.mirror_water = { elem2: "water" }
