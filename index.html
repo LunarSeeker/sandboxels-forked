@@ -1587,7 +1587,8 @@
                 reactions: {
                     "sand": { elem1: "sand", elem2: "wet_sand", chance: 0.0005, oneway: true },
                     "dirt": { elem1: "sand", elem2: "mud", chance: 0.0005, oneway: true },
-                    "gravel": { elem1: "cement", elem2: null, chance: 0.2 }
+                    "gravel": { elem1: "cement", elem2: null, chance: 0.2 },
+                    "dead_plant": { elem1: "mud", elem2: "mud", chance: 0.1, oneway: true }
                 },
                 tempHigh: 100,
                 stateHigh: "packed_sand",
@@ -1774,7 +1775,8 @@
                 category: "life",
                 state: "solid",
                 density: 1400,
-                seed: "grass"
+                seed: "grass",
+                cooldown: defaultCooldown
             },
             "algae": {
                 color: ["#395706", "#6f9315", "#9dca19"],
@@ -7624,7 +7626,7 @@
                 tick: behaviors.SEEDRISE,
                 reactions: {
                     "wood": { elem2: "dirt", chance: 0.04 },
-                    "tree_brake": { elem2: "dirt", chance: 0.04 },
+                    "tree_branch": { elem2: "dirt", chance: 0.04 },
                     "plant": { elem2: "dirt", chance: 0.07 },
                     "evergreen": { elem2: "dirt", chance: 0.07 },
                     "root": { elem2: "dirt", chance: 0.07 },
@@ -7652,7 +7654,7 @@
                 ],
                 reactions: {
                     "wood": { elem2: "dirt", chance: 0.04 },
-                    "tree_brake": { elem2: "dirt", chance: 0.04 },
+                    "tree_branch": { elem2: "dirt", chance: 0.04 },
                     "plant": { elem2: "dirt", chance: 0.07 },
                     "evergreen": { elem2: "dirt", chance: 0.07 },
                     "root": { elem2: "dirt", chance: 0.07 },
@@ -7758,7 +7760,7 @@
                 ],
                 reactions: {
                     "wood": { elem2: "dirt", chance: 0.04 },
-                    "tree_brake": { elem2: "dirt", chance: 0.04 },
+                    "tree_branch": { elem2: "dirt", chance: 0.04 },
                     "plant": { elem2: "dirt", chance: 0.07 },
                     "evergreen": { elem2: "dirt", chance: 0.07 },
                     "root": { elem2: "dirt", chance: 0.07 },
