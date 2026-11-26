@@ -106,6 +106,7 @@ elements.stable_sand = {
     category: "land",
     color: "#77d9e6",
     density: 1602,
+    hidden: true,
     state: "solid",
     stateHigh: "molten_glass",
     tempHigh: 1700
@@ -186,12 +187,20 @@ elements.stabilizer = {
     state: "solid",
     tick: function (pixel) {
         if (pixel.charge > 0) {
-            var coords = circleCoords(pixel.x, pixel.y, 50)
+            var coords = circleCoords(pixel.x, pixel.y, 60)
             for (var i = 0; i < coords.length; i++) {
                 if (!isEmpty(coords[i].x, coords[i].y) && !outOfBounds(coords[i].x, coords[i].y)) {
                     var unstable_element = pixelMap[coords[i].x][coords[i].y]
                     if (unstable_element.element === "unstablium" || unstable_element.element === "black_hole") {
                         changePixel(unstable_element, "stable_sand")
+                    } else if (unstable_element.element === "gray_goo") {
+                        changePixel(unstable_element, "iron")
+                    } else if (unstable_element.element === "midas_touch" || unstable_element.element === "ancient_curse") {
+                        changePixel(unstable_element, "gold")
+                    } else if (unstable_element.element === "strange_matter" || unstable_element.element === "void" || unstable_element.element === "warp") {
+                        changePixel(unstable_element, "sand")
+                    } else if (unstable_element.element === "mirror_water" || unstable_element.element === "hot_ice" || unstable_element.element === "cold_steam") {
+                        changePixel(unstable_element, "water")
                     }
                 }
             }
@@ -199,5 +208,5 @@ elements.stabilizer = {
     }
 }
 
-elements.bless.reactions.destabilizer = { elem2: "stabilizer" }
+elements.bless.reactions.destabilizer = { elem2: null }
 elements.bless.reactions.unstablium = { elem2: "stable_sand" }
